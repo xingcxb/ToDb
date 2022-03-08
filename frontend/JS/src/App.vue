@@ -7,6 +7,7 @@
     <div class="nav" data-wails-no-drag>
       <router-link to="/">{{ $t("nav.home") }}</router-link>
       <router-link to="/about">{{ $t("nav.about") }}</router-link>
+      <router-link to="/newConnection">新建连接</router-link>
     </div>
     <!-- Menu -->
     <!-- 菜单 -->

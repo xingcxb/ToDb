@@ -2,11 +2,15 @@ module ToDb
 
 go 1.17
 
-require github.com/wailsapp/wails/v2 v2.0.0-beta.33
+require (
+	github.com/go-redis/redis/v8 v8.11.4
+	github.com/wailsapp/wails/v2 v2.0.0-beta.33
+)
 
 require (
 	github.com/andybalholm/brotli v1.0.2 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fasthttp/websocket v0.0.0-20200320073529-1554a54587ab // indirect
 	github.com/gabriel-vasile/mimetype v1.3.1 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect

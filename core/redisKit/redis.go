@@ -2,6 +2,7 @@ package redisKit
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-redis/redis/v8"
 	"strings"
 )
@@ -15,7 +16,7 @@ var (
 	rdb      *redis.Client
 )
 
-func init() {
+func InitDb() {
 	var url strings.Builder
 	url.WriteString(Addr)
 	url.WriteString(":")
@@ -28,6 +29,8 @@ func init() {
 }
 
 // GetBaseInfo 获取redis基础信息
-func GetBaseInfo() {
-
+func GetBaseInfo(ctx context.Context) {
+	//fmt.Println(rdb.Set(ctx, "test", "11111", time.Second*100).Err())
+	fmt.Println(rdb.Ping(ctx))
+	//fmt.Println(rdb.Do(ctx, "info"))
 }

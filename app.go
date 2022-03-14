@@ -2,7 +2,10 @@ package main
 
 import (
 	"ToDb/appview"
+	"ToDb/kit"
 	"context"
+	"fmt"
+	"net/http"
 )
 
 // App struct
@@ -47,4 +50,26 @@ func (a *App) beforeClose(ctx context.Context) (prevent bool) {
 func (a *App) shutdown(ctx context.Context) {
 	// Perform your teardown here
 	// 在此处做一些资源释放的操作
+}
+
+// TestConnection 测试连接
+func (a *App) TestConnection(conectionInfo string) string {
+	var responseJson kit.JsonResponse
+	var message string
+	fmt.Println("==============================", conectionInfo)
+	//var p fastjson.Parser
+	//v, err := p.Parse(conectionInfo)
+	//fmt.Println("============", v)
+	//用于标记是否要继续匹配
+	//ok := true
+	//if err != nil {
+	//	message = "参数格式错误"
+	//	//ok = false
+	//}
+	fmt.Println(message)
+	responseJson = kit.JsonResponse{
+		Code:    http.StatusBadRequest,
+		Message: "暂不支持此类型的代理商",
+	}
+	return responseJson.String()
 }

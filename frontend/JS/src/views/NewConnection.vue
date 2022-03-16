@@ -72,16 +72,16 @@
 </template>
 
 <script setup>
-import {reactive, ref} from "vue";
-import {Modal} from "ant-design-vue";
+import { reactive } from 'vue';
+import { Modal } from 'ant-design-vue';
 
 let connectionInfo = reactive({
-  alias:"111",
-  hostURL:"111",
-  port:"",
-  username:"",
-  password:"",
-  savePassword:"",
+  alias: "",
+  hostURL: "",
+  port: "",
+  username: "",
+  password: "",
+  savePassword: "",
 })
 
 // //连接别名
@@ -99,9 +99,7 @@ let connectionInfo = reactive({
 
 // 测试连接
 function testConnection() {
-  console.log("111111")
-  console.log(connectionInfo)
-  window.go.main.App.TestConnection(connectionInfo.toString()).then((resolve)=>{
+  window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then((resolve) => {
     console.log(resolve)
     // var result = JSON.parse(resolve)
     // if (result.code === 200){
@@ -111,14 +109,14 @@ function testConnection() {
     //     content:"111111"
     //   })
     // }
-  })
+  });
 }
 
 
 </script>
 
 <style scoped>
-.imageRow{
+.imageRow {
   height: 72px;
   background: #7cb305;
 }

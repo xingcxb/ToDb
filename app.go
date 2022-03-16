@@ -2,9 +2,11 @@ package main
 
 import (
 	"ToDb/appview"
+	"ToDb/core/redisKit"
 	"ToDb/kit"
 	"context"
 	"fmt"
+	"github.com/tidwall/gjson"
 	"net/http"
 )
 
@@ -53,23 +55,40 @@ func (a *App) shutdown(ctx context.Context) {
 }
 
 // TestConnection 测试连接
-func (a *App) TestConnection(conectionInfo string) string {
+func (a *App) TestConnection(connectionInfo string) string {
 	var responseJson kit.JsonResponse
 	var message string
-	fmt.Println("==============================", conectionInfo)
-	//var p fastjson.Parser
-	//v, err := p.Parse(conectionInfo)
-	//fmt.Println("============", v)
 	//用于标记是否要继续匹配
-	//ok := true
-	//if err != nil {
-	//	message = "参数格式错误"
-	//	//ok = false
-	//}
+	fail := false
+	parameter := gjson.Parse(connectionInfo).Map()
+	for k, v := range parameter {
+		if k == "savePassword" || k == "username" {
+			continue
+		}
+		if v.String() == "" {
+			message = "参数" + k + "不存在值"
+			fail = true
+			break
+		}
+	}
+
+	if !fail {
+		redisKit.Addr = parameter["hostURL"].String()
+		redisKit.Port = parameter["port"].String()
+		redisKit.Username = parameter["username"].String()
+		redisKit.Password = parameter["password"].String()
+		redisKit.InitDb()
+		err := redisKit.Ping(context.Background())
+		if err != nil {
+			message = err.Error()
+		} else {
+			message = "连接成功"
+		}
+	}
 	fmt.Println(message)
 	responseJson = kit.JsonResponse{
 		Code:    http.StatusBadRequest,
-		Message: "暂不支持此类型的代理商",
+		Message: message,
 	}
 	return responseJson.String()
 }

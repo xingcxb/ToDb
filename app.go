@@ -2,12 +2,10 @@ package main
 
 import (
 	"ToDb/appview"
-	"ToDb/core/redisKit"
+	"ToDb/communication"
 	"ToDb/kit"
 	"context"
-	"fmt"
-	"github.com/tidwall/gjson"
-	"net/http"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -57,37 +55,23 @@ func (a *App) shutdown(ctx context.Context) {
 // TestConnection 测试连接
 func (a *App) TestConnection(connectionInfo string) string {
 	var responseJson kit.JsonResponse
-	var message string
-	//用于标记是否要继续匹配
-	fail := false
-	parameter := gjson.Parse(connectionInfo).Map()
-	for k, v := range parameter {
-		if k == "savePassword" || k == "username" {
-			continue
-		}
-		if v.String() == "" {
-			message = "参数" + k + "不存在值"
-			fail = true
-			break
-		}
-	}
-
-	if !fail {
-		redisKit.Addr = parameter["hostURL"].String()
-		redisKit.Port = parameter["port"].String()
-		redisKit.Username = parameter["username"].String()
-		redisKit.Password = parameter["password"].String()
-		redisKit.InitDb()
-		err := redisKit.Ping(context.Background())
-		if err != nil {
-			message = err.Error()
-		} else {
-			message = "连接成功"
-		}
-	}
-	fmt.Println(message)
+	code, message := communication.RedisPing(connectionInfo)
 	responseJson = kit.JsonResponse{
-		Code:    http.StatusBadRequest,
+		Code:    code,
+		Message: message,
+	}
+	runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+		Type: runtime.DialogType(),
+	})
+	return responseJson.String()
+}
+
+// Ok 确定按钮
+func (a App) Ok(connectionInfo string) string {
+	var responseJson kit.JsonResponse
+	code, message := communication.Ok(connectionInfo)
+	responseJson = kit.JsonResponse{
+		Code:    code,
 		Message: message,
 	}
 	return responseJson.String()

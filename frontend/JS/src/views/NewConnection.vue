@@ -76,40 +76,43 @@ import { reactive } from 'vue';
 import { Modal } from 'ant-design-vue';
 
 let connectionInfo = reactive({
+  //连接别名
   alias: "",
+  //连接地址
   hostURL: "",
+  //端口
   port: "",
+  //用户名
   username: "",
+  //密码
   password: "",
-  savePassword: "",
+  //是否保存密码
+  savePassword: false,
 })
-
-// //连接别名
-// const alias = ref('')
-// //连接地址
-// const hostURL = ref('')
-// //端口
-// const port = ref('')
-// //用户名
-// const username = ref('')
-// //密码
-// const password = ref('')
-// //是否保存密码
-// const savePassword = ref(false)
 
 // 测试连接
 function testConnection() {
   window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then((resolve) => {
     console.log(resolve)
-    // var result = JSON.parse(resolve)
-    // if (result.code === 200){
-    //   let secondsToGo = 5;
-    //   const modal = Modal.success({
-    //     title:"",
-    //     content:"111111"
-    //   })
-    // }
+    var result = JSON.parse(resolve)
+    let secondsToGo = 5;
+    if (result.code === 200){
+      const modal = Modal.success({
+        title:"ToDo",
+        content:result.message
+      })
+    }else{
+      const modal = Modal.warning({
+        title:"ToDo",
+        content:result.message
+      })
+    }
   });
+
+  // 确定按钮
+  function ok(){
+
+  }
 }
 
 

@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"reflect"
+	goruntime "runtime"
 	"strings"
 )
 
@@ -98,16 +99,26 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 		Password: parameter["password"].String(),
 	}
 	if parameter["savePassword"].Bool() {
-		var strBuild strings.Builder
-		fmt.Println(os.Getwd())
-		strBuild.WriteString("safe/")
-		strBuild.WriteString(info.Alias)
-		strBuild.WriteString(".json")
-		filename := strBuild.String()
+		var dirBuild strings.Builder
+		dir, _ := os.Getwd()
+		fmt.Println("=========================", dir)
+		dirBuild.WriteString(dir)
+		if goruntime.GOOS == "windows" {
+			//windows下存放配置文件路径
+			dirBuild.WriteString("\\safe\\")
+		} else if goruntime.GOOS == "darwin" {
+			//macOS下存放配置文件路径
+			dirBuild.WriteString("/safe/")
+		}
+		dirBuild.WriteString(info.Alias)
+		dirBuild.WriteString(".json")
+		filename := dirBuild.String()
 		f, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
 		if err != nil {
+			fmt.Println(err, "================================================")
 			newFile, err := os.Create(filename)
 			if err != nil {
+				fmt.Println(err, "==============2==================================")
 				return code, message
 			}
 			defer newFile.Close()

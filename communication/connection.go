@@ -4,19 +4,22 @@ import (
 	"ToDb/core/redisKit"
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/tidwall/gjson"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"net/http"
 	"os"
+	"reflect"
+	"strings"
 )
 
 // 连接信息
 type connectionType struct {
-	alias    string //别名
-	hostURL  string //连接地址
-	port     string //端口号
-	username string //用户名
-	password string //密码
+	Alias    string `tag:"连接名" json:"alias"`    //别名
+	HostURL  string `tag:"连接地址" json:"hostURL"` //连接地址
+	Port     string `tag:"端口号" json:"port"`     //端口号
+	Username string `tag:"用户名" json:"username"` //用户名
+	Password string `tag:"密码" json:"password"`  //密码
 }
 
 func checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
@@ -32,7 +35,9 @@ func checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
 		}
 		if v.String() == "" {
 			code = http.StatusBadRequest
-			message = "参数" + k + "不存在值"
+			fieldV, _ := reflect.TypeOf(connectionType{}).FieldByName(k)
+			tag := fieldV.Tag.Get("tag")
+			message = tag + "不能为空"
 			fail = true
 			break
 		}
@@ -52,18 +57,18 @@ func RedisPing(connectionInfo string) (int, string) {
 	code, message, fail = checkParameter(parameter)
 
 	info := connectionType{
-		alias:    parameter["alias"].String(),
-		hostURL:  parameter["hostURL"].String(),
-		port:     parameter["port"].String(),
-		username: parameter["username"].String(),
-		password: parameter["password"].String(),
+		Alias:    parameter["alias"].String(),
+		HostURL:  parameter["hostURL"].String(),
+		Port:     parameter["port"].String(),
+		Username: parameter["username"].String(),
+		Password: parameter["password"].String(),
 	}
 
 	if !fail {
-		redisKit.Addr = info.hostURL
-		redisKit.Port = info.port
-		redisKit.Username = info.username
-		redisKit.Password = info.password
+		redisKit.Addr = info.HostURL
+		redisKit.Port = info.Port
+		redisKit.Username = info.Username
+		redisKit.Password = info.Password
 		redisKit.InitDb()
 		err := redisKit.Ping(context.Background())
 		if err != nil {
@@ -78,7 +83,7 @@ func RedisPing(connectionInfo string) (int, string) {
 }
 
 // Ok 确定按钮
-func Ok(connectionInfo string) (int, string) {
+func Ok(ctx context.Context, connectionInfo string) (int, string) {
 	//返回连接信息
 	message := "连接成功"
 	//状态码
@@ -86,31 +91,34 @@ func Ok(connectionInfo string) (int, string) {
 	parameter := gjson.Parse(connectionInfo).Map()
 	code, message, _ = checkParameter(parameter)
 	info := connectionType{
-		alias:    parameter["alias"].String(),
-		hostURL:  parameter["hostURL"].String(),
-		port:     parameter["port"].String(),
-		username: parameter["username"].String(),
-		password: parameter["password"].String(),
+		Alias:    parameter["alias"].String(),
+		HostURL:  parameter["hostURL"].String(),
+		Port:     parameter["port"].String(),
+		Username: parameter["username"].String(),
+		Password: parameter["password"].String(),
 	}
 	if parameter["savePassword"].Bool() {
-		filename := info.alias + ".json"
+		var strBuild strings.Builder
+		fmt.Println(os.Getwd())
+		strBuild.WriteString("safe/")
+		strBuild.WriteString(info.Alias)
+		strBuild.WriteString(".json")
+		filename := strBuild.String()
 		f, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
 		if err != nil {
-			//打开文件错误，创建文件
 			newFile, err := os.Create(filename)
 			if err != nil {
 				return code, message
 			}
 			defer newFile.Close()
-		} else {
-			//此处上面已经绝对保证有文件
-			f, err = os.Open(info.alias)
+			f, err = os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
 		}
-		_v, _ := json.Marshal(info)
+		_v, _ := json.MarshalIndent(info, "", "    ")
 		_, err = f.WriteString(string(_v))
 		if err != nil {
-			runtime.LogError(context.Background(), err.Error())
+			runtime.LogError(ctx, err.Error())
 		}
+		defer f.Close()
 	}
 	return code, message
 }

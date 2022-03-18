@@ -1,7 +1,8 @@
 export interface go {
   "main": {
     "App": {
-		TestConnection(arg1:string):Promise<string>
+		Ok(arg1:string):Promise<string>
+		TestConnection(arg1:string):Promise<void>
     },
   }
 

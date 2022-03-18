@@ -63,18 +63,19 @@
     </a-col>
     <a-col :span="13"></a-col>
     <a-col :span="3">
-      <a-button>确定</a-button>
+      <a-button @click="ok">确定</a-button>
     </a-col>
     <a-col :span="3">
-      <a-button>取消</a-button>
+      <a-button @click="cancel">取消</a-button>
     </a-col>
   </a-row>
 </template>
 
 <script setup>
 import { reactive } from 'vue';
-import { Modal } from 'ant-design-vue';
+import {useRouter} from "vue-router";
 
+const router = useRouter()
 let connectionInfo = reactive({
   //连接别名
   alias: "",
@@ -92,27 +93,27 @@ let connectionInfo = reactive({
 
 // 测试连接
 function testConnection() {
-  window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then((resolve) => {
-    console.log(resolve)
+  window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then(() => {});
+}
+
+// 确定按钮
+function ok(){
+  window.go.main.App.Ok(JSON.stringify(connectionInfo)).then((resolve)=>{
     var result = JSON.parse(resolve)
-    let secondsToGo = 5;
     if (result.code === 200){
-      const modal = Modal.success({
-        title:"ToDo",
-        content:result.message
-      })
-    }else{
-      const modal = Modal.warning({
-        title:"ToDo",
-        content:result.message
+      //跳转到主页面
+      router.push({
+        name:'Home'
       })
     }
   });
+}
 
-  // 确定按钮
-  function ok(){
-
-  }
+// 取消按钮
+function cancel(){
+  router.push({
+    name:'Home'
+  })
 }
 
 

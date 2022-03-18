@@ -6,6 +6,7 @@ import (
 	"ToDb/kit"
 	"context"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"net/http"
 )
 
 // App struct
@@ -53,26 +54,45 @@ func (a *App) shutdown(ctx context.Context) {
 }
 
 // TestConnection 测试连接
-func (a *App) TestConnection(connectionInfo string) string {
-	var responseJson kit.JsonResponse
+func (a *App) TestConnection(connectionInfo string) {
+	//var responseJson kit.JsonResponse
 	code, message := communication.RedisPing(connectionInfo)
-	responseJson = kit.JsonResponse{
-		Code:    code,
-		Message: message,
+	//responseJson = kit.JsonResponse{
+	//	Code:    code,
+	//	Message: message,
+	//}
+	title := "成功"
+	typeV := runtime.InfoDialog
+	if code != http.StatusOK {
+		title = "错误"
+		typeV = runtime.ErrorDialog
 	}
 	runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-		Type: runtime.DialogType(),
+		Type:          typeV,
+		Title:         title,
+		Message:       message,
+		Buttons:       []string{"确定"},
+		DefaultButton: "确定",
 	})
-	return responseJson.String()
+	//return responseJson.String()
 }
 
 // Ok 确定按钮
 func (a App) Ok(connectionInfo string) string {
 	var responseJson kit.JsonResponse
-	code, message := communication.Ok(connectionInfo)
+	code, message := communication.Ok(a.ctx, connectionInfo)
 	responseJson = kit.JsonResponse{
 		Code:    code,
 		Message: message,
+	}
+	if code != http.StatusOK {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.ErrorDialog,
+			Title:         "错误",
+			Message:       message,
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
 	}
 	return responseJson.String()
 }

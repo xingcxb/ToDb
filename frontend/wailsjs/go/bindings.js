@@ -5,9 +5,17 @@ const go = {
   "main": {
     "App": {
       /**
-       * TestConnection
+       * Ok
        * @param {string} arg1 - Go Type: string
        * @returns {Promise<string>}  - Go Type: string
+       */
+      "Ok": (arg1) => {
+        return window.go.main.App.Ok(arg1);
+      },
+      /**
+       * TestConnection
+       * @param {string} arg1 - Go Type: string
+       * @returns {Promise<void>} 
        */
       "TestConnection": (arg1) => {
         return window.go.main.App.TestConnection(arg1);

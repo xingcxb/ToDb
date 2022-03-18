@@ -13,7 +13,6 @@ var (
 	Password = "" //密码
 	Port     = "" //端口号
 	Db       = 0  //操作数据库
-	ctx      = context.Background()
 	rdb      *redis.Client
 )
 

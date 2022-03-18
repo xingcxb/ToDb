@@ -24,7 +24,7 @@ func InitMenu(ctx context.Context) {
 		appMenu = windows(ctx)
 	case "darwin":
 		//macos
-		fmt.Println("暂不支持")
+		appMenu = windows(ctx)
 	default:
 		//linux
 		fmt.Println("暂不支持")
@@ -89,7 +89,22 @@ func edit(ctx context.Context) *menu.MenuItem {
 // 关于
 func about(ctx context.Context) *menu.MenuItem {
 	if osInfo == "darwin" {
-		return nil
+		return menu.SubMenu("ToDb帮助",
+			menu.NewMenuFromItems(
+				menu.Text("帮助中心", nil, nil),
+				menu.SubMenu("在线文档",
+					menu.NewMenuFromItems(
+						menu.Text("Redis", nil, nil),
+						menu.Text("MySQL", nil, nil),
+					),
+				),
+				menu.Text("意见反馈", nil, nil),
+				menu.Separator(),
+				menu.Text("检查更新", nil, nil),
+				menu.Separator(),
+				//menu.Text("关于", nil, nil),
+			),
+		)
 	} else {
 		return menu.SubMenu("ToDb帮助",
 			menu.NewMenuFromItems(

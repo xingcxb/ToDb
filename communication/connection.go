@@ -115,10 +115,8 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 		filename := dirBuild.String()
 		f, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
 		if err != nil {
-			fmt.Println(err, "================================================")
 			newFile, err := os.Create(filename)
 			if err != nil {
-				fmt.Println(err, "==============2==================================")
 				return code, message
 			}
 			defer newFile.Close()
@@ -127,7 +125,8 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 		_v, _ := json.MarshalIndent(info, "", "    ")
 		_, err = f.WriteString(string(_v))
 		if err != nil {
-			runtime.LogError(ctx, err.Error())
+			fmt.Println("======================")
+			runtime.LogError(ctx, "这里"+err.Error())
 		}
 		defer f.Close()
 	}

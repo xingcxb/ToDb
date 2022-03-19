@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import {reactive} from 'vue';
 import {useRouter} from "vue-router";
 
 const router = useRouter()
@@ -93,26 +93,27 @@ let connectionInfo = reactive({
 
 // 测试连接
 function testConnection() {
-  window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then(() => {});
+  window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then(() => {
+  });
 }
 
 // 确定按钮
-function ok(){
-  window.go.main.App.Ok(JSON.stringify(connectionInfo)).then((resolve)=>{
+function ok() {
+  window.go.main.App.Ok(JSON.stringify(connectionInfo)).then((resolve) => {
     var result = JSON.parse(resolve)
-    if (result.code === 200){
+    if (result.code === 200) {
       //跳转到主页面
       router.push({
-        name:'Home'
+        name: 'Home'
       })
     }
   });
 }
 
 // 取消按钮
-function cancel(){
+function cancel() {
   router.push({
-    name:'Home'
+    name: 'Home'
   })
 }
 

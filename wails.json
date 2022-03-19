@@ -21,8 +21,8 @@
   "Info": {
     "companyName": "ToDb",
     "productName": "ToDb",
-    "productVersion": "1.0.0",
-    "copyright": "Copyright.........",
+    "productVersion": "0.1.0",
+    "copyright": "Copyright©️ 2022- Symbol. All Rights Reserved.",
     "comments": "Built using Wails (https://wails.app)"
   },
   "debounceMS": 2000,

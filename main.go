@@ -26,8 +26,8 @@ func main() {
 	// 使用选项创建应用
 	err := wails.Run(&options.App{
 		Title:             "ToDb",
-		Width:             900,
-		Height:            600,
+		Width:             1100,
+		Height:            728,
 		MinWidth:          900,
 		MinHeight:         600,
 		MaxWidth:          1200,
@@ -63,14 +63,14 @@ func main() {
 		// Mac平台特定选项
 		Mac: &mac.Options{
 			TitleBar: &mac.TitleBar{
-				TitlebarAppearsTransparent: true,
+				TitlebarAppearsTransparent: false,
 				HideTitle:                  false,
 				HideTitleBar:               false,
 				FullSizeContent:            false,
 				UseToolbar:                 false,
 				HideToolbarSeparator:       true,
 			},
-			Appearance:           mac.NSAppearanceNameDarkAqua,
+			Appearance:           mac.NSAppearanceNameVibrantLight,
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
 			About: &mac.AboutInfo{

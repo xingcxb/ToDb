@@ -3,7 +3,7 @@ package main
 import (
 	"ToDb/appview"
 	"ToDb/communication"
-	"ToDb/kit"
+	"ToDb/lib"
 	"context"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"net/http"
@@ -55,9 +55,9 @@ func (a *App) shutdown(ctx context.Context) {
 
 // TestConnection 测试连接
 func (a *App) TestConnection(connectionInfo string) {
-	//var responseJson kit.JsonResponse
+	//var responseJson lib.JsonResponse
 	code, message := communication.RedisPing(connectionInfo)
-	//responseJson = kit.JsonResponse{
+	//responseJson = lib.JsonResponse{
 	//	Code:    code,
 	//	Message: message,
 	//}
@@ -79,9 +79,9 @@ func (a *App) TestConnection(connectionInfo string) {
 
 // Ok 确定按钮
 func (a App) Ok(connectionInfo string) string {
-	var responseJson kit.JsonResponse
+	var responseJson lib.JsonResponse
 	code, message := communication.Ok(a.ctx, connectionInfo)
-	responseJson = kit.JsonResponse{
+	responseJson = lib.JsonResponse{
 		Code:    code,
 		Message: message,
 	}

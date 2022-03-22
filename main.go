@@ -27,7 +27,7 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:             "ToDb",
 		Width:             1100,
-		Height:            728,
+		Height:            778,
 		MinWidth:          900,
 		MinHeight:         600,
 		MaxWidth:          1200,

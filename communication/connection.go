@@ -2,15 +2,16 @@ package communication
 
 import (
 	"ToDb/core/redisKit"
+	"ToDb/lib"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/tidwall/gjson"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"reflect"
-	goruntime "runtime"
 	"strings"
 )
 
@@ -23,6 +24,7 @@ type connectionType struct {
 	Password string `tag:"密码" json:"password"`  //密码
 }
 
+// 检查参数
 func checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
 	//返回连接信息
 	message := "连接成功"
@@ -100,16 +102,17 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 	}
 	if parameter["savePassword"].Bool() {
 		var dirBuild strings.Builder
-		dir, _ := os.Getwd()
-		fmt.Println("=========================", dir)
-		dirBuild.WriteString(dir)
-		if goruntime.GOOS == "windows" {
-			//windows下存放配置文件路径
-			dirBuild.WriteString("\\safe\\")
-		} else if goruntime.GOOS == "darwin" {
-			//macOS下存放配置文件路径
-			dirBuild.WriteString("/safe/")
-		}
+		//dir, _ := os.Getwd()
+		//fmt.Println("=========================", dir)
+		//dirBuild.WriteString(dir)
+		//if goruntime.GOOS == "windows" {
+		//	//windows下存放配置文件路径
+		//	dirBuild.WriteString("\\safe\\")
+		//} else if goruntime.GOOS == "darwin" {
+		//	//macOS下存放配置文件路径
+		//	dirBuild.WriteString("/safe/")
+		//}
+		dirBuild.WriteString(lib.GetProgramSafePath())
 		dirBuild.WriteString(info.Alias)
 		dirBuild.WriteString(".json")
 		filename := dirBuild.String()
@@ -131,4 +134,27 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 		defer f.Close()
 	}
 	return code, message
+}
+
+type HistoryConn struct {
+	Title   string  `json:"title"`   //别名
+	Key     string  `json:"key"`     //key
+	Childer Childer `json:"childer"` //子集
+}
+
+type Childer struct {
+	Title string `json:"title"` //别名
+	Key   string `json:"key"`   //key
+}
+
+// LoadingHistory 加载已经存储的连接
+func LoadingHistory(ctx context.Context) {
+	// 获取所有连接文件的路径
+	allFilesPath := lib.GetProgramSafePath()
+	filesName := make([]string, 0, 1)
+	files, _ := ioutil.ReadDir(allFilesPath)
+	for _, f := range files {
+		filesName = append(filesName, f.Name())
+	}
+
 }

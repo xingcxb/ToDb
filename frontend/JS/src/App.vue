@@ -56,9 +56,20 @@
   <div class="box" ref="box">
     <div class="left">
       <!--左侧div内容-->
+      <a-tree
+          v-model:expandedKeys="expandedKeys"
+          v-model:selectedKeys="selectedKeys"
+          v-model:checkedKeys="checkedKeys"
+          checkable
+          :tree-data="treeData"
+      >
+        <template #title="{ title, key }">
+          <span v-if="key === '0-0-1-0'" style="color: #1890ff">{{ title }}</span>
+          <template v-else>{{ title }}</template>
+        </template>
+      </a-tree>
     </div>
     <div class="resize" @mousedown="handleMouseMoveLine">
-
     </div>
     <div class="mid">
       <!--右侧div内容-->
@@ -67,6 +78,33 @@
 </template>
 
 <script setup>
+import { defineComponent, ref, watch } from 'vue';
+const treeData = [{
+  title: 'parent 1',
+  key: '0-0',
+  children: [{
+    title: 'parent 1-0',
+    key: '0-0-0',
+    disabled: true,
+    children: [{
+      title: 'leaf',
+      key: '0-0-0-0',
+      disableCheckbox: true,
+    }, {
+      title: 'leaf',
+      key: '0-0-0-1',
+    }],
+  }, {
+    title: 'parent 1-1',
+    key: '0-0-1',
+    children: [{
+      key: '0-0-1-0',
+      title: 'sss',
+    }],
+  }],
+}];
+
+
 //鼠标移动到边线
   function handleMouseMoveLine() {
     var resize = document.getElementsByClassName('resize');
@@ -140,14 +178,14 @@
 
 .left {
   width:calc(25% - 10px);
-  min-height: 500px;
+  min-height: 661px;
   height:100%;
   float: left;
   background: rgba(224, 225, 225, 0);
 }
 
 .resize{
-  min-height: 500px;
+  min-height: 661px;
   height:100%;
   width: 2px;
   float: left;

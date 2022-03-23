@@ -139,12 +139,12 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 }
 
 type HistoryConn struct {
-	Title   string    `json:"title"`   //别名
-	Key     string    `json:"key"`     //key
-	Childer []Childer `json:"childer"` //子集
+	Title    string     `json:"title"`    //别名
+	Key      string     `json:"key"`      //key
+	Children []Children `json:"children"` //子集
 }
 
-type Childer struct {
+type Children struct {
 	Title string `json:"title"` //别名
 	Key   string `json:"key"`   //key
 }
@@ -169,17 +169,17 @@ func LoadingHistory() string {
 		switch t {
 		case "redis":
 			//如果是redis则直接显示15个库
-			var childers []Childer
+			var childers []Children
 			for i := 0; i < 16; i++ {
 				var dbName strings.Builder
 				dbName.WriteString("db")
 				dbName.WriteString(strconv.Itoa(i))
-				childers = append(childers, Childer{
+				childers = append(childers, Children{
 					Title: dbName.String(),
 					Key:   "0",
 				})
 			}
-			data.Childer = childers
+			data.Children = childers
 		default:
 
 		}

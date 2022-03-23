@@ -3,13 +3,13 @@
     <div class="left">
       <!--左侧div内容-->
       <a-tree
-          :tree-data=treeData
+          :tree-data="treeData.data"
       >
-        <template #title="{ title, key }">
-<!--          <span v-if="key === '0-0-1-0'" style="color: #1890ff">{{ title }}</span>-->
-<!--          <template v-else>{{ title }}</template>-->
-          <template>{{ title }}</template>
-        </template>
+<!--        <template #title="{ title, key }">-->
+<!--&lt;!&ndash;          <span v-if="key === '0-0-1-0'" style="color: #1890ff">{{ title }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;          <template v-else>{{ title }}</template>&ndash;&gt;-->
+<!--          <template>{{ title }}</template>-->
+<!--        </template>-->
       </a-tree>
     </div>
     <div class="resize" @mousedown="handleMouseMoveLine">
@@ -21,45 +21,49 @@
 </template>
 
 <script setup>
-import {onBeforeMount, reactive} from 'vue';
+import {onBeforeMount,onMounted, reactive} from 'vue';
 
 // let treeData = reactive({})
 
-onBeforeMount(() => {
+let treeData = reactive({
+  data: [{
+    title: 'parent 1',
+    key: '0-0',
+    children: [{
+      title: 'parent 1-0',
+      key: '0-0-0',
+      disabled: true,
+      children: [{
+        title: 'leaf',
+        key: '0-0-0-0',
+        disableCheckbox: true,
+      }, {
+        title: 'leaf',
+        key: '0-0-0-1',
+      }],
+    }, {
+      title: 'parent 1-1',
+      key: '0-0-1',
+      children: [{
+        key: '0-0-1-0',
+        title: 'sss',
+      }],
+    }],
+  }]
+})
+
+onMounted(() => {
   window.go.main.App.LoadingConnectionInfo().then((resolve) => {
+    console.log(resolve)
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
-      // treeData = JSON.parse(resolve)
+      treeData.data = JSON.parse(resolve)
       console.log("222222222\n",treeData)
     }
   })
 })
 
 
-const treeData = [{
-  title: 'parent 1',
-  key: '0-0',
-  children: [{
-    title: 'parent 1-0',
-    key: '0-0-0',
-    disabled: true,
-    children: [{
-      title: 'leaf',
-      key: '0-0-0-0',
-      disableCheckbox: true,
-    }, {
-      title: 'leaf',
-      key: '0-0-0-1',
-    }],
-  }, {
-    title: 'parent 1-1',
-    key: '0-0-1',
-    children: [{
-      key: '0-0-1-0',
-      title: 'sss',
-    }],
-  }],
-}];
 
 
 //鼠标移动到边线

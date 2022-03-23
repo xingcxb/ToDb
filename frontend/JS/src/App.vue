@@ -13,8 +13,8 @@
           <template #overlay>
             <a-menu>
               <a-menu-item key="0">
-<!--                <a href="http://www.alipay.com/">Redis</a>-->
-                <router-link to="/newConnection">Redis</router-link>
+                <a @click="toView('redis')">Redis</a>
+<!--                <span :click="toView('redis')">Redis</span>-->
               </a-menu-item>
               <a-menu-item key="1">
                 <a href="http://www.taobao.com/">MySQL</a>
@@ -58,7 +58,12 @@
 </template>
 
 <script setup>
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
+function toView(v){
+  console.log(v)
+  router.push("/newConnection")
+}
 </script>
 <style>
 .header {

@@ -5,18 +5,18 @@ import (
 	"ToDb/lib"
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/tidwall/gjson"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
 // 连接信息
 type connectionType struct {
+	Type     string `tag:"类型" json:"type"`      //类型
 	Alias    string `tag:"连接名" json:"alias"`    //别名
 	HostURL  string `tag:"连接地址" json:"hostURL"` //连接地址
 	Port     string `tag:"端口号" json:"port"`     //端口号
@@ -94,6 +94,7 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 	parameter := gjson.Parse(connectionInfo).Map()
 	code, message, _ = checkParameter(parameter)
 	info := connectionType{
+		Type:     parameter["type"].String(),
 		Alias:    parameter["alias"].String(),
 		HostURL:  parameter["hostURL"].String(),
 		Port:     parameter["port"].String(),
@@ -126,20 +127,21 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 			f, err = os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
 		}
 		_v, _ := json.MarshalIndent(info, "", "    ")
-		_, err = f.WriteString(string(_v))
-		if err != nil {
-			fmt.Println("======================")
-			runtime.LogError(ctx, "这里"+err.Error())
-		}
+		f.WriteString(string(_v))
+		//_, err = f.WriteString(string(_v))
+		//if err != nil {
+		//	fmt.Println("======================")
+		//	runtime.LogError(ctx, "这里"+err.Error())
+		//}
 		defer f.Close()
 	}
 	return code, message
 }
 
 type HistoryConn struct {
-	Title   string  `json:"title"`   //别名
-	Key     string  `json:"key"`     //key
-	Childer Childer `json:"childer"` //子集
+	Title   string    `json:"title"`   //别名
+	Key     string    `json:"key"`     //key
+	Childer []Childer `json:"childer"` //子集
 }
 
 type Childer struct {
@@ -148,13 +150,41 @@ type Childer struct {
 }
 
 // LoadingHistory 加载已经存储的连接
-func LoadingHistory(ctx context.Context) {
+func LoadingHistory() string {
 	// 获取所有连接文件的路径
 	allFilesPath := lib.GetProgramSafePath()
-	filesName := make([]string, 0, 1)
+	datas := make([]HistoryConn, 0, 1)
 	files, _ := ioutil.ReadDir(allFilesPath)
 	for _, f := range files {
-		filesName = append(filesName, f.Name())
-	}
+		var filePath strings.Builder
+		filePath.WriteString(allFilesPath)
+		filePath.WriteString(f.Name())
+		valueByte, _ := ioutil.ReadFile(filePath.String())
+		t := gjson.Get(string(valueByte), "type").String()
+		alias := gjson.Get(string(valueByte), "alias").String()
+		data := HistoryConn{
+			Title: alias,
+			Key:   t,
+		}
+		switch t {
+		case "redis":
+			//如果是redis则直接显示15个库
+			var childers []Childer
+			for i := 0; i < 16; i++ {
+				var dbName strings.Builder
+				dbName.WriteString("db")
+				dbName.WriteString(strconv.Itoa(i))
+				childers = append(childers, Childer{
+					Title: dbName.String(),
+					Key:   "0",
+				})
+			}
+			data.Childer = childers
+		default:
 
+		}
+		datas = append(datas, data)
+	}
+	vb, _ := json.Marshal(datas)
+	return string(vb)
 }

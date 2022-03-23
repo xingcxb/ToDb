@@ -96,3 +96,8 @@ func (a App) Ok(connectionInfo string) string {
 	}
 	return responseJson.String()
 }
+
+// LoadingConnectionInfo 加载联系信息
+func (a *App) LoadingConnectionInfo() string {
+	return communication.LoadingHistory()
+}

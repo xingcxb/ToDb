@@ -26,39 +26,14 @@ import {onBeforeMount,onMounted, reactive} from 'vue';
 // let treeData = reactive({})
 
 let treeData = reactive({
-  data: [{
-    title: 'parent 1',
-    key: '0-0',
-    children: [{
-      title: 'parent 1-0',
-      key: '0-0-0',
-      disabled: true,
-      children: [{
-        title: 'leaf',
-        key: '0-0-0-0',
-        disableCheckbox: true,
-      }, {
-        title: 'leaf',
-        key: '0-0-0-1',
-      }],
-    }, {
-      title: 'parent 1-1',
-      key: '0-0-1',
-      children: [{
-        key: '0-0-1-0',
-        title: 'sss',
-      }],
-    }],
-  }]
+  data: ""
 })
 
 onMounted(() => {
   window.go.main.App.LoadingConnectionInfo().then((resolve) => {
-    console.log(resolve)
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
       treeData.data = JSON.parse(resolve)
-      console.log("222222222\n",treeData)
     }
   })
 })
@@ -126,7 +101,7 @@ function handleMouseMoveLine() {
 }
 
 .left {
-  width: calc(25% - 10px);
+  width: calc(20% - 10px);
   min-height: 661px;
   height: 100%;
   float: left;
@@ -138,7 +113,7 @@ function handleMouseMoveLine() {
   height: 100%;
   width: 2px;
   float: left;
-  border-right: 1px solid #d5d6d6;
+  border-right: 2px solid #d5d6d6;
 }
 
 .resize:hover {

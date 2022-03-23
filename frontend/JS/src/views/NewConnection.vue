@@ -89,7 +89,11 @@ let connectionInfo = reactive({
   password: "",
   //是否保存密码
   savePassword: false,
+  //类型
+  connType: router.currentRoute.value.query.connType,
 })
+
+console.log("=========" + router.currentRoute.value.query.type)
 
 // 测试连接
 function testConnection() {

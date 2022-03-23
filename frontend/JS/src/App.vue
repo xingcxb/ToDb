@@ -14,7 +14,7 @@
             <a-menu>
               <a-menu-item key="0">
                 <a @click="toView('redis')">Redis</a>
-<!--                <span :click="toView('redis')">Redis</span>-->
+                <!--                <span :click="toView('redis')">Redis</span>-->
               </a-menu-item>
               <a-menu-item key="1">
                 <a href="http://www.taobao.com/">MySQL</a>
@@ -58,11 +58,18 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import {useRouter} from 'vue-router';
+
 const router = useRouter();
-function toView(v){
+
+function toView(v) {
   console.log(v)
-  router.push("/newConnection")
+  router.push({
+    path: "/newConnection",
+    query: {
+      connType: v
+    }
+  })
 }
 </script>
 <style>

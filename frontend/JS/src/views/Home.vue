@@ -3,11 +3,12 @@
     <div class="left">
       <!--左侧div内容-->
       <a-tree
-          :tree-data="treeData"
+          :tree-data=treeData
       >
         <template #title="{ title, key }">
-          <span v-if="key === '0-0-1-0'" style="color: #1890ff">{{ title }}</span>
-          <template v-else>{{ title }}</template>
+<!--          <span v-if="key === '0-0-1-0'" style="color: #1890ff">{{ title }}</span>-->
+<!--          <template v-else>{{ title }}</template>-->
+          <template>{{ title }}</template>
         </template>
       </a-tree>
     </div>
@@ -20,8 +21,19 @@
 </template>
 
 <script setup>
-import { defineComponent, ref, watch } from 'vue';
+import {onBeforeMount, reactive} from 'vue';
 
+// let treeData = reactive({})
+
+onBeforeMount(() => {
+  window.go.main.App.LoadingConnectionInfo().then((resolve) => {
+    if (resolve !== "") {
+      // 如果返回值中不为空字符串才进行操作
+      // treeData = JSON.parse(resolve)
+      console.log("222222222\n",treeData)
+    }
+  })
+})
 
 
 const treeData = [{
@@ -102,7 +114,7 @@ function handleMouseMoveLine() {
 </script>
 
 <style scoped>
-.box{
+.box {
   min-height: 500px;
   height: 100%;
   width: 100%;
@@ -110,26 +122,28 @@ function handleMouseMoveLine() {
 }
 
 .left {
-  width:calc(25% - 10px);
+  width: calc(25% - 10px);
   min-height: 661px;
-  height:100%;
+  height: 100%;
   float: left;
   background: rgba(224, 225, 225, 0);
 }
 
-.resize{
+.resize {
   min-height: 661px;
-  height:100%;
+  height: 100%;
   width: 2px;
   float: left;
   border-right: 1px solid #d5d6d6;
 }
-.resize:hover{
-  cursor:col-resize;
+
+.resize:hover {
+  cursor: col-resize;
 }
-.mid{
+
+.mid {
   float: left;
-  width: 68%;   /*右侧初始化宽度*/
+  width: 68%; /*右侧初始化宽度*/
   height: 100%;
   background: #fff;
 }

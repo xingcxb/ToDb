@@ -2,15 +2,15 @@
   <div class="box" ref="box">
     <div class="left">
       <!--左侧div内容-->
-      <a-tree
-          :tree-data="treeData.data"
-      >
-<!--        <template #title="{ title, key }">-->
-<!--&lt;!&ndash;          <span v-if="key === '0-0-1-0'" style="color: #1890ff">{{ title }}</span>&ndash;&gt;-->
-<!--&lt;!&ndash;          <template v-else>{{ title }}</template>&ndash;&gt;-->
-<!--          <template>{{ title }}</template>-->
-<!--        </template>-->
-      </a-tree>
+      <a-row v-for="(item,index) in listData.data" :justify="center" style="width: calc(20% - 10px);background: rgba(224, 225, 225, 0.1);">
+        <a-col :span="5">
+          <img :src="item.iconPath" style="width: 20px"/>
+        </a-col>
+        <a-col :span="19">
+          <span>{{item.title}}</span>
+        </a-col>
+        <br/>
+      </a-row>
     </div>
     <div class="resize" @mousedown="handleMouseMoveLine">
     </div>
@@ -23,17 +23,16 @@
 <script setup>
 import {onBeforeMount,onMounted, reactive} from 'vue';
 
-// let treeData = reactive({})
-
-let treeData = reactive({
+let listData = reactive({
   data: ""
 })
 
-onMounted(() => {
+onBeforeMount(() => {
   window.go.main.App.LoadingConnectionInfo().then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
-      treeData.data = JSON.parse(resolve)
+      console.log(JSON.parse(resolve))
+      listData.data = JSON.parse(resolve)
     }
   })
 })
@@ -105,7 +104,7 @@ function handleMouseMoveLine() {
   min-height: 661px;
   height: 100%;
   float: left;
-  background: rgba(224, 225, 225, 0);
+  background: rgba(224, 225, 225, 0.1);
 }
 
 .resize {

@@ -5,6 +5,7 @@ import (
 	"ToDb/lib"
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
@@ -149,8 +150,46 @@ type Children struct {
 	Key   string `json:"key"`   //key
 }
 
-// LoadingHistory 加载已经存储的连接
-func LoadingHistory() string {
+type BaseConnInfo struct {
+	Title        string `json:"title"`        //别名
+	ConnType     string `json:"connType"`     //类型
+	IconPath     string `json:"iconPath"`     //图标路径
+	ConnFileAddr string `json:"ConnFileAddr"` //连接信息文件存放地址
+}
+
+// LoadingBaseHistoryInfo 加载已经存储的连接别名
+func LoadingBaseHistoryInfo() string {
+	// 获取所有连接文件的路径
+	allFilesPath := lib.GetProgramSafePath()
+	files, _ := ioutil.ReadDir(allFilesPath)
+	datas := make([]BaseConnInfo, 0, 1)
+	for _, f := range files {
+		fileName := f.Name()
+		var filePath strings.Builder
+		filePath.WriteString(allFilesPath)
+		filePath.WriteString(fileName)
+		valueByte, _ := ioutil.ReadFile(filePath.String())
+		t := gjson.Get(string(valueByte), "type").String()
+		alias := gjson.Get(string(valueByte), "alias").String()
+		var ipt strings.Builder
+		ipt.WriteString("leftNavigation/")
+		ipt.WriteString(t)
+		ipt.WriteString(".png")
+		bci := BaseConnInfo{
+			Title:        alias,
+			ConnType:     t,
+			IconPath:     ipt.String(),
+			ConnFileAddr: filePath.String(),
+		}
+		datas = append(datas, bci)
+	}
+	jb, _ := json.Marshal(datas)
+	fmt.Println(string(jb))
+	return string(jb)
+}
+
+// LoadingHistoryAlias 加载已经存储的
+func LoadingHistoryAliasBak() string {
 	// 获取所有连接文件的路径
 	allFilesPath := lib.GetProgramSafePath()
 	datas := make([]HistoryConn, 0, 1)

@@ -2,20 +2,18 @@
   <div class="box" ref="box">
     <div class="left">
       <!--左侧div内容-->
-      <a-row v-for="(item,index) in listData.data" :justify="center" style="width: calc(20% - 10px);background: rgba(224, 225, 225, 0.1);">
-        <a-col :span="5">
-          <img :src="item.iconPath" style="width: 20px"/>
-        </a-col>
-        <a-col :span="19">
+      <ul v-for="(item,index) in listData.data">
+        <li>
+          <img :src="item.iconPath" alt="" style="width: 20px"/>
           <span>{{item.title}}</span>
-        </a-col>
-        <br/>
-      </a-row>
+        </li>
+      </ul>
     </div>
     <div class="resize" @mousedown="handleMouseMoveLine">
     </div>
     <div class="mid">
       <!--右侧div内容-->
+      这是一个信息
     </div>
   </div>
 </template>

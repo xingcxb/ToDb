@@ -19,6 +19,7 @@
     "npm": ">=7.0.0"
   },
   "dependencies": {
-    "ant-design-vue": "^2.2.8"
+    "ant-design-vue": "^2.2.8",
+    "element-plus": "^2.1.4"
   }
 }

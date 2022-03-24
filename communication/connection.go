@@ -5,7 +5,6 @@ import (
 	"ToDb/lib"
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
@@ -184,7 +183,6 @@ func LoadingBaseHistoryInfo() string {
 		datas = append(datas, bci)
 	}
 	jb, _ := json.Marshal(datas)
-	fmt.Println(string(jb))
 	return string(jb)
 }
 

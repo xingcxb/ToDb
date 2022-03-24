@@ -73,6 +73,9 @@ function toView(v) {
 }
 </script>
 <style>
+body {
+  overscroll-behavior: none;
+}
 .header {
   height: 64px;
   width: 100%;

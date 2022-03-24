@@ -1,6 +1,6 @@
 {
     "type": "redis",
-    "alias": "这是redis1",
+    "alias": "localhost",
     "hostURL": "11",
     "port": "11",
     "username": "11",

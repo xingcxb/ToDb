@@ -5,6 +5,7 @@ import (
 	"ToDb/lib"
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
@@ -151,6 +152,7 @@ type Children struct {
 
 type BaseConnInfo struct {
 	Title        string `json:"title"`        //别名
+	Key          string `json:"key"`          //适配tree
 	ConnType     string `json:"connType"`     //类型
 	IconPath     string `json:"iconPath"`     //图标路径
 	ConnFileAddr string `json:"ConnFileAddr"` //连接信息文件存放地址
@@ -176,6 +178,7 @@ func LoadingBaseHistoryInfo() string {
 		ipt.WriteString(".png")
 		bci := BaseConnInfo{
 			Title:        alias,
+			Key:          t,
 			ConnType:     t,
 			IconPath:     ipt.String(),
 			ConnFileAddr: filePath.String(),
@@ -183,45 +186,41 @@ func LoadingBaseHistoryInfo() string {
 		datas = append(datas, bci)
 	}
 	jb, _ := json.Marshal(datas)
+	fmt.Println(string(jb))
 	return string(jb)
 }
 
-// LoadingHistoryAlias 加载已经存储的
-func LoadingHistoryAliasBak() string {
+// LoadingHistoryInfo 加载已经存储的
+func LoadingHistoryInfo(key string) string {
 	// 获取所有连接文件的路径
 	allFilesPath := lib.GetProgramSafePath()
-	datas := make([]HistoryConn, 0, 1)
-	files, _ := ioutil.ReadDir(allFilesPath)
-	for _, f := range files {
-		var filePath strings.Builder
-		filePath.WriteString(allFilesPath)
-		filePath.WriteString(f.Name())
-		valueByte, _ := ioutil.ReadFile(filePath.String())
-		t := gjson.Get(string(valueByte), "type").String()
-		alias := gjson.Get(string(valueByte), "alias").String()
-		data := HistoryConn{
-			Title: alias,
-			Key:   t,
-		}
-		switch t {
-		case "redis":
-			//如果是redis则直接显示15个库
-			var childers []Children
-			for i := 0; i < 16; i++ {
-				var dbName strings.Builder
-				dbName.WriteString("db")
-				dbName.WriteString(strconv.Itoa(i))
-				childers = append(childers, Children{
-					Title: dbName.String(),
-					Key:   "0",
-				})
-			}
-			data.Children = childers
-		default:
-
-		}
-		datas = append(datas, data)
+	var filePath strings.Builder
+	filePath.WriteString(allFilesPath)
+	filePath.WriteString(key)
+	filePath.WriteString(".json")
+	valueByte, _ := ioutil.ReadFile(filePath.String())
+	t := gjson.Get(string(valueByte), "type").String()
+	data := HistoryConn{
+		Title: key,
+		Key:   t,
 	}
-	vb, _ := json.Marshal(datas)
+	switch t {
+	case "redis":
+		//如果是redis则直接显示15个库
+		var childrens []Children
+		for i := 0; i < 16; i++ {
+			var dbName strings.Builder
+			dbName.WriteString("db")
+			dbName.WriteString(strconv.Itoa(i))
+			childrens = append(childrens, Children{
+				Title: dbName.String(),
+				Key:   "0",
+			})
+		}
+		data.Children = childrens
+	default:
+	}
+	vb, _ := json.Marshal(data)
+	fmt.Println(string(vb))
 	return string(vb)
 }

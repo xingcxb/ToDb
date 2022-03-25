@@ -97,7 +97,12 @@ func (a App) Ok(connectionInfo string) string {
 	return responseJson.String()
 }
 
-// LoadingConnectionInfo 加载已保存的连接信息
-func (a *App) LoadingConnectionInfo() string {
+// LoadingConnKey 加载已保存的连接信息
+func (a *App) LoadingConnKey() string {
 	return communication.LoadingBaseHistoryInfo()
+}
+
+// LoadingConnInfo 获取链接信息详情
+func (a *App) LoadingConnInfo(key string) string {
+	return communication.LoadingHistoryInfo(key)
 }

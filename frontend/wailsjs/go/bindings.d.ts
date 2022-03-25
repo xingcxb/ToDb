@@ -1,7 +1,8 @@
 export interface go {
   "main": {
     "App": {
-		LoadingConnectionInfo():Promise<string>
+		LoadingConnInfo(arg1:string):Promise<string>
+		LoadingConnKey():Promise<string>
 		Ok(arg1:string):Promise<string>
 		TestConnection(arg1:string):Promise<void>
     },

@@ -12,5 +12,6 @@ func TestTt(t *testing.T) {
 }
 
 func TestReadFile(t *testing.T) {
-	communication.LoadingBaseHistoryInfo()
+	//communication.LoadingBaseHistoryInfo()
+	communication.LoadingHistoryInfo("localhost")
 }

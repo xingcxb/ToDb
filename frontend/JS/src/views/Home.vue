@@ -2,12 +2,19 @@
   <div class="box" ref="box">
     <div class="left">
       <!--左侧div内容-->
-      <ul v-for="(item,index) in listData.data">
-        <li>
-          <img :src="item.iconPath" alt="" style="width: 20px"/>
-          <span>{{item.title}}</span>
-        </li>
-      </ul>
+      <!--      <ul v-for="(item,index) in listData.data">-->
+      <!--        <li>-->
+      <!--          <img :src="item.iconPath" alt="" style="width: 20px"/>-->
+      <!--          <span>{{item.title}}</span>-->
+      <!--        </li>-->
+      <!--      </ul>-->
+      <a-tree
+          v-model:expandedKeys="expandedKeys"
+          v-model:selectedKeys="selectedKeys"
+          :load-data="onLoadData"
+          :tree-data="listData.data"
+          style="width: calc(20% - 10px);"
+      />
     </div>
     <div class="resize" @mousedown="handleMouseMoveLine">
     </div>
@@ -19,14 +26,19 @@
 </template>
 
 <script setup>
-import {onBeforeMount,onMounted, reactive} from 'vue';
+import {onBeforeMount, reactive, ref} from 'vue';
 
 let listData = reactive({
   data: ""
 })
+const expandedKeys = ref([]);
+const selectedKeys = ref([]);
+// let onLoadData = reactive({
+//   data: ""
+// })
 
 onBeforeMount(() => {
-  window.go.main.App.LoadingConnectionInfo().then((resolve) => {
+  window.go.main.App.LoadingConnKey().then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
       console.log(JSON.parse(resolve))
@@ -35,7 +47,17 @@ onBeforeMount(() => {
   })
 })
 
+// 获取本地的连接信息
+let onLoadData = treeNode=>{
 
+}
+function getConnectionInfo(title) {
+  window.go.main.App.LoadingConnInfo(title).then((resolve)=>{
+    if (resolve !== ""){
+      onLoadData.data = JSON.parse(resolve)
+    }
+  })
+}
 
 
 //鼠标移动到边线
@@ -111,6 +133,7 @@ function handleMouseMoveLine() {
   width: 2px;
   float: left;
   border-right: 2px solid #d5d6d6;
+  background-image: url("../assets/line.png");
 }
 
 .resize:hover {

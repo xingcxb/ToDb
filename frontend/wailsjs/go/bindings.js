@@ -5,11 +5,19 @@ const go = {
   "main": {
     "App": {
       /**
-       * LoadingConnectionInfo
+       * LoadingConnInfo
+       * @param {string} arg1 - Go Type: string
        * @returns {Promise<string>}  - Go Type: string
        */
-      "LoadingConnectionInfo": () => {
-        return window.go.main.App.LoadingConnectionInfo();
+      "LoadingConnInfo": (arg1) => {
+        return window.go.main.App.LoadingConnInfo(arg1);
+      },
+      /**
+       * LoadingConnKey
+       * @returns {Promise<string>}  - Go Type: string
+       */
+      "LoadingConnKey": () => {
+        return window.go.main.App.LoadingConnKey();
       },
       /**
        * Ok

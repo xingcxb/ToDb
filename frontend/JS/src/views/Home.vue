@@ -46,6 +46,7 @@ onBeforeMount(() => {
 
 // 获取本地的连接信息
 let onLoadData = treeNode => {
+  console.log(treeNode.dataRef.key)
   return new Promise(resolve => {
     window.go.main.App.LoadingConnInfo(treeNode.dataRef.key).then((resolve) => {
       if (resolve !== "") {
@@ -56,15 +57,6 @@ let onLoadData = treeNode => {
     resolve();
   });
 }
-
-function getConnectionInfo(title) {
-  window.go.main.App.LoadingConnInfo(title).then((resolve) => {
-    if (resolve !== "") {
-      onLoadData.data = JSON.parse(resolve)
-    }
-  })
-}
-
 
 //鼠标移动到边线
 function handleMouseMoveLine() {

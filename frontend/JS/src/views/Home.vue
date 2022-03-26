@@ -33,9 +33,6 @@ let listData = reactive({
 })
 const expandedKeys = ref([]);
 const selectedKeys = ref([]);
-// let onLoadData = reactive({
-//   data: ""
-// })
 
 onBeforeMount(() => {
   window.go.main.App.LoadingConnKey().then((resolve) => {
@@ -44,43 +41,25 @@ onBeforeMount(() => {
       console.log(JSON.parse(resolve))
       listData.data = JSON.parse(resolve)
     }
-  })
+  });
 })
 
 // 获取本地的连接信息
-let onLoadData = treeNode=>{
-    console.log("选中的当前层级");
-    console.log(treeNode);
-return new Promise(resolve=>{
-    
-    $.agax({
-        url:"",
-        method:"post",
-        success:function(env,data){
-        //通过请求得到对应的结果数据
-        // 补充到当前层级的trtreeNode的children下面，然后赋值
-        treeNode.dataRef.children = [{
-            title: 'Child Node',
-            key: `${treeNode.eventKey}-0`,
-          }, {
-            title: 'Child Node',
-            key: `${treeNode.eventKey}-1`,
-          }];
-          treeData.value = [...treeData.value];
-
-        }
-
-    })；
+let onLoadData = treeNode => {
+  return new Promise(resolve => {
+    window.go.main.App.LoadingConnInfo(treeNode.dataRef.key).then((resolve) => {
+      if (resolve !== "") {
+        console.log(JSON.parse(resolve))
+        treeNode.dataRef.children = JSON.parse(resolve)
+      }
+    })
     resolve();
-    return;
-   
-});
-
-
+  });
 }
+
 function getConnectionInfo(title) {
-  window.go.main.App.LoadingConnInfo(title).then((resolve)=>{
-    if (resolve !== ""){
+  window.go.main.App.LoadingConnInfo(title).then((resolve) => {
+    if (resolve !== "") {
       onLoadData.data = JSON.parse(resolve)
     }
   })

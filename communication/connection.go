@@ -139,17 +139,6 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 	return code, message
 }
 
-type HistoryConn struct {
-	Title    string     `json:"title"`    //别名
-	Key      string     `json:"key"`      //key
-	Children []Children `json:"children"` //子集
-}
-
-type Children struct {
-	Title string `json:"title"` //别名
-	Key   string `json:"key"`   //key
-}
-
 type BaseConnInfo struct {
 	Title        string `json:"title"`        //别名
 	Key          string `json:"key"`          //适配tree
@@ -178,7 +167,7 @@ func LoadingBaseHistoryInfo() string {
 		ipt.WriteString(".png")
 		bci := BaseConnInfo{
 			Title:        alias,
-			Key:          t,
+			Key:          alias,
 			ConnType:     t,
 			IconPath:     ipt.String(),
 			ConnFileAddr: filePath.String(),
@@ -188,6 +177,12 @@ func LoadingBaseHistoryInfo() string {
 	jb, _ := json.Marshal(datas)
 	fmt.Println(string(jb))
 	return string(jb)
+}
+
+type Children struct {
+	Title    string `json:"title"`    //别名
+	Key      string `json:"key"`      //key
+	Children string `json:"children"` //子集
 }
 
 // LoadingHistoryInfo 加载已经存储的
@@ -200,27 +195,21 @@ func LoadingHistoryInfo(key string) string {
 	filePath.WriteString(".json")
 	valueByte, _ := ioutil.ReadFile(filePath.String())
 	t := gjson.Get(string(valueByte), "type").String()
-	data := HistoryConn{
-		Title: key,
-		Key:   t,
-	}
+	var data []Children
 	switch t {
 	case "redis":
 		//如果是redis则直接显示15个库
-		var childrens []Children
 		for i := 0; i < 16; i++ {
 			var dbName strings.Builder
 			dbName.WriteString("db")
 			dbName.WriteString(strconv.Itoa(i))
-			childrens = append(childrens, Children{
+			data = append(data, Children{
 				Title: dbName.String(),
-				Key:   "0",
+				Key:   strconv.Itoa(i),
 			})
 		}
-		data.Children = childrens
 	default:
 	}
 	vb, _ := json.Marshal(data)
-	fmt.Println(string(vb))
 	return string(vb)
 }

@@ -104,5 +104,15 @@ func (a *App) LoadingConnKey() string {
 
 // LoadingConnInfo 获取链接信息详情
 func (a *App) LoadingConnInfo(key string) string {
-	return communication.LoadingHistoryInfo(key)
+	code, message := communication.LoadingHistoryInfo(key)
+	if code != http.StatusOK {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.ErrorDialog,
+			Title:         "错误",
+			Message:       message,
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	}
+	return message
 }

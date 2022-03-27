@@ -13,6 +13,7 @@
           v-model:selectedKeys="selectedKeys"
           :load-data="onLoadData"
           :tree-data="listData.data"
+          @select="onSelect"
           style="width: calc(20% - 10px);"
       />
     </div>
@@ -38,11 +39,15 @@ onBeforeMount(() => {
   window.go.main.App.LoadingConnKey().then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
-      console.log(JSON.parse(resolve))
       listData.data = JSON.parse(resolve)
     }
   });
 })
+
+// 选中文字也可以进行操作
+function onSelect(selectedKeys,{node}) {
+  node.onExpand()
+}
 
 // 获取本地的连接信息
 let onLoadData = treeNode => {
@@ -50,7 +55,6 @@ let onLoadData = treeNode => {
   return new Promise(resolve => {
     window.go.main.App.LoadingConnInfo(treeNode.dataRef.key).then((resolve) => {
       if (resolve !== "") {
-        console.log(JSON.parse(resolve))
         treeNode.dataRef.children = JSON.parse(resolve)
       }
     })

@@ -104,16 +104,6 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 	}
 	if parameter["savePassword"].Bool() {
 		var dirBuild strings.Builder
-		//dir, _ := os.Getwd()
-		//fmt.Println("=========================", dir)
-		//dirBuild.WriteString(dir)
-		//if goruntime.GOOS == "windows" {
-		//	//windows下存放配置文件路径
-		//	dirBuild.WriteString("\\safe\\")
-		//} else if goruntime.GOOS == "darwin" {
-		//	//macOS下存放配置文件路径
-		//	dirBuild.WriteString("/safe/")
-		//}
 		dirBuild.WriteString(lib.GetProgramSafePath())
 		dirBuild.WriteString(info.Alias)
 		dirBuild.WriteString(".json")
@@ -129,11 +119,6 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 		}
 		_v, _ := json.MarshalIndent(info, "", "    ")
 		f.WriteString(string(_v))
-		//_, err = f.WriteString(string(_v))
-		//if err != nil {
-		//	fmt.Println("======================")
-		//	runtime.LogError(ctx, "这里"+err.Error())
-		//}
 		defer f.Close()
 	}
 	return code, message
@@ -185,8 +170,8 @@ type Children struct {
 	Children string `json:"children"` //子集
 }
 
-// LoadingHistoryInfo 加载已经存储的
-func LoadingHistoryInfo(key string) string {
+// LoadingHistoryInfo 加载已经存储的连接信息
+func LoadingHistoryInfo(key string) (int, string) {
 	// 获取所有连接文件的路径
 	allFilesPath := lib.GetProgramSafePath()
 	var filePath strings.Builder
@@ -211,5 +196,14 @@ func LoadingHistoryInfo(key string) string {
 	default:
 	}
 	vb, _ := json.Marshal(data)
-	return string(vb)
+	redisKit.Port = gjson.Get(string(vb), "port").String()
+	redisKit.Username = gjson.Get(string(vb), "username").String()
+	redisKit.Password = gjson.Get(string(vb), "password").String()
+	redisKit.Addr = gjson.Get(string(vb), "hostURL").String()
+	redisKit.InitDb()
+	err := redisKit.Ping(context.Background())
+	if err != nil {
+		return http.StatusBadRequest, err.Error()
+	}
+	return http.StatusOK, string(vb)
 }

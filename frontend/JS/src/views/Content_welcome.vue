@@ -1,7 +1,10 @@
 <template>
-  <div class="welcome">
-11111
-  </div>
+  1111
+<!--  <a-layout>-->
+<!--    <a-layout-header>Header</a-layout-header>-->
+<!--    <a-layout-content>Content</a-layout-content>-->
+<!--    <a-layout-footer>Footer</a-layout-footer>-->
+<!--  </a-layout>-->
 <!--  <a-tabs v-model:activeKey="activeKey">-->
 <!--    <a-tab-pane key="1">-->
 <!--      <template #tab>-->

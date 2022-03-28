@@ -24,6 +24,13 @@ const routes = [
       return import(/* webpackChunkName: "about" */ "../views/NewConnection.vue");
     },
   },
+  {
+    path:"/welcome",
+    name:"welcome",
+    component: function () {
+      return import(/* webpackChunkName: "about" */ "../views/Content_welcome.vue")
+    }
+  },
 ];
 
 const router = createRouter({

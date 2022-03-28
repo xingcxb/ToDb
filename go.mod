@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/tidwall/gjson v1.14.0
-	github.com/wailsapp/wails/v2 v2.0.0-beta.33
+	github.com/wailsapp/wails/v2 v2.0.0-beta.34
 )
 
 require (
@@ -23,7 +23,7 @@ require (
 	github.com/klauspost/compress v1.12.2 // indirect
 	github.com/leaanthony/go-ansi-parser v1.0.1 // indirect
 	github.com/leaanthony/go-common-file-dialog v1.0.3 // indirect
-	github.com/leaanthony/go-webview2 v1.0.3-0.20220125181555-00f20a61c17d // indirect
+	github.com/leaanthony/go-webview2 v1.0.3-0.20220314105146-f44268990abe // indirect
 	github.com/leaanthony/gosod v1.0.3 // indirect
 	github.com/leaanthony/slicer v1.5.0 // indirect
 	github.com/leaanthony/typescriptify-golang-structs v0.1.7 // indirect

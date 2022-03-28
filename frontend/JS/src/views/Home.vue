@@ -21,13 +21,15 @@
     </div>
     <div class="mid">
       <!--右侧div内容-->
-      这是一个信息
+      <router-view/>
     </div>
   </div>
 </template>
 
 <script setup>
 import {onBeforeMount, reactive, ref} from 'vue';
+import {useRouter} from "vue-router";
+const router = useRouter();
 
 let listData = reactive({
   data: ""
@@ -42,6 +44,10 @@ onBeforeMount(() => {
       listData.data = JSON.parse(resolve)
     }
   });
+  //加载默认的右窗口
+  router.push({
+    path: "/welcome",
+  })
 })
 
 // 选中文字也可以进行操作

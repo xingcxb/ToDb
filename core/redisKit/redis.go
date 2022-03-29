@@ -39,6 +39,16 @@ func Ping(ctx context.Context) error {
 	return nil
 }
 
+// GetDbCount 获取单个库的数量
+func GetDbCount(ctx context.Context) (int, error) {
+	count, err := rdb.DBSize(ctx).Result()
+	if err != nil {
+		fmt.Println("error:", err)
+		return 0, err
+	}
+	return int(count), nil
+}
+
 //// Info redis所有信息
 //type Info struct {
 //	Server Server

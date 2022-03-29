@@ -21,15 +21,16 @@
     </div>
     <div class="mid">
       <!--右侧div内容-->
-      <router-view/>
+      11111
+<!--      <router-view/>-->
     </div>
   </div>
 </template>
 
 <script setup>
 import {onBeforeMount, reactive, ref} from 'vue';
-import {useRouter} from "vue-router";
-const router = useRouter();
+// import {useRouter} from "vue-router";
+// const router = useRouter();
 
 let listData = reactive({
   data: ""
@@ -44,10 +45,6 @@ onBeforeMount(() => {
       listData.data = JSON.parse(resolve)
     }
   });
-  //加载默认的右窗口
-  router.push({
-    path: "/welcome",
-  })
 })
 
 // 选中文字也可以进行操作
@@ -57,10 +54,11 @@ function onSelect(selectedKeys,{node}) {
 
 // 获取本地的连接信息
 let onLoadData = treeNode => {
-  console.log(treeNode.dataRef.key)
   return new Promise(resolve => {
     window.go.main.App.LoadingConnInfo(treeNode.dataRef.key).then((resolve) => {
       if (resolve !== "") {
+        // 如果返回值中不为空字符串才进行操作
+        console.log(resolve)
         treeNode.dataRef.children = JSON.parse(resolve)
       }
     })

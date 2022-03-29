@@ -1,8 +1,8 @@
 {
     "type": "redis",
     "alias": "localhost",
-    "hostURL": "11",
-    "port": "11",
-    "username": "11",
-    "password": "11"
+    "hostURL": "127.0.0.1",
+    "port": "6379",
+    "username": "",
+    "password": "redmiK40"
 }

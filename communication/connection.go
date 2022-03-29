@@ -196,10 +196,10 @@ func LoadingHistoryInfo(key string) (int, string) {
 	default:
 	}
 	vb, _ := json.Marshal(data)
-	redisKit.Port = gjson.Get(string(vb), "port").String()
-	redisKit.Username = gjson.Get(string(vb), "username").String()
-	redisKit.Password = gjson.Get(string(vb), "password").String()
-	redisKit.Addr = gjson.Get(string(vb), "hostURL").String()
+	redisKit.Port = gjson.Get(string(valueByte), "port").String()
+	redisKit.Username = gjson.Get(string(valueByte), "username").String()
+	redisKit.Password = gjson.Get(string(valueByte), "password").String()
+	redisKit.Addr = gjson.Get(string(valueByte), "hostURL").String()
 	redisKit.InitDb()
 	err := redisKit.Ping(context.Background())
 	if err != nil {

@@ -33,12 +33,13 @@ import {onBeforeMount,onMounted, reactive, ref} from 'vue';
 // const router = useRouter();
 
 let listData = reactive({
-  data: ""
+  data: []
 })
 const expandedKeys = ref([]);
 const selectedKeys = ref([]);
 
 onBeforeMount(() => {
+  console.log("Home.vue onBeforeMount")
   window.go.main.App.LoadingConnKey().then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作

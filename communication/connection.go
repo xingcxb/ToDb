@@ -180,23 +180,7 @@ func LoadingHistoryInfo(key string) (int, string) {
 	filePath.WriteString(key)
 	filePath.WriteString(".json")
 	valueByte, _ := ioutil.ReadFile(filePath.String())
-	t := gjson.Get(string(valueByte), "type").String()
-	var data []Children
-	switch t {
-	case "redis":
-		//如果是redis则直接显示15个库
-		for i := 0; i < 16; i++ {
-			var dbName strings.Builder
-			dbName.WriteString("db")
-			dbName.WriteString(strconv.Itoa(i))
-			data = append(data, Children{
-				Title: dbName.String(),
-				Key:   strconv.Itoa(i),
-			})
-		}
-	default:
-	}
-	vb, _ := json.Marshal(data)
+
 	redisKit.Port = gjson.Get(string(valueByte), "port").String()
 	redisKit.Username = gjson.Get(string(valueByte), "username").String()
 	redisKit.Password = gjson.Get(string(valueByte), "password").String()
@@ -206,5 +190,26 @@ func LoadingHistoryInfo(key string) (int, string) {
 	if err != nil {
 		return http.StatusBadRequest, err.Error()
 	}
+
+	t := gjson.Get(string(valueByte), "type").String()
+	var data []Children
+	switch t {
+	case "redis":
+		//如果是redis则直接显示15个库
+		for i := 0; i < 16; i++ {
+			var dbName strings.Builder
+			dbName.WriteString("db")
+			dbName.WriteString(strconv.Itoa(i))
+			dbName.WriteString("(")
+			dbName.WriteString(strconv.Itoa(redisKit.GetDbCount(context.Background(), i)))
+			dbName.WriteString(")")
+			data = append(data, Children{
+				Title: dbName.String(),
+				Key:   strconv.Itoa(i),
+			})
+		}
+	default:
+	}
+	vb, _ := json.Marshal(data)
 	return http.StatusOK, string(vb)
 }

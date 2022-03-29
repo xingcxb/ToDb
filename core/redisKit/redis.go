@@ -22,10 +22,11 @@ func InitDb() {
 	url.WriteString(":")
 	url.WriteString(Port)
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     url.String(),
-		Username: Username,
-		Password: Password,
-		DB:       Db,
+		Addr:     url.String(), //redis链接地址
+		Username: Username,     //设置用户名
+		Password: Password,     //设置密码
+		DB:       Db,           //设置默认的数据库
+		PoolSize: 10,           //设置连接池大小
 	})
 }
 
@@ -40,13 +41,21 @@ func Ping(ctx context.Context) error {
 }
 
 // GetDbCount 获取单个库的数量
-func GetDbCount(ctx context.Context, dbId int) (int, error) {
+func GetDbCount(ctx context.Context, dbId int) int {
+	ChangeDb(ctx, dbId)
 	count, err := rdb.DBSize(ctx).Result()
 	if err != nil {
 		fmt.Println("error:", err)
-		return 0, err
+		return 0
 	}
-	return int(count), nil
+	return int(count)
+}
+
+// ChangeDb 切换数据库
+func ChangeDb(ctx context.Context, dbId int) {
+	pipe := rdb.Pipeline()
+	_ = pipe.Select(ctx, dbId)
+	_, _ = pipe.Exec(ctx)
 }
 
 //// Info redis所有信息

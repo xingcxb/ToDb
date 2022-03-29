@@ -56,7 +56,6 @@ let onLoadData = treeNode => {
         listData.data =[...listData.data]
       }
     })
-    console.log("============",listData.data)
     resolve();
   });
 }

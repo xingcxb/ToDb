@@ -40,7 +40,7 @@ func Ping(ctx context.Context) error {
 }
 
 // GetDbCount 获取单个库的数量
-func GetDbCount(ctx context.Context) (int, error) {
+func GetDbCount(ctx context.Context, dbId int) (int, error) {
 	count, err := rdb.DBSize(ctx).Result()
 	if err != nil {
 		fmt.Println("error:", err)

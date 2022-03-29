@@ -53,7 +53,7 @@ let onLoadData = treeNode => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         treeNode.dataRef.children = JSON.parse(resolve)
-        listData.data =[...listData.data,treeNode.dataRef]
+        listData.data =[...listData.data]
       }
     })
     console.log("============",listData.data)

@@ -94,8 +94,12 @@ func about(ctx context.Context) *menu.MenuItem {
 				menu.Text("帮助中心", nil, nil),
 				menu.SubMenu("在线文档",
 					menu.NewMenuFromItems(
-						menu.Text("Redis", nil, nil),
-						menu.Text("MySQL", nil, nil),
+						menu.Text("Redis", nil, func(_ *menu.CallbackData) {
+							runtime.BrowserOpenURL(ctx, "http://doc.redisfans.com/")
+						}),
+						menu.Text("MySQL", nil, func(_ *menu.CallbackData) {
+							runtime.BrowserOpenURL(ctx, "https://dev.mysql.com/doc/refman/8.0/en/")
+						}),
 					),
 				),
 				menu.Text("意见反馈", nil, nil),
@@ -111,8 +115,12 @@ func about(ctx context.Context) *menu.MenuItem {
 				menu.Text("帮助中心", nil, nil),
 				menu.SubMenu("在线文档",
 					menu.NewMenuFromItems(
-						menu.Text("Redis", nil, nil),
-						menu.Text("MySQL", nil, nil),
+						menu.Text("Redis", nil, func(_ *menu.CallbackData) {
+							runtime.BrowserOpenURL(ctx, "http://doc.redisfans.com/")
+						}),
+						menu.Text("MySQL", nil, func(_ *menu.CallbackData) {
+							runtime.BrowserOpenURL(ctx, "https://dev.mysql.com/doc/refman/8.0/en/")
+						}),
 					),
 				),
 				menu.Text("意见反馈", nil, nil),

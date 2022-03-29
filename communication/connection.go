@@ -130,6 +130,7 @@ type BaseConnInfo struct {
 	ConnType     string `json:"connType"`     //类型
 	IconPath     string `json:"iconPath"`     //图标路径
 	ConnFileAddr string `json:"ConnFileAddr"` //连接信息文件存放地址
+	Children     string `json:"children"`
 }
 
 // LoadingBaseHistoryInfo 加载已经存储的连接别名

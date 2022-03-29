@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import {onBeforeMount, reactive, ref} from 'vue';
+import {onBeforeMount,onMounted, reactive, ref} from 'vue';
 // import {useRouter} from "vue-router";
 // const router = useRouter();
 
@@ -42,6 +42,7 @@ onBeforeMount(() => {
   window.go.main.App.LoadingConnKey().then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
+      console.log(JSON.parse(resolve));
       listData.data = JSON.parse(resolve)
     }
   });

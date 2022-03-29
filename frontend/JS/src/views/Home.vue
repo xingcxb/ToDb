@@ -2,12 +2,6 @@
   <div class="box" ref="box">
     <div class="left">
       <!--左侧div内容-->
-      <!--      <ul v-for="(item,index) in listData.data">-->
-      <!--        <li>-->
-      <!--          <img :src="item.iconPath" alt="" style="width: 20px"/>-->
-      <!--          <span>{{item.title}}</span>-->
-      <!--        </li>-->
-      <!--      </ul>-->
       <a-tree
           v-model:expandedKeys="expandedKeys"
           v-model:selectedKeys="selectedKeys"
@@ -39,20 +33,18 @@ const expandedKeys = ref([]);
 const selectedKeys = ref([]);
 
 onBeforeMount(() => {
-  console.log("Home.vue onBeforeMount")
   window.go.main.App.LoadingConnKey().then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
-      console.log(JSON.parse(resolve));
       listData.data = JSON.parse(resolve)
     }
   });
 })
 
 // 选中文字也可以进行操作
-function onSelect(selectedKeys,{node}) {
-  node.onExpand()
-}
+// function onSelect(selectedKeys,{node}) {
+//   node.onExpand()
+// }
 
 // 获取本地的连接信息
 let onLoadData = treeNode => {
@@ -60,10 +52,11 @@ let onLoadData = treeNode => {
     window.go.main.App.LoadingConnInfo(treeNode.dataRef.key).then((resolve) => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
-        console.log(resolve)
         treeNode.dataRef.children = JSON.parse(resolve)
+        listData.data =[...listData.data,treeNode.dataRef]
       }
     })
+    console.log("============",listData.data)
     resolve();
   });
 }

@@ -25,8 +25,8 @@ const routes = [
     },
   },
   {
-    path:"/home/welcome",
-    name:"welcome",
+    path:"/rightContent/default",
+    name:"default",
     component:function (){
       return import(/* webpackChunkName: "about" */ "../views/Content_welcome.vue")
     }

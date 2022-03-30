@@ -181,6 +181,7 @@ func LoadingHistoryInfo(key string) (int, string) {
 	filePath.WriteString(".json")
 	valueByte, _ := ioutil.ReadFile(filePath.String())
 
+	//优先初始化redis链接
 	redisKit.Port = gjson.Get(string(valueByte), "port").String()
 	redisKit.Username = gjson.Get(string(valueByte), "username").String()
 	redisKit.Password = gjson.Get(string(valueByte), "password").String()

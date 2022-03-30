@@ -1,38 +1,39 @@
 <template>
-  1111
-<!--  <a-layout>-->
-<!--    <a-layout-header>Header</a-layout-header>-->
-<!--    <a-layout-content>Content</a-layout-content>-->
-<!--    <a-layout-footer>Footer</a-layout-footer>-->
-<!--  </a-layout>-->
-<!--  <a-tabs v-model:activeKey="activeKey">-->
-<!--    <a-tab-pane key="1">-->
-<!--      <template #tab>-->
-<!--        <span>-->
-<!--          <apple-outlined />-->
-<!--          Tab 1-->
-<!--        </span>-->
-<!--      </template>-->
-<!--      Tab 1-->
-<!--    </a-tab-pane>-->
-<!--    <a-tab-pane key="2">-->
-<!--      <template #tab>-->
-<!--        <span>-->
-<!--          <android-outlined />-->
-<!--          Tab 2-->
-<!--        </span>-->
-<!--      </template>-->
-<!--      Tab 2-->
-<!--    </a-tab-pane>-->
-<!--  </a-tabs>-->
+  <div>
+    <a-row class="top">
+    </a-row>
+    <a-row>
+      <a-col :span="12">
+        <image src="../../public/logo.png"></image>
+      </a-col>
+      <a-col :span="12">
+        <p>TODB</p>
+        <p>Version 0.1.0</p>
+        <p>Powered by <a target="_blank" href="https://github.com/wailsapp/wails">wails</a> and
+          <a target="_blank" href="https://icons8.com">Icons8</a>
+        </p>
+      </a-col>
+    </a-row>
+    <a-row class="bottom">
+
+    </a-row>
+  </div>
 </template>
 
-<script>
+<script setup>
 export default {
   name: "Context"
 }
+
 </script>
 
 <style scoped>
+.top {
+  height: 10%;
+  /*background-color: #00bcd4;*/
+}
 
+.bottom {
+  height: 10%;
+}
 </style>

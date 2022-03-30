@@ -118,7 +118,9 @@ function handleMouseMoveLine() {
   width: 100%;
   overflow: hidden;
 }
-
+/**
+ * 左侧区域
+ */
 .left {
   width: calc(20% - 10px);
   min-height: 661px;

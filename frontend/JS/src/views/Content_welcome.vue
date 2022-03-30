@@ -4,12 +4,12 @@
       <img src="../../public/logo.png" alt="ToDB"/>
     </a-col>
     <a-col :span="12">
-      <span class="app-name">ToDB </span><span class="tail">.app</span>
+      <span class="app_name">ToDB </span><span class="tail">.app</span>
       <br/>
       <span class="other">Version 0.1.0</span><br/>
       <span class="other">Powered by
-          <span class="open-source" @click='openBrower("https://github.com/wailsapp/wails")'>wails</span> and
-          <span class="open-source" @click='openBrower("https://icons8.com")'>Icons8</span>
+          <span class="open_source" @click='openBrower("https://github.com/wailsapp/wails")'>wails</span> and
+          <span class="open_source" @click='openBrower("https://icons8.com")'>Icons8</span>
         </span>
     </a-col>
   </a-row>
@@ -22,7 +22,7 @@ function openBrower(v) {
 </script>
 
 <style scoped>
-.app-name {
+.app_name {
   font-size: 20px
 }
 
@@ -34,7 +34,7 @@ function openBrower(v) {
   font-size: 12px;
 }
 
-.open-source {
+.open_source {
   font-size: 12px;
   color: #1565c0;
   cursor: pointer;

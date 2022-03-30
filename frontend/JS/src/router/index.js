@@ -25,12 +25,22 @@ const routes = [
     },
   },
   {
-    path:"/welcome",
+    path:"/home/welcome",
     name:"welcome",
-    component: function () {
+    component:function (){
       return import(/* webpackChunkName: "about" */ "../views/Content_welcome.vue")
     }
   },
+  // {
+  //   path:"/:key",
+  //   name:"welcome",
+  //   children:[
+  //     {
+  //       path: "",
+  //       component: welcome,
+  //     }
+  //   ]
+  // },
 ];
 
 const router = createRouter({

@@ -21,9 +21,6 @@
 </template>
 
 <script setup>
-export default {
-  name: "Context"
-}
 
 </script>
 

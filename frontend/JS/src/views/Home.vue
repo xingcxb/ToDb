@@ -16,15 +16,15 @@
     <div class="mid">
       <!--右侧div内容-->
       11111
-<!--      <router-view/>-->
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script setup>
 import {onBeforeMount,onMounted, reactive, ref} from 'vue';
-// import {useRouter} from "vue-router";
-// const router = useRouter();
+import {useRouter} from "vue-router";
+const router = useRouter();
 
 let listData = reactive({
   data: []
@@ -39,6 +39,13 @@ onBeforeMount(() => {
       listData.data = JSON.parse(resolve)
     }
   });
+})
+
+onMounted(()=>{
+  router.go({
+    path: '/home/welcome',
+    replace: true
+  })
 })
 
 // 选中文字也可以进行操作
@@ -143,9 +150,9 @@ function handleMouseMoveLine() {
 }
 
 .mid {
-  float: left;
+  /*float: left;*/
   width: 68%; /*右侧初始化宽度*/
   height: 100%;
-  background: #fff;
+  background: blue;
 }
 </style>

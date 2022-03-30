@@ -13,3 +13,11 @@ func TestConnect(t *testing.T) {
 	InitDb()
 	fmt.Println(GetMainViewInfo(context.Background()))
 }
+
+func TestInfo(t *testing.T) {
+	Addr = "127.0.0.1"
+	Port = "6379"
+	Password = "redmiK40"
+	InitDb()
+	fmt.Println(GetMainViewInfo(context.Background()))
+}

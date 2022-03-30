@@ -20,6 +20,14 @@ const go = {
         return window.go.main.App.LoadingConnKey();
       },
       /**
+       * LoadingDbResource
+       * @param {string} arg1 - Go Type: string
+       * @returns {Promise<string>}  - Go Type: string
+       */
+      "LoadingDbResource": (arg1) => {
+        return window.go.main.App.LoadingDbResource(arg1);
+      },
+      /**
        * Ok
        * @param {string} arg1 - Go Type: string
        * @returns {Promise<string>}  - Go Type: string

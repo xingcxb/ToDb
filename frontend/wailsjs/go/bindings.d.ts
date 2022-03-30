@@ -5,6 +5,7 @@ export interface go {
     "App": {
 		LoadingConnInfo(arg1:string):Promise<string>
 		LoadingConnKey():Promise<string>
+		LoadingDbResource(arg1:string):Promise<string>
 		Ok(arg1:string):Promise<string>
 		TestConnection(arg1:string):Promise<void>
     },

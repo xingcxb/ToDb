@@ -54,29 +54,31 @@
       </a-col>
     </a-row>
   </div>
-    <div class="box" ref="box">
-      <div class="left">
-        <!--左侧div内容-->
-        <a-tree
-            v-model:expandedKeys="expandedKeys"
-            v-model:selectedKeys="selectedKeys"
-            :load-data="onLoadData"
-            :tree-data="listData.data"
-            @select="onSelect"
-            style="width: calc(20% - 10px); background: rgba(224, 225, 225, 0.1)"
-        />
-      </div>
-      <div class="resize" @mousedown="handleMouseMoveLine">
-      </div>
-      <div class="mid">
-        <!--右侧div内容-->
-        <router-view/>
-      </div>
+  <div class="box" ref="box">
+    <div class="left">
+      <!--左侧div内容-->
+      <a-tree
+          v-model:expandedKeys="expandedKeys"
+          v-model:selectedKeys="selectedKeys"
+          :load-data="onLoadData"
+          :tree-data="listData.data"
+          @select="onSelect"
+          style="width: calc(20% - 10px); background: rgba(224, 225, 225, 0.1)"
+      >
+        <a-spin/>
+      </a-tree>
     </div>
+    <div class="resize" @mousedown="handleMouseMoveLine">
+    </div>
+    <div class="mid">
+      <!--右侧div内容-->
+      <router-view/>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import {onBeforeMount,onMounted, reactive, ref} from 'vue';
+import {onBeforeMount, reactive, ref} from 'vue';
 import {useRouter} from "vue-router";
 
 const router = useRouter();
@@ -95,7 +97,7 @@ onBeforeMount(() => {
     }
   });
   router.push({
-    path:"/rightContent/default",
+    path: "/rightContent/default",
   })
 })
 
@@ -117,9 +119,15 @@ function toView(v) {
 // })
 
 // 选中文字也可以进行操作
-// function onSelect(selectedKeys,{node}) {
-//   node.onExpand()
-// }
+function onSelect(selectedKeys) {
+  console.log(selectedKeys)
+  window.go.main.App.LoadingDbResource(selectedKeys[0]).then((resolve) => {
+    if (resolve !== "") {
+      // 如果返回值中不为空字符串才进行操作
+      console.log(resolve)
+    }
+  });
+}
 
 // 获取本地的连接信息
 let onLoadData = treeNode => {
@@ -128,7 +136,7 @@ let onLoadData = treeNode => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         treeNode.dataRef.children = JSON.parse(resolve)
-        listData.data =[...listData.data]
+        listData.data = [...listData.data]
       }
     })
     resolve();
@@ -189,11 +197,13 @@ function handleMouseMoveLine() {
 body {
   overscroll-behavior: none;
 }
+
 .header {
   height: 64px;
   width: 100%;
   background: #f0efee;
 }
+
 .box {
   min-height: 500px;
   height: 100%;
@@ -201,6 +211,7 @@ body {
   overflow: hidden;
   /*border-top: 1px solid black;*/
 }
+
 /**
  * 左侧区域
  */
@@ -211,6 +222,7 @@ body {
   float: left;
   background: rgba(224, 225, 225, 0.1);
 }
+
 .resize {
   min-height: 661px;
   height: 100%;
@@ -230,6 +242,7 @@ body {
   min-height: 661px;
   height: 100%;
 }
+
 .quickIcon {
   padding: 0;
   text-align: center;

@@ -214,3 +214,9 @@ func LoadingHistoryInfo(key string) (int, string) {
 	vb, _ := json.Marshal(data)
 	return http.StatusOK, string(vb)
 }
+
+// LoadingDbResource 加载数据库资源消耗
+func LoadingDbResource(key string) string {
+
+	return ""
+}

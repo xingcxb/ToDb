@@ -116,3 +116,8 @@ func (a *App) LoadingConnInfo(key string) string {
 	}
 	return message
 }
+
+// LoadingDbResource 加载数据库资源消耗
+func (a *App) LoadingDbResource(key string) string {
+	return communication.LoadingDbResource(key)
+}

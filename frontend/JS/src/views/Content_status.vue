@@ -18,12 +18,9 @@
   <a-row :guttes="10" class="status-container status-card">
     <!-- server status row -->
   <a-col :span="8">
-    <div style>
-
-    </div>
     <a-card class="box-card">
       <template #title>
-        <hdd-two-tone />
+        <img src="../../public/status/service.png" alt="service" style="width: 40px; height: 40px;">
         <span>服务器</span>
       </template>
       <p class="server-status-tag-p">
@@ -50,7 +47,7 @@
     <a-col :span="8">
       <a-card class="box-card">
         <template #title>
-          <hdd-two-tone />
+          <img src="../../public/status/memory.png" alt="service" style="width: 40px; height: 40px;">
           <span>内存</span>
         </template>
         <p class="server-status-tag-p">
@@ -76,7 +73,7 @@
     <a-col :span="8">
       <a-card class="box-card">
         <template #title>
-          <dashboard-two-tone />
+          <img src="../../public/status/history.png" alt="service" style="width: 40px; height: 40px;">
           <span>服务器</span>
         </template>
         <p class="server-status-tag-p">
@@ -103,7 +100,7 @@
 </template>
 
 <script setup>
-import {SyncOutlined,HddTwoTone,DashboardTwoTone} from '@ant-design/icons-vue';
+import {SyncOutlined} from '@ant-design/icons-vue';
 import {onBeforeMount, reactive, ref, toRef} from "vue";
 import {useRouter} from "vue-router";
 

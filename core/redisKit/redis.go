@@ -2,6 +2,7 @@ package redisKit
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"strings"
@@ -260,10 +261,10 @@ func GetBaseAllInfo(ctx context.Context) map[string]string {
 }
 
 // GetMainViewInfo 获取主要信息展示信息
-func GetMainViewInfo(ctx context.Context) (server, memory, start, dbkv, all map[string]string) {
+func GetMainViewInfo(ctx context.Context) string {
 	allInfo := GetBaseAllInfo(ctx)
 	// 服务器
-	server = make(map[string]string)
+	server := make(map[string]string)
 	//redis版本
 	server["version"] = allInfo["redis_version"]
 	//redis运行系统
@@ -272,43 +273,52 @@ func GetMainViewInfo(ctx context.Context) (server, memory, start, dbkv, all map[
 	server["process"] = allInfo["process_id"]
 
 	//内存
-	memory = make(map[string]string)
+	memory := make(map[string]string)
 	//已用内存
 	memory["usedMemory"] = allInfo["used_memory_human"]
 	//内存占用峰值
-	memory["usedBigMemory"] = allInfo["Used_memory_peak_human"]
+	memory["usedBigMemory"] = allInfo["used_memory_peak_human"]
 	//Lua占用内存
 	memory["luaMemory"] = allInfo["used_memory_lua_human"]
 
 	//状态
-	start = make(map[string]string)
+	start := make(map[string]string)
 	// 当前redis连接数
 	start["connectCount"] = allInfo["client_recent_max_input_buffer"]
 	// 历史连接个数
-	start["historyCount"] = allInfo["Connected_clients"]
+	start["historyCount"] = allInfo["connected_clients"]
 	// 历史执行命令
-	start["historyInstructions"] = allInfo["Total_commands_processed"]
+	start["historyInstructions"] = allInfo["total_commands_processed"]
 
 	//键值列表
-	dbkv = make(map[string]string)
-	dbkv["db0"] = all["db0"]
-	dbkv["db1"] = all["db1"]
-	dbkv["db2"] = all["db2"]
-	dbkv["db3"] = all["db3"]
-	dbkv["db4"] = all["db4"]
-	dbkv["db5"] = all["db5"]
-	dbkv["db6"] = all["db6"]
-	dbkv["db7"] = all["db7"]
-	dbkv["db8"] = all["db8"]
-	dbkv["db9"] = all["db9"]
-	dbkv["db10"] = all["db10"]
-	dbkv["db11"] = all["db011"]
-	dbkv["db12"] = all["db12"]
-	dbkv["db13"] = all["db13"]
-	dbkv["db13"] = all["db13"]
-	dbkv["db13"] = all["db13"]
-	dbkv["db14"] = all["db14"]
-	dbkv["db15"] = all["db15"]
+	dbkv := make(map[string]string)
+	dbkv["db0"] = allInfo["db0"]
+	dbkv["db1"] = allInfo["db1"]
+	dbkv["db2"] = allInfo["db2"]
+	dbkv["db3"] = allInfo["db3"]
+	dbkv["db4"] = allInfo["db4"]
+	dbkv["db5"] = allInfo["db5"]
+	dbkv["db6"] = allInfo["db6"]
+	dbkv["db7"] = allInfo["db7"]
+	dbkv["db8"] = allInfo["db8"]
+	dbkv["db9"] = allInfo["db9"]
+	dbkv["db10"] = allInfo["db10"]
+	dbkv["db11"] = allInfo["db011"]
+	dbkv["db12"] = allInfo["db12"]
+	dbkv["db13"] = allInfo["db13"]
+	dbkv["db13"] = allInfo["db13"]
+	dbkv["db13"] = allInfo["db13"]
+	dbkv["db14"] = allInfo["db14"]
+	dbkv["db15"] = allInfo["db15"]
 
-	return server, memory, start, dbkv, all
+	all := make(map[string]map[string]string)
+	all["server"] = server
+	all["memory"] = memory
+	all["start"] = start
+	all["dbkv"] = dbkv
+	strByte, err := json.Marshal(all)
+	if err != nil {
+		return ""
+	}
+	return string(strByte)
 }

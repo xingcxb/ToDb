@@ -15,9 +15,9 @@ func TestConnect(t *testing.T) {
 }
 
 func TestInfo(t *testing.T) {
-	Addr = "127.0.0.1"
+	Addr = "192.168.10.59"
 	Port = "6379"
-	Password = "redmiK40"
+	Password = "123456"
 	InitDb()
 	fmt.Println(GetMainViewInfo(context.Background()))
 }

@@ -5,7 +5,6 @@ import (
 	"ToDb/lib"
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
@@ -161,7 +160,6 @@ func LoadingBaseHistoryInfo() string {
 		datas = append(datas, bci)
 	}
 	jb, _ := json.Marshal(datas)
-	fmt.Println(string(jb))
 	return string(jb)
 }
 
@@ -173,20 +171,7 @@ type Children struct {
 
 // LoadingHistoryInfo 加载已经存储的连接信息
 func LoadingHistoryInfo(key string) (int, string) {
-	// 获取所有连接文件的路径
-	allFilesPath := lib.GetProgramSafePath()
-	var filePath strings.Builder
-	filePath.WriteString(allFilesPath)
-	filePath.WriteString(key)
-	filePath.WriteString(".json")
-	valueByte, _ := ioutil.ReadFile(filePath.String())
-
-	//优先初始化redis链接
-	redisKit.Port = gjson.Get(string(valueByte), "port").String()
-	redisKit.Username = gjson.Get(string(valueByte), "username").String()
-	redisKit.Password = gjson.Get(string(valueByte), "password").String()
-	redisKit.Addr = gjson.Get(string(valueByte), "hostURL").String()
-	redisKit.InitDb()
+	valueByte := initRedis(key)
 	err := redisKit.Ping(context.Background())
 	if err != nil {
 		return http.StatusBadRequest, err.Error()
@@ -215,8 +200,27 @@ func LoadingHistoryInfo(key string) (int, string) {
 	return http.StatusOK, string(vb)
 }
 
+// 获取内容
+func initRedis(key string) []byte {
+	// 获取所有连接文件的路径
+	allFilesPath := lib.GetProgramSafePath()
+	var filePath strings.Builder
+	filePath.WriteString(allFilesPath)
+	filePath.WriteString(key)
+	filePath.WriteString(".json")
+	valueByte, _ := ioutil.ReadFile(filePath.String())
+
+	//优先初始化redis链接
+	redisKit.Port = gjson.Get(string(valueByte), "port").String()
+	redisKit.Username = gjson.Get(string(valueByte), "username").String()
+	redisKit.Password = gjson.Get(string(valueByte), "password").String()
+	redisKit.Addr = gjson.Get(string(valueByte), "hostURL").String()
+	redisKit.InitDb()
+	return valueByte
+}
+
 // LoadingDbResource 加载数据库资源消耗
 func LoadingDbResource(key string) string {
-
-	return ""
+	initRedis(key)
+	return redisKit.GetMainViewInfo(context.Background())
 }

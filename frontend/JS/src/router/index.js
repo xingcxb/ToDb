@@ -31,16 +31,13 @@ const routes = [
       return import(/* webpackChunkName: "about" */ "../views/Content_welcome.vue")
     }
   },
-  // {
-  //   path:"/:key",
-  //   name:"welcome",
-  //   children:[
-  //     {
-  //       path: "",
-  //       component: welcome,
-  //     }
-  //   ]
-  // },
+  {
+    path:"/rightContent/status",
+    name:"status",
+    component: function (){
+      return import(/* webpackChunkName: "about" */ "../views/Content_status.vue")
+    }
+  },
 ];
 
 const router = createRouter({

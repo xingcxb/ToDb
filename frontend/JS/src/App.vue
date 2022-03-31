@@ -102,7 +102,6 @@ onBeforeMount(() => {
 })
 
 function toView(v) {
-  console.log(v)
   router.push({
     path: "/newConnection",
     query: {
@@ -120,13 +119,12 @@ function toView(v) {
 
 // 选中文字也可以进行操作
 function onSelect(selectedKeys) {
-  console.log(selectedKeys)
-  window.go.main.App.LoadingDbResource(selectedKeys[0]).then((resolve) => {
-    if (resolve !== "") {
-      // 如果返回值中不为空字符串才进行操作
-      console.log(resolve)
+  router.push({
+    path:"/rightContent/status",
+    query:{
+      data:selectedKeys[0],
     }
-  });
+  })
 }
 
 // 获取本地的连接信息

@@ -34,7 +34,7 @@
 <a href="https://gitee.com/proudmubai"><img src="https://portrait.gitee.com/uploads/avatars/user/2977/8931258_proudmubai_1617707128.png!avatar200" width="40"/></a>
 
 ## 特别提及
-如果没有一下成员，此项目或许就该胎死腹中了：
+如果没有以下成员，此项目或许就该胎死腹中了：
 
 - [reciment](https://gitee.com/recimentPackage)
 - [ProudMuBai](https://gitee.com/proudmubai)

@@ -27,13 +27,14 @@ func InitDb() {
 		Username: Username,     //设置用户名
 		Password: Password,     //设置密码
 		DB:       Db,           //设置默认的数据库
-		PoolSize: 10,           //设置连接池大小
+		//PoolSize: 10,           //设置连接池大小
 	})
 }
 
 // Ping redis测试是否联通
 func Ping(ctx context.Context) error {
 	err := rdb.Ping(ctx).Err()
+	defer rdb.Close()
 	if err != nil {
 		fmt.Println("error: ", err)
 		return err
@@ -45,6 +46,7 @@ func Ping(ctx context.Context) error {
 func GetDbCount(ctx context.Context, dbId int) int {
 	ChangeDb(ctx, dbId)
 	count, err := rdb.DBSize(ctx).Result()
+	defer rdb.Close()
 	if err != nil {
 		fmt.Println("error:", err)
 		return 0
@@ -247,6 +249,7 @@ func ChangeDb(ctx context.Context, dbId int) {
 // GetBaseAllInfo  获取redis基础信息
 func GetBaseAllInfo(ctx context.Context) map[string]string {
 	_info := rdb.Info(ctx).String()
+	defer rdb.Close()
 	_vs := strings.Split(_info, "\r\n")
 	infoMap := make(map[string]string)
 	for _, _str := range _vs {

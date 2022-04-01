@@ -10,9 +10,9 @@
         </a-tag>
         <a-tooltip placement="bottom">
           <template #title>
-            <span>自动刷新开关，每2秒刷新一次</span>
+            <span>自动刷新开关，每5秒刷新一次</span>
           </template>
-          <a-switch @click="changeAutoRefresh" v-model:checked="autoRefresh.value" checked-children="开"
+          <a-switch @click="changeAutoRefresh" v-model:checked="autoRefresh" checked-children="开"
                     un-checked-children="关"></a-switch>
         </a-tooltip>
       </div>
@@ -126,7 +126,7 @@ import {useRouter} from "vue-router";
 
 const router = useRouter();
 //是否刷新
-const autoRefresh = ref(false);
+let autoRefresh = ref(false);
 //定时刷新时间 5s
 const refreshTimer = ref(5);
 // 获取redis所在服务器信息
@@ -161,9 +161,10 @@ onBeforeMount(() => {
 })
 
 function changeAutoRefresh() {
-  autoRefresh.value = !autoRefresh.value
-  console.log(autoRefresh.value)
-  if (autoRefresh.value) {
+  console.log("----------",autoRefresh)
+  autoRefresh = !autoRefresh
+  console.log("----------",autoRefresh)
+  if (autoRefresh) {
     // 开启自动刷新
     // 开启定时器
     setInterval(() => {

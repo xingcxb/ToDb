@@ -2,7 +2,7 @@
    <img src="todb.png"><br/>
 </p>
 
-# ToDb
+# `ToDb`
 
 `ToDb`一款连接数据库的工具
 
@@ -13,8 +13,8 @@
  
 ## 准备处理的数据库
  
-- [ ] Redis
-- [ ] MySQL
+- [ ] `Redis`
+- [ ] `MySQL`
 - [ ] ......
 
 ## 常见问题

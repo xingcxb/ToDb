@@ -200,7 +200,7 @@ func LoadingHistoryInfo(key string) (int, string) {
 	return http.StatusOK, string(vb)
 }
 
-// 获取内容
+// 连接redis
 func initRedis(key string) []byte {
 	// 获取所有连接文件的路径
 	allFilesPath := lib.GetProgramSafePath()
@@ -223,4 +223,11 @@ func initRedis(key string) []byte {
 func LoadingDbResource(key string) string {
 	initRedis(key)
 	return redisKit.GetMainViewInfo(context.Background())
+}
+
+// GetKeyValueInfo 获取键值信息
+func GetKeyValueInfo(key string) string {
+	initRedis(key)
+
+	return ""
 }

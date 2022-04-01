@@ -90,15 +90,15 @@ const expandedKeys = ref([]);
 const selectedKeys = ref([]);
 
 onBeforeMount(() => {
+  router.push({
+    path: "/rightContent/default",
+  })
   window.go.main.App.LoadingConnKey().then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
       listData.data = JSON.parse(resolve)
     }
   });
-  router.push({
-    path: "/rightContent/default",
-  })
 })
 
 function toView(v) {
@@ -109,13 +109,6 @@ function toView(v) {
     }
   })
 }
-
-// onMounted(()=>{
-//   router.go({
-//     path: '/home/welcome',
-//     replace: true
-//   })
-// })
 
 // 选中文字也可以进行操作
 function onSelect(selectedKeys) {
@@ -236,7 +229,7 @@ body {
 
 .mid {
   float: left;
-  width: 68%; /*右侧初始化宽度*/
+  width: 80%; /*右侧初始化宽度*/
   min-height: 661px;
   height: 100%;
 }

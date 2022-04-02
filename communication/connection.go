@@ -224,10 +224,3 @@ func LoadingDbResource(key string) string {
 	initRedis(key)
 	return redisKit.GetMainViewInfo(context.Background())
 }
-
-// GetKeyValueInfo 获取键值信息
-func GetKeyValueInfo(key string) string {
-	initRedis(key)
-
-	return ""
-}

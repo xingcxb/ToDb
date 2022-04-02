@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"strconv"
 	"strings"
 )
 
@@ -295,24 +296,12 @@ func GetMainViewInfo(ctx context.Context) string {
 
 	//键值列表
 	dbkv := make(map[string]string)
-	dbkv["db0"] = allInfo["db0"]
-	dbkv["db1"] = allInfo["db1"]
-	dbkv["db2"] = allInfo["db2"]
-	dbkv["db3"] = allInfo["db3"]
-	dbkv["db4"] = allInfo["db4"]
-	dbkv["db5"] = allInfo["db5"]
-	dbkv["db6"] = allInfo["db6"]
-	dbkv["db7"] = allInfo["db7"]
-	dbkv["db8"] = allInfo["db8"]
-	dbkv["db9"] = allInfo["db9"]
-	dbkv["db10"] = allInfo["db10"]
-	dbkv["db11"] = allInfo["db011"]
-	dbkv["db12"] = allInfo["db12"]
-	dbkv["db13"] = allInfo["db13"]
-	dbkv["db13"] = allInfo["db13"]
-	dbkv["db13"] = allInfo["db13"]
-	dbkv["db14"] = allInfo["db14"]
-	dbkv["db15"] = allInfo["db15"]
+	for i := 0; i < 16; i++ {
+		var _key strings.Builder
+		_key.WriteString("db")
+		_key.WriteString(strconv.Itoa(i))
+		dbkv[_key.String()] = allInfo[_key.String()]
+	}
 
 	all := make(map[string]map[string]string)
 	all["server"] = server

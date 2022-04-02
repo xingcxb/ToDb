@@ -105,15 +105,14 @@
   </a-row>
   <br/>
   <!--键值信息-->
-  <a-row :gutter="16" style="margin-left: 2px">
-    <a-col>
+  <a-row style="width: 100%;margin-right: 2px">
+    <a-col :span="24">
       <a-card>
         <template #title>
           <img src="../../public/status/kv.png" alt="service" style="width: 40px; height: 40px;">
           <span>键值统计</span>
         </template>
-        <a-table :dataSource="kvInfo" :columns="columns" :loading="loading">
-
+        <a-table :dataSource="kvInfo.data" :columns="columns" :pagination="false">
         </a-table>
       </a-card>
     </a-col>
@@ -122,7 +121,7 @@
 
 <script setup>
 import {SyncOutlined} from '@ant-design/icons-vue';
-import {onBeforeMount, reactive, ref,onBeforeUnmount} from "vue";
+import {onBeforeMount, onBeforeUnmount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
@@ -144,20 +143,73 @@ let historyInfo = reactive({
   data: []
 })
 // 键值信息
-let kvInfo = "";
+let kvInfo = reactive({
+  data: []
+})
+// 表格标题
+const columns = [
+  {
+    title: 'DB',
+    dataIndex: 'db',
+    key: 'db',
+  }, {
+    title: 'Keys',
+    dataIndex: 'keys',
+    key: 'keys',
+  }, {
+    title: 'Expires',
+    dataIndex: 'expires',
+    key: 'expires',
+  }, {
+    title: 'Avg TTL',
+    dataIndex: 'avgTtl',
+    key: 'avgTtl',
+  }
+]
+
 
 onBeforeMount(() => {
-  console.log(router.currentRoute.value.query.data)
+  // console.log(router.currentRoute.value.query.data)
   // 获取基本数据
   window.go.main.App.LoadingDbResource(router.currentRoute.value.query.data).then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
-      console.log(resolve)
+      // console.log(resolve)
       let _json = JSON.parse(resolve)
       // 获取服务信息
       serviceInfo.data = _json.server;
       memoryInfo.data = _json.memory;
       historyInfo.data = _json.start;
+      // 获取键值信息
+      let _kvInfo = _json.dbkv;
+      for (let i = 0; i < 16; i++) {
+        let _temp = _kvInfo["db" + i];
+        if (_temp === ""){
+          continue;
+        }
+        let splitArry = _temp.split(",");
+        let __info = "";
+        for (let j = 0; j < splitArry.length; j++) {
+          let _temp2 = splitArry[j].split("=");
+          if (__info.length === 0){
+            __info = "{"
+          }
+          __info += "\"" + _temp2[0] + "\":\"" + _temp2[1] + "\""
+          if (j < splitArry.length - 1) {
+            __info += ","
+          }
+        }
+        __info += "}"
+        let _info = JSON.parse(__info);
+        kvInfo.data.push({
+          key: i,
+          db: "db" + i,
+          keys: _info.keys,
+          expires: _info.expires,
+          avgTtl: _info.avg_ttl,
+        })
+      }
+      console.log(kvInfo.data)
     }
   });
 })
@@ -190,6 +242,7 @@ function changeAutoRefresh() {
     timer = null;
   }
 }
+
 </script>
 
 <style scoped>

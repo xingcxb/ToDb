@@ -72,7 +72,7 @@
     </div>
     <div class="mid">
       <!--右侧div内容-->
-      <router-view/>
+      <router-view :key="$route.path + Date.now()"/>
     </div>
   </div>
 </template>

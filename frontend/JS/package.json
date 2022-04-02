@@ -10,6 +10,7 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "ant-design-vue": "^3.1.0-rc.3",
+    "timers": "^0.1.1",
     "vue": "^3.2.23",
     "vue-i18n": "^9.1.9",
     "vue-router": "^4.0.12"

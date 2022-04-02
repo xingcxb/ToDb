@@ -209,7 +209,11 @@ onBeforeMount(() => {
           avgTtl: _info.avg_ttl,
         })
       }
-      console.log(kvInfo.data)
+    }else{
+      // 如果返回空值返回到默认界面
+      router.push({
+        path: "/rightContent/default",
+      })
     }
   });
 })

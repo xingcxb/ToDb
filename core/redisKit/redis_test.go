@@ -19,5 +19,5 @@ func TestInfo(t *testing.T) {
 	Port = "6379"
 	Password = "123456"
 	InitDb()
-	fmt.Println(GetMainViewInfo(context.Background()))
+	fmt.Println(GetBaseAllInfo(context.Background()))
 }

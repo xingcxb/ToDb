@@ -123,8 +123,10 @@ function onSelect(selectedKeys) {
 // 获取本地的连接信息
 let onLoadData = treeNode => {
   return new Promise(resolve => {
+    console.log(treeNode.dataRef.key)
     window.go.main.App.LoadingConnInfo(treeNode.dataRef.key).then((resolve) => {
       if (resolve !== "") {
+        console.log(resolve)
         // 如果返回值中不为空字符串才进行操作
         treeNode.dataRef.children = JSON.parse(resolve)
         listData.data = [...listData.data]

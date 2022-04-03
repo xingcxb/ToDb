@@ -169,7 +169,14 @@ const columns = [
 
 
 onBeforeMount(() => {
-  // console.log(router.currentRoute.value.query.data)
+  console.log(router.currentRoute.value.query.data)
+  if(router.currentRoute.value.query.data === ""){
+    // 如果返回空值返回到默认界面
+    router.push({
+      path: "/rightContent/default",
+    })
+    return;
+  }
   // 获取基本数据
   window.go.main.App.LoadingDbResource(router.currentRoute.value.query.data).then((resolve) => {
     if (resolve !== "") {

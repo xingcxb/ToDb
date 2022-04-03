@@ -3,6 +3,7 @@ package main
 import (
 	"ToDb/communication"
 	"context"
+	"fmt"
 	"testing"
 )
 
@@ -13,5 +14,9 @@ func TestTt(t *testing.T) {
 
 func TestReadFile(t *testing.T) {
 	//communication.LoadingBaseHistoryInfo()
-	communication.LoadingHistoryInfo("这是redis2")
+	communication.LoadingHistoryInfo("这是2")
+}
+
+func TestGetHistoryInfo(t *testing.T) {
+	fmt.Println(communication.LoadingHistoryInfo("这是2"))
 }

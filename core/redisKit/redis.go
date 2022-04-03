@@ -35,7 +35,7 @@ func InitDb() {
 // Ping redis测试是否联通
 func Ping(ctx context.Context) error {
 	err := rdb.Ping(ctx).Err()
-	defer rdb.Close()
+	//defer rdb.Close()
 	if err != nil {
 		fmt.Println("error: ", err)
 		return err
@@ -47,7 +47,7 @@ func Ping(ctx context.Context) error {
 func GetDbCount(ctx context.Context, dbId int) int {
 	ChangeDb(ctx, dbId)
 	count, err := rdb.DBSize(ctx).Result()
-	defer rdb.Close()
+	//defer rdb.Close()
 	if err != nil {
 		fmt.Println("error:", err)
 		return 0
@@ -267,6 +267,9 @@ func GetBaseAllInfo(ctx context.Context) map[string]string {
 // GetMainViewInfo 获取主要信息展示信息
 func GetMainViewInfo(ctx context.Context) string {
 	allInfo := GetBaseAllInfo(ctx)
+	if len(allInfo) == 0 {
+		return ""
+	}
 	// 服务器
 	server := make(map[string]string)
 	//redis版本

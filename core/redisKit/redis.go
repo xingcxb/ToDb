@@ -291,9 +291,9 @@ func GetMainViewInfo(ctx context.Context) string {
 	//状态
 	start := make(map[string]string)
 	// 当前redis连接数
-	start["connectCount"] = allInfo["client_recent_max_input_buffer"]
+	start["connectCount"] = allInfo["connected_clients"]
 	// 历史连接个数
-	start["historyCount"] = allInfo["connected_clients"]
+	start["historyCount"] = allInfo["client_recent_max_input_buffer"]
 	// 历史执行命令
 	start["historyInstructions"] = allInfo["total_commands_processed"]
 

@@ -57,16 +57,17 @@
   <div class="box" ref="box">
     <div class="left">
       <!--左侧div内容-->
-      <a-tree
+      <a-directory-tree
           v-model:expandedKeys="expandedKeys"
           v-model:selectedKeys="selectedKeys"
           :load-data="onLoadData"
           :tree-data="listData.data"
+          multiple
           @select="onSelect"
-          style="width: calc(20% - 10px); background: rgba(224, 225, 225, 0.1)"
+          @expand="onExpand"
+          style="min-width: 210px;width: calc(20% - 10px); background: rgba(224, 225, 225, 0.1);"
       >
-        <a-spin/>
-      </a-tree>
+      </a-directory-tree>
     </div>
     <div class="resize" @mousedown="handleMouseMoveLine">
     </div>
@@ -123,10 +124,8 @@ function onSelect(selectedKeys) {
 // 获取本地的连接信息
 let onLoadData = treeNode => {
   return new Promise(resolve => {
-    console.log(treeNode.dataRef.key)
     window.go.main.App.LoadingConnInfo(treeNode.dataRef.key).then((resolve) => {
       if (resolve !== "") {
-        console.log(resolve)
         // 如果返回值中不为空字符串才进行操作
         treeNode.dataRef.children = JSON.parse(resolve)
         listData.data = [...listData.data]

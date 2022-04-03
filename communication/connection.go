@@ -150,9 +150,13 @@ func LoadingBaseHistoryInfo() string {
 		ipt.WriteString("leftNavigation/")
 		ipt.WriteString(t)
 		ipt.WriteString(".png")
+		var key strings.Builder
+		key.WriteString(alias)
+		key.WriteString(",")
+		key.WriteString(t)
 		bci := BaseConnInfo{
 			Title:        alias,
-			Key:          alias,
+			Key:          key.String(),
 			ConnType:     t,
 			IconPath:     ipt.String(),
 			ConnFileAddr: filePath.String(),
@@ -164,9 +168,9 @@ func LoadingBaseHistoryInfo() string {
 }
 
 type Children struct {
-	Title    string `json:"title"`    //别名
-	Key      string `json:"key"`      //key
-	Children string `json:"children"` //子集
+	Title string `json:"title"` //别名
+	Key   string `json:"key"`   //key
+	//Children string `json:"children"` //子集
 }
 
 // LoadingHistoryInfo 加载已经存储的连接信息

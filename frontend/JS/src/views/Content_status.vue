@@ -169,8 +169,8 @@ const columns = [
 
 
 onBeforeMount(() => {
-  console.log(router.currentRoute.value.query.data)
-  if(router.currentRoute.value.query.data === ""){
+  console.log("status页面", router.currentRoute.value.query.data)
+  if (router.currentRoute.value.query.data === "") {
     // 如果返回空值返回到默认界面
     router.push({
       path: "/rightContent/default",
@@ -191,14 +191,14 @@ onBeforeMount(() => {
       let _kvInfo = _json.dbkv;
       for (let i = 0; i < 16; i++) {
         let _temp = _kvInfo["db" + i];
-        if (_temp === ""){
+        if (_temp === "") {
           continue;
         }
         let splitArry = _temp.split(",");
         let __info = "";
         for (let j = 0; j < splitArry.length; j++) {
           let _temp2 = splitArry[j].split("=");
-          if (__info.length === 0){
+          if (__info.length === 0) {
             __info = "{"
           }
           __info += "\"" + _temp2[0] + "\":\"" + _temp2[1] + "\""
@@ -216,7 +216,7 @@ onBeforeMount(() => {
           avgTtl: _info.avg_ttl,
         })
       }
-    }else{
+    } else {
       // 如果返回空值返回到默认界面
       router.push({
         path: "/rightContent/default",

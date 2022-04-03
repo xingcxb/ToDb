@@ -62,7 +62,7 @@
           v-model:selectedKeys="selectedKeys"
           :load-data="onLoadData"
           :tree-data="listData.data"
-          multiple
+          :show-icon="showIcon"
           @select="onSelect"
           @expand="onExpand"
           style="min-width: 210px;width: calc(20% - 10px); background: rgba(224, 225, 225, 0.1);"
@@ -113,18 +113,32 @@ function toView(v) {
 
 // 选中文字也可以进行操作
 function onSelect(selectedKeys) {
-  router.push({
-    path:"/rightContent/status",
-    query:{
-      data:selectedKeys[0],
-    }
-  })
+  console.log("onSelect",selectedKeys)
+  if(selectedKeys.length <= 0){
+    return
+  }
+  let key = selectedKeys[0]
+  if (selectedKeys.length > 1) {
+    //表示选中子节点，通常是选中了一个具体的库/表
+    console.log("多选")
+  } else {
+    console.log("根选",key)
+    //表示选中一个根节点，通常是选中了一个数据库
+    router.push({
+      path: "/rightContent/status",
+      query: {
+        key: key[0]
+      }
+    })
+  }
 }
 
 // 获取本地的连接信息
 let onLoadData = treeNode => {
+  console.log("onLoadData",treeNode.dataRef.key)
+  let key = treeNode.dataRef.key.split(",")
   return new Promise(resolve => {
-    window.go.main.App.LoadingConnInfo(treeNode.dataRef.key).then((resolve) => {
+    window.go.main.App.LoadingConnInfo(key[0]).then((resolve) => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         treeNode.dataRef.children = JSON.parse(resolve)

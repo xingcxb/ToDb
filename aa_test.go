@@ -20,3 +20,7 @@ func TestReadFile(t *testing.T) {
 func TestGetHistoryInfo(t *testing.T) {
 	fmt.Println(communication.LoadingHistoryInfo("这是2"))
 }
+
+func TestFilePath(t *testing.T) {
+	fmt.Println(communication.LoadingBaseHistoryInfo())
+}

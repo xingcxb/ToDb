@@ -122,12 +122,13 @@ function onSelect(selectedKeys) {
     //表示选中子节点，通常是选中了一个具体的库/表
     console.log("多选")
   } else {
-    console.log("根选",key)
+    let keys = key.split(",")
+    console.log("单选",keys[0])
     //表示选中一个根节点，通常是选中了一个数据库
     router.push({
       path: "/rightContent/status",
       query: {
-        key: key[0]
+        key: keys[0]
       }
     })
   }

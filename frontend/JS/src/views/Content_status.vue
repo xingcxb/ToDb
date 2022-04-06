@@ -169,8 +169,8 @@ const columns = [
 
 
 onBeforeMount(() => {
-  console.log("status页面", router.currentRoute.value.query.data)
-  if (router.currentRoute.value.query.data === "") {
+  console.log("status页面", router.currentRoute.value.query.key)
+  if (router.currentRoute.value.query.key === "") {
     // 如果返回空值返回到默认界面
     router.push({
       path: "/rightContent/default",
@@ -178,7 +178,7 @@ onBeforeMount(() => {
     return;
   }
   // 获取基本数据
-  window.go.main.App.LoadingDbResource(router.currentRoute.value.query.data).then((resolve) => {
+  window.go.main.App.LoadingDbResource(router.currentRoute.value.query.key).then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
       // console.log(resolve)

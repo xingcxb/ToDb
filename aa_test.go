@@ -2,6 +2,7 @@ package main
 
 import (
 	"ToDb/communication"
+	"ToDb/lib"
 	"context"
 	"fmt"
 	"testing"
@@ -23,4 +24,13 @@ func TestGetHistoryInfo(t *testing.T) {
 
 func TestFilePath(t *testing.T) {
 	fmt.Println(communication.LoadingBaseHistoryInfo())
+}
+
+func TestTest(t *testing.T) {
+	//maps := make(map[string]int, 0)
+	//trees := make([]lib.TreeKeys, 0, 1)
+	trees := lib.TreeKeys{}
+	value := "123:12:11"
+	lib.KeyToTree(value, &trees)
+	fmt.Println(&trees)
 }

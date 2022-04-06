@@ -5,6 +5,7 @@ import (
 	"ToDb/lib"
 	"context"
 	"encoding/json"
+	"errors"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
@@ -230,13 +231,43 @@ func LoadingDbResource(key string) string {
 }
 
 // GetNodeData 获取节点数据
-func GetNodeData(connType, connName string, nodeId int) string {
+func GetNodeData(connType, connName string, nodeId int) (string, error) {
+	values := ""
 	if connType == "" ||
 		connName == "" {
-		return ""
+		return values, errors.New("parameter is missing")
 	}
-	initRedis(connName)
-	redisKit.ChangeDb(context.Background(), nodeId)
-	// todo 待开发
-	return ""
+	ctx := context.Background()
+	switch connType {
+	case "redis":
+		initRedis(connName)
+		redisKit.ChangeDb(ctx, nodeId)
+		arr, err := redisKit.GetDbData(ctx, 0)
+		if err != nil {
+			return "", err
+		}
+		//treeData := make([]TreeKeys, 0, 1)
+		for _, key := range arr {
+			keys := strings.Split(key, ":")
+			if len(keys) > 1 {
+				// 表示存在键集合
+				for i := 0; i < len(keys); i++ {
+					//num := maps[keys[0]]
+
+				}
+			} else {
+				// 表示单纯的键
+				//treeData = append(treeData, TreeKeys{
+				//	Title:    key,
+				//	Key:      key,
+				//	Count:    "1",
+				//	TreeKeys: "",
+				//})
+			}
+		}
+	default:
+		return "", errors.New("unknown error")
+	}
+
+	return "", errors.New("=====")
 }

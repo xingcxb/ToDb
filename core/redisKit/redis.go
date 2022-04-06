@@ -317,3 +317,16 @@ func GetMainViewInfo(ctx context.Context) string {
 	}
 	return string(strByte)
 }
+
+// GetDbData 获取指定库中的数据
+func GetDbData(ctx context.Context, cursor uint64) (string, error) {
+	keys, cursor, err := rdb.Scan(ctx, cursor, "*", 100).Result()
+	if err != nil {
+		return "", err
+	}
+	for _, key := range keys {
+		fmt.Println("|==========", key)
+		//splitStr := strings.Split(key, ":")
+	}
+	return "", err
+}

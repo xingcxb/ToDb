@@ -111,24 +111,29 @@ function toView(v) {
   })
 }
 
+
 // 选中文字也可以进行操作
-function onSelect(selectedKeys) {
-  console.log("onSelect",selectedKeys)
-  if(selectedKeys.length <= 0){
-    return
-  }
-  let key = selectedKeys[0]
-  if (selectedKeys.length > 1) {
-    //表示选中子节点，通常是选中了一个具体的库/表
-    console.log("多选")
+function onSelect(selectedKeys, info) {
+  // console.log("onSelect", selectedKeys)
+  let parent = info.node.parent;
+  console.log("show parent", parent)
+  if (parent != undefined) {
+    //当前为子节点,改变到右侧的页面中显示数据
+    //redis,localhost,1
+    console.log("parent key", info.node.parent.key)
+    let parentKey = info.node.parent.key
+    let parentKeyArr = parentKey.split(",")
+    let connName = parentKeyArr[1]
+
   } else {
+    //当前为根节点
+    let key = selectedKeys[0]
     let keys = key.split(",")
-    console.log("单选",keys[0])
     //表示选中一个根节点，通常是选中了一个数据库
     router.push({
       path: "/rightContent/status",
       query: {
-        key: keys[0]
+        key: keys[1]
       }
     })
   }
@@ -136,10 +141,13 @@ function onSelect(selectedKeys) {
 
 // 获取本地的连接信息
 let onLoadData = treeNode => {
-  console.log("onLoadData",treeNode.dataRef.key)
   let key = treeNode.dataRef.key.split(",")
+  if (key.length == 1) {
+    //如果只有一个key，说明不是根节点
+    return;
+  }
   return new Promise(resolve => {
-    window.go.main.App.LoadingConnInfo(key[0]).then((resolve) => {
+    window.go.main.App.LoadingConnInfo(key[1]).then((resolve) => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         treeNode.dataRef.children = JSON.parse(resolve)

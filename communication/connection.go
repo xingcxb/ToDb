@@ -151,9 +151,9 @@ func LoadingBaseHistoryInfo() string {
 		ipt.WriteString(t)
 		ipt.WriteString(".png")
 		var key strings.Builder
-		key.WriteString(alias)
-		key.WriteString(",")
 		key.WriteString(t)
+		key.WriteString(",")
+		key.WriteString(alias)
 		bci := BaseConnInfo{
 			Title:        alias,
 			Key:          key.String(),
@@ -227,4 +227,16 @@ func initRedis(key string) []byte {
 func LoadingDbResource(key string) string {
 	initRedis(key)
 	return redisKit.GetMainViewInfo(context.Background())
+}
+
+// GetNodeData 获取节点数据
+func GetNodeData(connType, connName string, nodeId int) string {
+	if connType == "" ||
+		connName == "" {
+		return ""
+	}
+	initRedis(connName)
+	redisKit.ChangeDb(context.Background(), nodeId)
+	// todo 待开发
+	return ""
 }

@@ -32,5 +32,5 @@ func TestTest(t *testing.T) {
 	trees := lib.TreeKeys{}
 	value := "123:12:11"
 	lib.KeyToTree(value, &trees)
-	fmt.Println(&trees)
+	fmt.Println(trees)
 }

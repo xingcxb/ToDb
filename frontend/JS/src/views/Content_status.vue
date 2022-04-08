@@ -168,6 +168,7 @@ const columns = [
 ]
 
 
+// 页面加载时同步加载redis数据
 onBeforeMount(() => {
   console.log("status页面", router.currentRoute.value.query.key)
   if (router.currentRoute.value.query.key === "") {
@@ -225,6 +226,7 @@ onBeforeMount(() => {
   });
 })
 
+// 卸载时关闭定时器
 onBeforeUnmount(() => {
   clearInterval(timer);
   timer = null;
@@ -238,6 +240,7 @@ function getNodeData(){
   })
 }
 
+// 自动刷新按钮
 function changeAutoRefresh() {
   if (autoRefresh.value) {
     // 开启定时器

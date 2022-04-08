@@ -29,8 +29,18 @@ func TestFilePath(t *testing.T) {
 func TestTest(t *testing.T) {
 	//maps := make(map[string]int, 0)
 	//trees := make([]lib.TreeKeys, 0, 1)
-	trees := lib.TreeKeys{}
-	value := "123:12:11"
-	lib.KeyToTree(value, &trees)
+	//trees := new(lib.TreeKeys)
+	value := []string{
+		"1:2:3",
+		"1:2:4",
+		"1111",
+		"12312",
+	}
+	var trees []interface{}
+	lib.KeyToTree2(value, trees)
 	fmt.Println(trees)
+}
+
+func TestApp_GetNodeData(t *testing.T) {
+	fmt.Println(communication.GetNodeData("redis", "localhost", 13))
 }

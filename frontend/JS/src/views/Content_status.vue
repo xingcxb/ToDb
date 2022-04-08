@@ -230,6 +230,13 @@ onBeforeUnmount(() => {
   timer = null;
 })
 
+// 获取节点数据
+function getNodeData(){
+  window.go.main.App.GetNodeData("redis","localhost",13).then((resolve)=>{
+    console.log(resolve)
+  })
+}
+
 function changeAutoRefresh() {
   if (autoRefresh.value) {
     // 开启定时器

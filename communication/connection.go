@@ -232,10 +232,10 @@ func LoadingDbResource(key string) string {
 
 // GetNodeData 获取节点数据
 func GetNodeData(connType, connName string, nodeId int) (string, error) {
-	values := ""
+	var value strings.Builder
 	if connType == "" ||
 		connName == "" {
-		return values, errors.New("parameter is missing")
+		return value.String(), errors.New("parameter is missing")
 	}
 	ctx := context.Background()
 	switch connType {
@@ -246,28 +246,14 @@ func GetNodeData(connType, connName string, nodeId int) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		//treeData := make([]TreeKeys, 0, 1)
-		for _, key := range arr {
-			keys := strings.Split(key, ":")
-			if len(keys) > 1 {
-				// 表示存在键集合
-				for i := 0; i < len(keys); i++ {
-					//num := maps[keys[0]]
-
-				}
-			} else {
-				// 表示单纯的键
-				//treeData = append(treeData, TreeKeys{
-				//	Title:    key,
-				//	Key:      key,
-				//	Count:    "1",
-				//	TreeKeys: "",
-				//})
+		for _, str := range arr {
+			if len(value.String()) != 0 {
+				value.WriteString(",")
 			}
+			value.WriteString(str)
 		}
+		return value.String(), nil
 	default:
 		return "", errors.New("unknown error")
 	}
-
-	return "", errors.New("=====")
 }

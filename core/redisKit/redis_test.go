@@ -21,5 +21,6 @@ func TestInfo(t *testing.T) {
 	InitDb()
 	ChangeDb(context.Background(), 3)
 	//fmt.Println(GetBaseAllInfo(context.Background()))
-	fmt.Println(GetDbData(context.Background(), 0))
+	v, _ := GetDbData(context.Background(), 0)
+	fmt.Println(v)
 }

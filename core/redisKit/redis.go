@@ -325,10 +325,14 @@ func GetDbData(ctx context.Context, cursor uint64) ([]string, error) {
 	if err != nil {
 		return keys, err
 	}
-	//for _, key := range keys {
-	//	//fmt.Println("|==========", key)
-	//	//splitStr := strings.Split(key, ":")
-	//	keys = append(keys, key)
-	//}
 	return keys, nil
+}
+
+// 获取redis数据
+func Get(ctx context.Context, key string) string {
+	val, err := rdb.Get(ctx, key).Result()
+	if err != nil {
+		return ""
+	}
+	return val
 }

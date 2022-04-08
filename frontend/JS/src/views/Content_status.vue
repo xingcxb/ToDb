@@ -233,6 +233,7 @@ onBeforeUnmount(() => {
 // 获取节点数据
 function getNodeData(){
   window.go.main.App.GetNodeData("redis","localhost",13).then((resolve)=>{
+    let val = ["1:2:3","1111","234234","12312","1:2:4"];
     console.log(resolve)
   })
 }

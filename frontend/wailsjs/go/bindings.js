@@ -5,6 +5,16 @@ const go = {
   "main": {
     "App": {
       /**
+       * GetNodeData
+       * @param {string} arg1 - Go Type: string
+       * @param {string} arg2 - Go Type: string
+       * @param {number} arg3 - Go Type: int
+       * @returns {Promise<string>}  - Go Type: string
+       */
+      "GetNodeData": (arg1, arg2, arg3) => {
+        return window.go.main.App.GetNodeData(arg1, arg2, arg3);
+      },
+      /**
        * LoadingConnInfo
        * @param {string} arg1 - Go Type: string
        * @returns {Promise<string>}  - Go Type: string

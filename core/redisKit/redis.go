@@ -24,10 +24,11 @@ func InitDb() {
 	url.WriteString(":")
 	url.WriteString(Port)
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     url.String(), //redis链接地址
-		Username: Username,     //设置用户名
-		Password: Password,     //设置密码
-		DB:       Db,           //设置默认的数据库
+		Addr:        url.String(), //redis链接地址
+		Username:    Username,     //设置用户名
+		Password:    Password,     //设置密码
+		DB:          Db,           //设置默认的数据库
+		DialTimeout: 1,            //设置超时时间为1s，避免等待时间过长
 		//PoolSize: 10,           //设置连接池大小
 	})
 }

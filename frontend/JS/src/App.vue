@@ -135,7 +135,7 @@ function onSelect(selectedKeys, info) {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         let data = JSON.parse(resolve)
-
+        info.node.parent.node.children = [...data,...info.node.parent.node.children]
       }
     });
   } else {

@@ -123,7 +123,7 @@ func (a *App) LoadingDbResource(key string) string {
 }
 
 // GetNodeData 获取节点数据
-func (a *App) GetNodeData(connType, connName string, nodeId int) string {
-	sts, _ := communication.GetNodeData(connType, connName, nodeId)
+func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
+	sts, _ := communication.GetNodeData(connType, connName, nodeIdStr)
 	return sts
 }

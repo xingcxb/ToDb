@@ -60,9 +60,9 @@
       <a-directory-tree
           v-model:expandedKeys="expandedKeys"
           v-model:selectedKeys="selectedKeys"
-          :load-data="onLoadData"
           :tree-data="listData.data"
-          :show-icon="showIcon"
+          :load-data="onLoadData"
+          :showicon="showIcon"
           @select="onSelect"
           @expand="onExpand"
           style="min-width: 210px;width: calc(20% - 10px); background: rgba(224, 225, 225, 0.1);"
@@ -114,17 +114,30 @@ function toView(v) {
 
 // 选中文字也可以进行操作
 function onSelect(selectedKeys, info) {
-  // console.log("onSelect", selectedKeys)
+  console.log("onSelect", selectedKeys)
+  if (selectedKeys.length === 0) {
+    //表示是取消选中
+    console.log("取消选中")
+    return
+  }
   let parent = info.node.parent;
   console.log("show parent", parent)
   if (parent != undefined) {
     //当前为子节点,改变到右侧的页面中显示数据
     //redis,localhost,1
-    console.log("parent key", info.node.parent.key)
     let parentKey = info.node.parent.key
     let parentKeyArr = parentKey.split(",")
+    let connType = parentKeyArr[0]
     let connName = parentKeyArr[1]
+    //selectKey是显示具体的节点key，parent显示的是父节点
+    window.go.main.App.GetNodeData(connType,connName,selectedKeys[0]+'').then((resolve) => {
+      console.log("resolve", resolve)
+      if (resolve !== "") {
+        // 如果返回值中不为空字符串才进行操作
+        let data = JSON.parse(resolve)
 
+      }
+    });
   } else {
     //当前为根节点
     let key = selectedKeys[0]
@@ -146,6 +159,7 @@ let onLoadData = treeNode => {
     //如果只有一个key，说明不是根节点
     return;
   }
+  console.log("key", key)
   return new Promise(resolve => {
     window.go.main.App.LoadingConnInfo(key[1]).then((resolve) => {
       if (resolve !== "") {

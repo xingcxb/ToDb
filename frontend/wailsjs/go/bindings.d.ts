@@ -3,7 +3,7 @@ import * as models from './models';
 export interface go {
   "main": {
     "App": {
-		GetNodeData(arg1:string,arg2:string,arg3:number):Promise<string>
+		GetNodeData(arg1:string,arg2:string,arg3:string):Promise<string>
 		LoadingConnInfo(arg1:string):Promise<string>
 		LoadingConnKey():Promise<string>
 		LoadingDbResource(arg1:string):Promise<string>

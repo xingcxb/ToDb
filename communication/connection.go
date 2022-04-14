@@ -231,7 +231,7 @@ func LoadingDbResource(key string) string {
 }
 
 // GetNodeData 获取节点数据
-func GetNodeData(connType, connName string, nodeId int) (string, error) {
+func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 	var value strings.Builder
 	if connType == "" ||
 		connName == "" {
@@ -241,18 +241,14 @@ func GetNodeData(connType, connName string, nodeId int) (string, error) {
 	switch connType {
 	case "redis":
 		initRedis(connName)
+		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.ChangeDb(ctx, nodeId)
 		arr, err := redisKit.GetDbKeys(ctx, 0)
 		if err != nil {
 			return "", err
 		}
-		for _, str := range arr {
-			if len(value.String()) != 0 {
-				value.WriteString(",")
-			}
-			value.WriteString(str)
-		}
-		return value.String(), nil
+		value := lib.PackageTree(arr)
+		return value, nil
 	default:
 		return "", errors.New("unknown error")
 	}

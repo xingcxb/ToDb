@@ -33,7 +33,7 @@ func TestTest(t *testing.T) {
 	var treeNode []lib.Node
 
 	//redis返回数据: [1:2:3, 1:2:4, 1111, 12312]
-	sl := []string{"1:2:3", "1:2:4", "1:2:5", "1111", "12312:333"}
+	sl := []string{"234234", "1:2:4", "1:2:3", "1111", "12312"}
 	for _, val := range sl {
 		var node lib.Node
 		sl := strings.SplitN(val, ":", 2)
@@ -66,5 +66,5 @@ func TestTest(t *testing.T) {
 }
 
 func TestApp_GetNodeData(t *testing.T) {
-	fmt.Println(communication.GetNodeData("redis", "localhost", 13))
+	fmt.Println(communication.GetNodeData("redis", "localhost", "13"))
 }

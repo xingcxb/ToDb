@@ -6,10 +6,10 @@ import (
 )
 
 type Node struct {
-	Title    string
-	Key      string
-	Count    int
-	Children []*Node
+	Title    string  `json:"title"`
+	Key      string  `json:"key"`
+	Count    int     `json:"count"`
+	Children []*Node `json:"children"`
 }
 
 func PackageTree(v []string) string {

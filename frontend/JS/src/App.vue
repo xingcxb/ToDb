@@ -132,10 +132,17 @@ function onSelect(selectedKeys, info) {
     //selectKey是显示具体的节点key，parent显示的是父节点
     window.go.main.App.GetNodeData(connType,connName,selectedKeys[0]+'').then((resolve) => {
       console.log("resolve", resolve)
+      console.log("========", info.node.parent.node.children)
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         let data = JSON.parse(resolve)
-        info.node.parent.node.children = [...data,...info.node.parent.node.children]
+        let list = info.node.parent.node.children.map(item => {
+          if(item.key == selectedKeys) {
+            item.children = data
+          }
+          return item
+        })
+        info.node.parent.node.children = [...list]
       }
     });
   } else {

@@ -1,9 +1,9 @@
 module ToDb
 
-go 1.17
+go 1.18
 
 require (
-	github.com/go-redis/redis/v8 v8.11.4
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/tidwall/gjson v1.14.0
 	github.com/wailsapp/wails/v2 v2.0.0-beta.34
 )

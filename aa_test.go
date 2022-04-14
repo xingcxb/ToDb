@@ -4,7 +4,9 @@ import (
 	"ToDb/communication"
 	"ToDb/lib"
 	"context"
+	"encoding/json"
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -27,18 +29,40 @@ func TestFilePath(t *testing.T) {
 }
 
 func TestTest(t *testing.T) {
-	//maps := make(map[string]int, 0)
-	//trees := make([]lib.TreeKeys, 0, 1)
-	//trees := new(lib.TreeKeys)
-	value := []string{
-		"1:2:3",
-		"1:2:4",
-		"1111",
-		"12312",
+	// 声明切片存放树形数据
+	var treeNode []lib.Node
+
+	//redis返回数据: [1:2:3, 1:2:4, 1111, 12312]
+	sl := []string{"1:2:3", "1:2:4", "1:2:5", "1111", "12312:333"}
+	for _, val := range sl {
+		var node lib.Node
+		sl := strings.SplitN(val, ":", 2)
+		// 查找treeNode切片中是否已经存在当前key
+		for _, v := range treeNode {
+			if v.Key == sl[0] {
+				node = v
+			}
+		}
+		flag := node.Key == ""
+		if flag {
+			node.Title = sl[0]
+			node.Key = sl[0]
+			node.Count = 0
+		}
+
+		if len(sl) > 1 {
+			lib.GetChildren(sl[1], &node)
+		}
+
+		if flag {
+			treeNode = append(treeNode, node)
+		}
 	}
-	var trees []interface{}
-	lib.KeyToTree2(value, trees)
-	fmt.Println(trees)
+	res, err := json.Marshal(treeNode)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s\n", res)
 }
 
 func TestApp_GetNodeData(t *testing.T) {

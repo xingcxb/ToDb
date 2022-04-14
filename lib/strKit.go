@@ -2,59 +2,73 @@ package lib
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 )
 
-// TreeKeys 节点键位
-type Chilren struct {
-	Title   string    `json:"title"`    //别名
-	Key     string    `json:"key"`      //key
-	Count   string    `json:"count"`    //数量
-	Chilren []Chilren `json:"children"` //子集
+type Node struct {
+	Title    string
+	Key      string
+	Count    int
+	Children []*Node
 }
 
-// KeyToTree value
-func KeyToTree(value string, treeKeysRoots Chilren) {
-	// 判断value中是否还能够继续分割
-	index := strings.Index(value, ":")
-	if index == -1 {
-		// 表示不能继续分割
-		treeKeysRoots.Chilren = append(treeKeysRoots.Chilren, Chilren{
-			Title:   value,
-			Key:     value,
-			Count:   "1",
-			Chilren: nil,
-		})
-		sb, _ := json.Marshal(treeKeysRoots)
-		fmt.Println(string(sb))
-		return
-	}
-	// 获取切片数据
-	title := treeKeysRoots.Title
-	if title == "" {
-		//表示为根节点
-		treeKeysRoots = Chilren{
-			Title:   value[:index],
-			Key:     value,
-			Count:   "1",
-			Chilren: nil,
+func PackageTree(v []string) string {
+	// 声明切片存放树形数据
+	var treeNode []Node
+	for _, val := range v {
+		var node Node
+		sl := strings.SplitN(val, ":", 2)
+		// 查找treeNode切片中是否已经存在当前key
+		for _, v := range treeNode {
+			if v.Key == sl[0] {
+				node = v
+			}
+		}
+		flag := node.Key == ""
+		if flag {
+			node.Title = sl[0]
+			node.Key = sl[0]
+			node.Count = 0
+		}
+
+		if len(sl) > 1 {
+			GetChildren(sl[1], &node)
+		}
+
+		if flag {
+			treeNode = append(treeNode, node)
 		}
 	}
-	// 分割
-	key := value[index+1:]
-	treeKeysRoots.Chilren = append(treeKeysRoots.Chilren, Chilren{
-		Title:   value[:index],
-		Key:     key,
-		Count:   "1",
-		Chilren: nil,
-	})
-
-	// 递归
-	KeyToTree(value[:index], treeKeysRoots)
-	//fmt.Println(treeKeysRoots)
+	res, err := json.Marshal(treeNode)
+	if err != nil {
+		panic(err)
+	}
+	return string(res)
 }
 
-func KeyToTree2(value []string, tree []interface{}) {
+func GetChildren(nodeStr string, parentNode *Node) {
+	node := &Node{}
+	sl := strings.SplitN(nodeStr, ":", 2)
+	for _, v := range parentNode.Children {
+		if len(sl) > 1 && v.Key == sl[0] {
+			node = v
+		}
+	}
+	flag := node.Key == ""
+	if flag {
+		node.Title = sl[0]
+		var sb strings.Builder
+		sb.WriteString(sl[0])
+		sb.WriteString(":*")
+		node.Key = sb.String()
+		node.Count = 0
+	}
 
+	if len(sl) > 1 {
+		GetChildren(sl[1], node)
+	}
+	if flag {
+		parentNode.Children = append(parentNode.Children, node)
+		parentNode.Count = len(parentNode.Children)
+	}
 }

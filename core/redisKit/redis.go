@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var (
@@ -23,20 +24,20 @@ func InitDb() {
 	url.WriteString(Addr)
 	url.WriteString(":")
 	url.WriteString(Port)
+
 	rdb = redis.NewClient(&redis.Options{
-		Addr:        url.String(), //redis链接地址
-		Username:    Username,     //设置用户名
-		Password:    Password,     //设置密码
-		DB:          Db,           //设置默认的数据库
-		DialTimeout: 1,            //设置超时时间为1s，避免等待时间过长
-		//PoolSize: 10,           //设置连接池大小
+		Addr:        url.String(),         //redis链接地址
+		Username:    Username,             //设置用户名
+		Password:    Password,             //设置密码
+		DB:          Db,                   //设置默认的数据库
+		DialTimeout: 1 * time.Millisecond, //设置超时时间为1s，避免等待时间过长
+		PoolSize:    10,                   //设置连接池大小
 	})
 }
 
 // Ping redis测试是否联通
 func Ping(ctx context.Context) error {
 	err := rdb.Ping(ctx).Err()
-	//defer rdb.Close()
 	if err != nil {
 		fmt.Println("error: ", err)
 		return err
@@ -48,7 +49,6 @@ func Ping(ctx context.Context) error {
 func GetDbCount(ctx context.Context, dbId int) int {
 	ChangeDb(ctx, dbId)
 	count, err := rdb.DBSize(ctx).Result()
-	//defer rdb.Close()
 	if err != nil {
 		fmt.Println("error:", err)
 		return 0
@@ -63,6 +63,7 @@ func ChangeDb(ctx context.Context, dbId int) {
 	_, _ = pipe.Exec(ctx)
 }
 
+// region
 //// Info redis所有信息
 //type Info struct {
 //	Server Server
@@ -247,6 +248,7 @@ func ChangeDb(ctx context.Context, dbId int) {
 //	Db14 string `yaml:"db14"` //db14
 //	Db15 string `yaml:"db15"` //db15
 //}
+// endregion
 
 // GetBaseAllInfo  获取redis基础信息
 func GetBaseAllInfo(ctx context.Context) map[string]string {
@@ -255,7 +257,6 @@ func GetBaseAllInfo(ctx context.Context) map[string]string {
 	_vs := strings.Split(_info, "\r\n")
 	infoMap := make(map[string]string)
 	for _, _str := range _vs {
-		//_strs[0]:key  _strs[1]:value
 		_strs := strings.Split(_str, ":")
 		if len(_strs) != 2 || _strs[0] == "info" {
 			continue

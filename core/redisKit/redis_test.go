@@ -1,6 +1,7 @@
 package redisKit
 
 import (
+	"ToDb/lib"
 	"context"
 	"fmt"
 	"testing"
@@ -22,5 +23,6 @@ func TestInfo(t *testing.T) {
 	ChangeDb(context.Background(), 13)
 	//fmt.Println(GetBaseAllInfo(context.Background()))
 	v, _ := GetDbKeys(context.Background(), 0)
-	fmt.Println(v)
+	_v := lib.PackageTree(v)
+	fmt.Println(_v)
 }

@@ -319,8 +319,8 @@ func GetMainViewInfo(ctx context.Context) string {
 	return string(strByte)
 }
 
-// GetDbData 获取指定库中的数据
-func GetDbData(ctx context.Context, cursor uint64) ([]string, error) {
+// GetDbKeys 获取指定库中的key
+func GetDbKeys(ctx context.Context, cursor uint64) ([]string, error) {
 	keys := make([]string, 0, 1)
 	keys, cursor, err := rdb.Scan(ctx, cursor, "*", 10000).Result()
 	if err != nil {
@@ -329,7 +329,7 @@ func GetDbData(ctx context.Context, cursor uint64) ([]string, error) {
 	return keys, nil
 }
 
-// 获取redis数据
+// Get 获取redis数据
 func Get(ctx context.Context, key string) string {
 	val, err := rdb.Get(ctx, key).Result()
 	if err != nil {

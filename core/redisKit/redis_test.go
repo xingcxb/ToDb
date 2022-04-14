@@ -15,12 +15,22 @@ func TestConnect(t *testing.T) {
 }
 
 func TestInfo(t *testing.T) {
-	Addr = "192.168.10.59"
+	Addr = "127.0.0.1"
 	Port = "6379"
 	Password = "123456"
 	InitDb()
-	ChangeDb(context.Background(), 3)
+	ChangeDb(context.Background(), 2)
 	//fmt.Println(GetBaseAllInfo(context.Background()))
-	v, _ := GetDbData(context.Background(), 0)
+	v, _ := GetDbKeys(context.Background(), 0)
 	fmt.Println(v)
+}
+
+func TestDiGui(t *testing.T) {
+	Addr = "127.0.0.1"
+	Port = "6379"
+	Password = "123456"
+	InitDb()
+	ChangeDb(context.Background(), 13)
+	v, _ := GetDbKeys(context.Background(), 0)
+	println(v)
 }

@@ -242,7 +242,7 @@ func GetNodeData(connType, connName string, nodeId int) (string, error) {
 	case "redis":
 		initRedis(connName)
 		redisKit.ChangeDb(ctx, nodeId)
-		arr, err := redisKit.GetDbData(ctx, 0)
+		arr, err := redisKit.GetDbKeys(ctx, 0)
 		if err != nil {
 			return "", err
 		}

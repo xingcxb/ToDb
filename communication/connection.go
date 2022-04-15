@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
@@ -171,7 +172,7 @@ func LoadingBaseHistoryInfo() string {
 type Children struct {
 	Title string `json:"title"` //别名
 	Key   string `json:"key"`   //key
-	//Children string `json:"children"` //子集
+	//Children []*Children `json:"children"` //子集
 }
 
 // LoadingHistoryInfo 加载已经存储的连接信息
@@ -202,6 +203,7 @@ func LoadingHistoryInfo(key string) (int, string) {
 	default:
 	}
 	vb, _ := json.Marshal(data)
+	fmt.Println(string(vb))
 	return http.StatusOK, string(vb)
 }
 
@@ -243,12 +245,13 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.ChangeDb(ctx, nodeId)
-		arr, err := redisKit.GetDbKeys(ctx, 0)
+		_, err := redisKit.GetDbKeys(ctx, 0)
 		if err != nil {
 			return "", err
 		}
-		value := lib.PackageTree(arr)
-		return value, nil
+		//value := lib.PackageTree(arr)
+		//return value, nil
+		return "", nil
 	default:
 		return "", errors.New("unknown error")
 	}

@@ -4,9 +4,7 @@ import (
 	"ToDb/communication"
 	"ToDb/lib"
 	"context"
-	"encoding/json"
 	"fmt"
-	"strings"
 	"testing"
 )
 
@@ -29,40 +27,17 @@ func TestFilePath(t *testing.T) {
 }
 
 func TestTest(t *testing.T) {
-	// 声明切片存放树形数据
-	var treeNode []lib.Node
-
 	//redis返回数据: [1:2:3, 1:2:4, 1111, 12312]
-	sl := []string{"234234", "1:2:4", "1:2:3", "1111", "12312"}
-	for _, val := range sl {
-		var node lib.Node
-		sl := strings.SplitN(val, ":", 2)
-		// 查找treeNode切片中是否已经存在当前key
-		for _, v := range treeNode {
-			if v.Key == sl[0] {
-				node = v
-			}
-		}
-		flag := node.Key == ""
-		if flag {
-			node.Title = sl[0]
-			node.Key = sl[0]
-			node.Count = 0
-		}
+	//sl := []string{"1:2:3:9:5", "1:2:4:6", "1111", "12312:333"}
+	sl := []string{"234234", "1:2:4", "1:2:3", "1111:33333", "12312", "1:2:5", "1111:2222"}
+	v := lib.PackageTree(sl)
+	fmt.Printf("%s\n", v)
+}
 
-		if len(sl) > 1 {
-			lib.GetChildren(sl[1], &node)
-		}
-
-		if flag {
-			treeNode = append(treeNode, node)
-		}
-	}
-	res, err := json.Marshal(treeNode)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("%s\n", res)
+func TestMP(t *testing.T) {
+	//v := []int{0, 2, 2, 0, 0}
+	sl := []string{"234234", "1:2:4", "1:2:3", "1111:33333", "12312", "1:2:5", "1111:2222"}
+	fmt.Println(lib.BubbleDescSort(sl))
 }
 
 func TestApp_GetNodeData(t *testing.T) {

@@ -119,7 +119,8 @@ function onSelect(selectedKeys, info) {
     return
   }
   let parent = info.node.parent;
-  console.log("文字点击操作")
+  console.log("文字点击操作",parent)
+  let flag = false;
   if (parent != undefined) {
     //当前为子节点,改变到右侧的页面中显示数据
     //redis,localhost,1
@@ -129,6 +130,7 @@ function onSelect(selectedKeys, info) {
     let connName = parentKeyArr[1]
     //selectKey是显示具体的节点key，parent显示的是父节点
     window.go.main.App.GetNodeData(connType,connName,selectedKeys[0]+'').then((resolve) => {
+      console.log("获取到的数据",resolve)
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         let data = JSON.parse(resolve)
@@ -139,6 +141,9 @@ function onSelect(selectedKeys, info) {
           return item
         })
         info.node.parent.node.children = [...list]
+      }else{
+        console.log("没有数据")
+        flag = true
       }
     });
   } else {
@@ -153,15 +158,22 @@ function onSelect(selectedKeys, info) {
       }
     })
   }
+  console.log("来了吗 老弟",flag)
+  if (flag){
+    //表示没有更深的
+    console.log("没有更深的")
+  }
 }
 
 // 获取本地的连接信息
 let onLoadData = treeNode => {
   let key = treeNode.dataRef.key.split(",")
+  console.log("=========+++++", key)
   if (key.length == 1) {
     //如果只有一个key，说明不是根节点
     return;
   }
+  console.log("获取本地的连接信息",key)
   return new Promise(resolve => {
     console.log("测试")
     window.go.main.App.LoadingConnInfo(key[1]).then((resolve) => {

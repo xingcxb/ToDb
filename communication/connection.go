@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/tidwall/gjson"
 	"io/ioutil"
 	"net/http"
@@ -203,7 +202,6 @@ func LoadingHistoryInfo(key string) (int, string) {
 	default:
 	}
 	vb, _ := json.Marshal(data)
-	fmt.Println(string(vb))
 	return http.StatusOK, string(vb)
 }
 
@@ -245,13 +243,12 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.ChangeDb(ctx, nodeId)
-		_, err := redisKit.GetDbKeys(ctx, 0)
+		arr, err := redisKit.GetDbKeys(ctx, 0)
 		if err != nil {
 			return "", err
 		}
-		//value := lib.PackageTree(arr)
-		//return value, nil
-		return "", nil
+		value := lib.PackageTree(arr)
+		return value, nil
 	default:
 		return "", errors.New("unknown error")
 	}

@@ -62,9 +62,7 @@
           v-model:selectedKeys="selectedKeys"
           :tree-data="listData.data"
           :load-data="onLoadData"
-          :showicon="showIcon"
           @select="onSelect"
-          @expand="onExpand"
           style="min-width: 210px;width: calc(20% - 10px); background: rgba(224, 225, 225, 0.1);"
       >
       </a-directory-tree>
@@ -120,7 +118,6 @@ function onSelect(selectedKeys, info) {
   }
   let parent = info.node.parent;
   console.log("文字点击操作",parent)
-  let flag = false;
   if (parent != undefined) {
     //当前为子节点,改变到右侧的页面中显示数据
     //redis,localhost,1
@@ -143,7 +140,18 @@ function onSelect(selectedKeys, info) {
         info.node.parent.node.children = [...list]
       }else{
         console.log("没有数据")
-        flag = true
+        //此处是属于根节点，右侧显示具体的数据
+        if (!selectedKeys.contains("*")){
+          // 如果不包含*，则表示右侧的页面要渲染
+          router.push({
+            path:"/rightContent/value",
+            query:{
+              key:selectedKeys[0],
+            }
+          })
+        }
+        // 获取children
+        let children = parent.node.children
       }
     });
   } else {
@@ -157,11 +165,6 @@ function onSelect(selectedKeys, info) {
         key: keys[1]
       }
     })
-  }
-  console.log("来了吗 老弟",flag)
-  if (flag){
-    //表示没有更深的
-    console.log("没有更深的")
   }
 }
 

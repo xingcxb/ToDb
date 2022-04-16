@@ -3,11 +3,13 @@ import Home from "@/views/Home.vue";
 
 const routes = [
   {
+    // 主页
     path: "/",
     name: "Home",
     component: Home,
   },
   {
+    // 关于
     path: "/about",
     name: "About",
     // route level code-splitting
@@ -18,6 +20,7 @@ const routes = [
     },
   },
   {
+    // 新建连接
     path: "/newConnection",
     name: "newConnection",
     component: function () {
@@ -25,6 +28,7 @@ const routes = [
     },
   },
   {
+    // 右侧默认页面
     path:"/rightContent/default",
     name:"default",
     component:function (){
@@ -32,10 +36,19 @@ const routes = [
     }
   },
   {
+    // 右侧状态页面
     path:"/rightContent/status",
     name:"status",
     component: function (){
       return import(/* webpackChunkName: "about" */ "../views/Content_status.vue")
+    }
+  },
+  {
+    // 右侧详情页面
+    path:"/rightContent/value",
+    name:"info",
+    component: function (){
+      return import(/* webpackChunkName: "about" */ "../views/Content_info.vue")
     }
   },
 ];

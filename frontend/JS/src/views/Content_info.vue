@@ -13,7 +13,10 @@ const router = useRouter();
 onBeforeMount(()=>{
   // 获取路由传递的参数
   let parameter = router.currentRoute.value.query.key
+  console.log("这是info页面")
   console.log(parameter)
+  // 从redis获取数据
+  
 })
 
 </script>

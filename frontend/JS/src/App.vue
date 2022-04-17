@@ -117,7 +117,6 @@ function onSelect(selectedKeys, info) {
     return
   }
   let parent = info.node.parent;
-  console.log("文字点击操作",parent)
   if (parent != undefined) {
     //当前为子节点,改变到右侧的页面中显示数据
     //redis,localhost,1
@@ -126,32 +125,33 @@ function onSelect(selectedKeys, info) {
     let connType = parentKeyArr[0]
     let connName = parentKeyArr[1]
     //selectKey是显示具体的节点key，parent显示的是父节点
-    window.go.main.App.GetNodeData(connType,connName,selectedKeys[0]+'').then((resolve) => {
-      console.log("获取到的数据",resolve)
+    window.go.main.App.GetNodeData(connType, connName, selectedKeys[0] + '').then((resolve) => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         let data = JSON.parse(resolve)
         let list = info.node.parent.node.children.map(item => {
-          if(item.key == selectedKeys) {
+          if (item.key == selectedKeys) {
             item.children = data
           }
           return item
         })
         info.node.parent.node.children = [...list]
-      }else{
-        console.log("没有数据")
+      } else {
+        let key = selectedKeys[0]
+        console.log("key", key)
+        console.log("info", info)
         //此处是属于根节点，右侧显示具体的数据
-        if (!selectedKeys.contains("*")){
+        if (key.indexOf("*") === -1) {
           // 如果不包含*，则表示右侧的页面要渲染
           router.push({
-            path:"/rightContent/value",
-            query:{
-              key:selectedKeys[0],
+            path: "/rightContent/value",
+            query: {
+              connType: connType,
+              connName: connName,
+              key: selectedKeys[0],
             }
           })
         }
-        // 获取children
-        let children = parent.node.children
       }
     });
   } else {
@@ -171,12 +171,11 @@ function onSelect(selectedKeys, info) {
 // 获取本地的连接信息
 let onLoadData = treeNode => {
   let key = treeNode.dataRef.key.split(",")
-  console.log("=========+++++", key)
   if (key.length == 1) {
     //如果只有一个key，说明不是根节点
     return;
   }
-  console.log("获取本地的连接信息",key)
+  console.log("获取本地的连接信息", key)
   return new Promise(resolve => {
     console.log("测试")
     window.go.main.App.LoadingConnInfo(key[1]).then((resolve) => {

@@ -253,3 +253,23 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 		return "", errors.New("unknown error")
 	}
 }
+
+// RedisGetData 通过key获取连接信息
+func RedisGetData(connType, connName, nodeIdStr, key string) (string, error) {
+	var value strings.Builder
+	if connType == "" ||
+		connName == "" {
+		return value.String(), errors.New("parameter is missing")
+	}
+	ctx := context.Background()
+	switch connType {
+	case "redis":
+		initRedis(connName)
+		nodeId, _ := strconv.Atoi(nodeIdStr)
+		redisKit.ChangeDb(ctx, nodeId)
+		v := redisKit.Get(context.Background(), key)
+		return v, nil
+	default:
+		return "", errors.New("unknown error")
+	}
+}

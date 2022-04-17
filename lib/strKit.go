@@ -8,6 +8,7 @@ import (
 type Node struct {
 	Title    string  `json:"title"`
 	Key      string  `json:"key"`
+	FullStr  string  `json:"fullStr"`
 	Count    int     `json:"count"`
 	Children []*Node `json:"children"`
 }
@@ -23,18 +24,25 @@ func PackageTree(v []string) string {
 		sl := strings.SplitN(val, ":", 2)
 		// 查找treeNode切片中是否已经存在当前key
 		for _, v := range treeNode {
-			if v.Key == sl[0] {
+			var sb strings.Builder
+			sb.WriteString(sl[0])
+			sb.WriteString(":*")
+			if v.Key == sb.String() {
 				node = v
 			}
 		}
 		flag := node.Key == ""
 		if flag {
 			node.Title = sl[0]
-			node.Key = sl[0]
+			var sb strings.Builder
+			sb.WriteString(sl[0])
+			sb.WriteString(":*")
+			node.Key = sb.String()
+			node.FullStr = val
 			node.Count = 0
 		}
 		if len(sl) > 1 {
-			GetChildren(sl[1], &node)
+			GetChildren(sl[1], val, &node)
 			if !flag {
 				for i, v := range treeNode {
 					if v.Key == node.Key {
@@ -54,7 +62,7 @@ func PackageTree(v []string) string {
 	return string(res)
 }
 
-func GetChildren(nodeStr string, parentNode *Node) {
+func GetChildren(nodeStr, fullStr string, parentNode *Node) {
 	node := &Node{}
 	sl := strings.SplitN(nodeStr, ":", 2)
 	for _, v := range parentNode.Children {
@@ -72,11 +80,15 @@ func GetChildren(nodeStr string, parentNode *Node) {
 		sb.WriteString(sl[0])
 		sb.WriteString(":*")
 		node.Key = sb.String()
+		node.FullStr = fullStr
 		node.Count = 0
 	}
 
 	if len(sl) > 1 {
-		GetChildren(sl[1], node)
+		GetChildren(sl[1], fullStr, node)
+	} else {
+		// 如果没有子节点说明是最终节点
+		node.Key = fullStr
 	}
 	if flag {
 		parentNode.Children = append(parentNode.Children, node)

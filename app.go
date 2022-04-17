@@ -127,3 +127,9 @@ func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
 	sts, _ := communication.GetNodeData(connType, connName, nodeIdStr)
 	return sts
 }
+
+// RedisGetData 从redis获取数据
+func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
+	v, _ := communication.RedisGetData(connType, connName, nodeIdStr, key)
+	return v
+}

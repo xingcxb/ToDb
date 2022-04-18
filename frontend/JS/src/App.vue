@@ -121,6 +121,8 @@ function onSelect(selectedKeys, info) {
     //当前为子节点,改变到右侧的页面中显示数据
     //redis,localhost,1
     let parentKey = info.node.parent.key
+    console.log("this is info ",info)
+    console.log("this is parentKey ",parentKey)
     let parentKeyArr = parentKey.split(",")
     let connType = parentKeyArr[0]
     let connName = parentKeyArr[1]
@@ -139,15 +141,19 @@ function onSelect(selectedKeys, info) {
       } else {
         let key = selectedKeys[0]
         console.log("key", key)
-        console.log("info", info)
+        let rootKey = info.node.parent.nodes[0].key
+        let dbKey = info.node.parent.nodes[1].key
+        let rootKeyArr = rootKey.split(",")
+        console.log("info", info.node.parent)
         //此处是属于根节点，右侧显示具体的数据
         if (key.indexOf("*") === -1) {
           // 如果不包含*，则表示右侧的页面要渲染
           router.push({
             path: "/rightContent/value",
             query: {
-              connType: connType,
-              connName: connName,
+              connType: rootKeyArr[0],
+              connName: rootKeyArr[1],
+              dbKey: dbKey,
               key: selectedKeys[0],
             }
           })

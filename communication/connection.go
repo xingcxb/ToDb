@@ -6,13 +6,15 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/tidwall/gjson"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"reflect"
 	"strconv"
 	"strings"
+
+	"github.com/tidwall/gjson"
 )
 
 // 连接信息
@@ -267,7 +269,9 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (string, error) {
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.ChangeDb(ctx, nodeId)
-		v := redisKit.Get(context.Background(), key)
+		// 通过键获取值
+		v := redisKit.GetKeyInfo(ctx, key)
+		fmt.Println("=========", v)
 		return v, nil
 	default:
 		return "", errors.New("unknown error")

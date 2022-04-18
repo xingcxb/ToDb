@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/go-redis/redis/v8"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/go-redis/redis/v8"
 )
 
 var (
@@ -330,11 +331,42 @@ func GetDbKeys(ctx context.Context, cursor uint64) ([]string, error) {
 	return keys, nil
 }
 
+// 值信息
+type VObj struct {
+	Size  int    `json:"size"`  //值的大小
+	Value string `json:"value"` //值的内容
+	Ttl   string `json:"ttl"`   //过期时间
+}
+
+// GetKeyInfo 通过key获取该键下值的所有信息
+func GetKeyInfo(ctx context.Context, key string) string {
+	// 获取值
+	v, size := GetValue(ctx, key)
+	ttl := GetTTL(ctx, key)
+	info := VObj{
+		Size:  size,
+		Value: v,
+		Ttl:   ttl,
+	}
+	strByte, _ := json.Marshal(info)
+	return string(strByte)
+}
+
 // Get 获取redis数据
-func Get(ctx context.Context, key string) string {
+func GetValue(ctx context.Context, key string) (string, int) {
 	val, err := rdb.Get(ctx, key).Result()
+	if err != nil {
+		return "", 0
+	}
+	s := len(val)
+	return val, s
+}
+
+// GetTTL 获取redis数据剩余时间
+func GetTTL(ctx context.Context, key string) string {
+	val, err := rdb.TTL(ctx, key).Result()
 	if err != nil {
 		return ""
 	}
-	return val
+	return strconv.FormatInt(int64(val), 10)
 }

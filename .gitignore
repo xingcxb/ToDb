@@ -1,0 +1,6 @@
+.idea/ToDb.iml
+.vscode/settings.json
+build/bin/ToDb.app/Contents/Info.plist
+build/bin/ToDb.app/Contents/MacOS/ToDb
+build/bin/ToDb.app/Contents/Resources/iconfile.icns
+.idea/ToDb.iml

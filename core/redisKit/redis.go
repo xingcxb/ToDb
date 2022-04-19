@@ -1,6 +1,7 @@
 package redisKit
 
 import (
+	"ToDb/lib"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -336,6 +337,7 @@ type VObj struct {
 	Size  int    `json:"size"`  //值的大小
 	Value string `json:"value"` //值的内容
 	Ttl   string `json:"ttl"`   //过期时间
+	Type  string `json:"type"`  //值的类型
 }
 
 // GetKeyInfo 通过key获取该键下值的所有信息
@@ -343,13 +345,27 @@ func GetKeyInfo(ctx context.Context, key string) string {
 	// 获取值
 	v, size := GetValue(ctx, key)
 	ttl := GetTTL(ctx, key)
+	keyType := GetType(ctx, key)
 	info := VObj{
 		Size:  size,
 		Value: v,
 		Ttl:   ttl,
+		Type:  keyType,
 	}
 	strByte, _ := json.Marshal(info)
 	return string(strByte)
+}
+
+// 获取值类型
+func GetType(ctx context.Context, key string) string {
+	allTypeStr := rdb.Type(ctx, key).String()
+	arr := strings.Split(allTypeStr, " ")
+	if len(arr) == 3 {
+		typeStr := arr[2]
+		typeStr = lib.FirstUpper(typeStr)
+		return typeStr
+	}
+	return ""
 }
 
 // Get 获取redis数据

@@ -27,3 +27,12 @@ func TestInfo(t *testing.T) {
 	_v := lib.PackageTree(v)
 	fmt.Println(_v)
 }
+
+func TestDel(t *testing.T) {
+	Addr = "127.0.0.1"
+	Port = "6379"
+	Password = "123456"
+	InitDb()
+	ChangeDb(context.Background(), 13)
+	Del(context.Background(), "1111")
+}

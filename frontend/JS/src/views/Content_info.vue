@@ -5,7 +5,8 @@
       <span style="font-size: 26px;vertical-align: middle;">{{ key }}</span>
     </a-col>
     <a-col :offset="8" :span="1">
-      <img src="../../public/info/close.png" alt="close" style="vertical-align: middle;" />
+      <!--关闭图片-->
+      <img src="../../public/info/close.png" alt="close" style="vertical-align: middle;cursor: pointer;" @click="close"/>
     </a-col>
   </a-row>
   <a-row style="margin-top:20px">
@@ -135,6 +136,13 @@ const formatTypeList = ref([{
   value: "Deflate",
   label: "Deflate"
 }]);
+
+// 关闭页面
+function close(){
+  router.push({
+    path: "/rightContent/default"
+  });
+}
 
 // 改变现实格式
 function handleChange(){

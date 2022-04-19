@@ -386,3 +386,12 @@ func GetTTL(ctx context.Context, key string) string {
 	}
 	return strconv.FormatInt(int64(val), 10)
 }
+
+// Del 通过键删除redis数据，返回删除的数量
+func Del(ctx context.Context, key string) int64 {
+	val, err := rdb.Del(ctx, key).Result()
+	if err != nil {
+		return 0
+	}
+	return val
+}

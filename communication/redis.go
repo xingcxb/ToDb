@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -271,9 +270,31 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (string, error) {
 		redisKit.ChangeDb(ctx, nodeId)
 		// 通过键获取值
 		v := redisKit.GetKeyInfo(ctx, key)
-		fmt.Println("=========", v)
 		return v, nil
 	default:
 		return "", errors.New("unknown error")
+	}
+}
+
+// 重命名key
+func RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
+	if connType == "" ||
+		connName == "" {
+		return "parameter is missing"
+	}
+	ctx := context.Background()
+	switch connType {
+	case "redis":
+		initRedis(connName)
+		nodeId, _ := strconv.Atoi(nodeIdStr)
+		redisKit.ChangeDb(ctx, nodeId)
+		// 通过键获取值
+		v := redisKit.RenName(ctx, oldKey, newKey)
+		if v != nil {
+			return v.Error()
+		}
+		return "success"
+	default:
+		return "unknown error"
 	}
 }

@@ -356,7 +356,7 @@ func GetKeyInfo(ctx context.Context, key string) string {
 	return string(strByte)
 }
 
-// 获取值类型
+// 获取值类型，返回类型
 func GetType(ctx context.Context, key string) string {
 	allTypeStr := rdb.Type(ctx, key).String()
 	arr := strings.Split(allTypeStr, " ")
@@ -368,7 +368,7 @@ func GetType(ctx context.Context, key string) string {
 	return ""
 }
 
-// Get 获取redis数据
+// Get 获取redis数据，返回值和大小
 func GetValue(ctx context.Context, key string) (string, int) {
 	val, err := rdb.Get(ctx, key).Result()
 	if err != nil {
@@ -378,13 +378,19 @@ func GetValue(ctx context.Context, key string) (string, int) {
 	return val, s
 }
 
-// GetTTL 获取redis数据剩余时间
+// GetTTL 获取redis数据剩余时间，返回剩余时间的秒数；如果是永久有效，返回-1
 func GetTTL(ctx context.Context, key string) string {
 	val, err := rdb.TTL(ctx, key).Result()
 	if err != nil {
 		return ""
 	}
 	return strconv.FormatInt(int64(val), 10)
+}
+
+// RenName 重命名key
+func RenName(ctx context.Context, key, newKey string) error {
+	err := rdb.Rename(ctx, key, newKey).Err()
+	return err
 }
 
 // Del 通过键删除redis数据，返回删除的数量

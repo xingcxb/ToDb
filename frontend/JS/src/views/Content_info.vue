@@ -12,9 +12,10 @@
   <a-row style="margin-top:20px">
     <a-col :offset="1" :span="10">
       <a-input-group compact>
-        <a-input :addon-before="value.data.type" v-model:value="key" style="width: calc(100% - 30px);">
+        <a-input :addon-before="value.data.type" v-model="key" style="width: calc(100% - 30px);">
         </a-input>
-        <a-button style="width: 30px;">
+        <a-button style="width: 30px;" @click="rename">
+          <!--设置新的key-->
           <template #icon>
             <check-outlined />
           </template>
@@ -95,8 +96,16 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+// 节点id
+let nodeId = ref("");
+// 连接类型
+let connType = ref("");
+// 连接文件名
+let connName = ref("");
 // redis key
 let key = ref("");
+// redis old key
+let oldKey = ref("");
 // redis value
 let value = reactive({
   data: ""
@@ -144,6 +153,11 @@ function close(){
   });
 }
 
+// 修改redis的键
+function rename(){
+  window.go.main.App.RedisReName(connType, connName,nodeId, oldKey, key)
+}
+
 // 改变现实格式
 function handleChange(){
   console.log(formatType)
@@ -154,12 +168,14 @@ onBeforeMount(() => {
   // 获取路由传递的参数
   // redis键
   key = router.currentRoute.value.query.key
+  // redis键
+  oldKey = router.currentRoute.value.query.key
   // redis db
-  let nodeId = router.currentRoute.value.query.dbKey
+  nodeId = router.currentRoute.value.query.dbKey
   // 类型
-  let connType = router.currentRoute.value.query.connType
+  connType = router.currentRoute.value.query.connType
   // 连接文件名
-  let connName = router.currentRoute.value.query.connName
+  connName = router.currentRoute.value.query.connName
   console.log("这是info页面")
   console.log("key", key, "nodeId", nodeId, "connType", connType, "connName", connName)
   if (connType == "redis") {

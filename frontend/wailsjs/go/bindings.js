@@ -57,6 +57,18 @@ const go = {
         return window.go.main.App.RedisGetData(arg1, arg2, arg3, arg4);
       },
       /**
+       * RedisReName
+       * @param {string} arg1 - Go Type: string
+       * @param {string} arg2 - Go Type: string
+       * @param {string} arg3 - Go Type: string
+       * @param {string} arg4 - Go Type: string
+       * @param {string} arg5 - Go Type: string
+       * @returns {Promise<void>} 
+       */
+      "RedisReName": (arg1, arg2, arg3, arg4, arg5) => {
+        return window.go.main.App.RedisReName(arg1, arg2, arg3, arg4, arg5);
+      },
+      /**
        * TestConnection
        * @param {string} arg1 - Go Type: string
        * @returns {Promise<void>} 

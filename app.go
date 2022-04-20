@@ -134,3 +134,25 @@ func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 	v, _ := communication.RedisGetData(connType, connName, nodeIdStr, key)
 	return v
 }
+
+// RedisReName rediskey重命名
+func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) {
+	v := communication.RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
+	if v != "success" {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.ErrorDialog,
+			Title:         "错误",
+			Message:       v,
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	} else {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.InfoDialog,
+			Title:         "成功",
+			Message:       "修改成功",
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	}
+}

@@ -9,6 +9,7 @@ export interface go {
 		LoadingDbResource(arg1:string):Promise<string>
 		Ok(arg1:string):Promise<string>
 		RedisGetData(arg1:string,arg2:string,arg3:string,arg4:string):Promise<string>
+		RedisReName(arg1:string,arg2:string,arg3:string,arg4:string,arg5:string):Promise<void>
 		TestConnection(arg1:string):Promise<void>
     },
   }

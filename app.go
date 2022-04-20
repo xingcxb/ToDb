@@ -179,6 +179,7 @@ func (a *App) RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr string) {
 	}
 }
 
+// RedisDelKey 删除键
 func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	selection, _ := runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
 		Type:          runtime.WarningDialog,
@@ -209,4 +210,9 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 			DefaultButton: "确定",
 		})
 	}
+}
+
+// 构建redis命令
+func (a *App) BuildCommand(connType,connName,key,value string) string {
+	return ""
 }

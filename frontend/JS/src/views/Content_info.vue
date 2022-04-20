@@ -156,7 +156,7 @@ function close() {
 
 // 获取redis命令
 function getCommand(){
-  
+  window.go.main.App.BuildCommand(connType.value,connName.value,content.value)
 }
 
 // 删除

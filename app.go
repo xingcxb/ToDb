@@ -156,3 +156,57 @@ func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) 
 		})
 	}
 }
+
+// RedisUpTtl 更新redis剩余时间
+func (a *App) RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr string) {
+	v := communication.RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr)
+	if v != "success" {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.ErrorDialog,
+			Title:         "错误",
+			Message:       v,
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	} else {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.InfoDialog,
+			Title:         "成功",
+			Message:       "修改成功",
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	}
+}
+
+func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
+	selection, _ := runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+		Type:          runtime.WarningDialog,
+		Title:         "删除",
+		Message:       "确定删除该key吗？",
+		Buttons:       []string{"确定", "取消"},
+		DefaultButton: "取消",
+		CancelButton:  "取消",
+	})
+	if selection != "确定" {
+		return
+	}
+	v := communication.RedisDel(connType, connName, nodeIdStr, key)
+	if v != "success" {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.ErrorDialog,
+			Title:         "错误",
+			Message:       v,
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	} else {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.InfoDialog,
+			Title:         "成功",
+			Message:       "删除成功",
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	}
+}

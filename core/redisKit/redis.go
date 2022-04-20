@@ -384,12 +384,34 @@ func GetTTL(ctx context.Context, key string) string {
 	if err != nil {
 		return ""
 	}
-	return strconv.FormatInt(int64(val), 10)
+	if val == -1 {
+		return "-1"
+	}
+	return strconv.FormatInt(int64(val.Seconds()), 10)
+}
+
+func AddData(ctx context.Context, key, value, dataType string, ttl int) error {
+	if ttl == -1 {
+		return rdb.Set(ctx, key, value, 0).Err()
+	}
+	return rdb.Set(ctx, key, value, time.Duration(ttl)*time.Second).Err()
 }
 
 // RenName 重命名key
 func RenName(ctx context.Context, key, newKey string) error {
 	err := rdb.Rename(ctx, key, newKey).Err()
+	return err
+}
+
+// UpTtl 更新key的过期时间
+func UpTtl(ctx context.Context, key string, ttl int) error {
+	err := rdb.Expire(ctx, key, time.Duration(ttl)*time.Second).Err()
+	return err
+}
+
+// UpPermanent 更新key为永久有效
+func UpPermanent(ctx context.Context, key string) error {
+	err := rdb.Persist(ctx, key).Err()
 	return err
 }
 

@@ -46,6 +46,17 @@ const go = {
         return window.go.main.App.Ok(arg1);
       },
       /**
+       * RedisDelKey
+       * @param {string} arg1 - Go Type: string
+       * @param {string} arg2 - Go Type: string
+       * @param {string} arg3 - Go Type: string
+       * @param {string} arg4 - Go Type: string
+       * @returns {Promise<void>} 
+       */
+      "RedisDelKey": (arg1, arg2, arg3, arg4) => {
+        return window.go.main.App.RedisDelKey(arg1, arg2, arg3, arg4);
+      },
+      /**
        * RedisGetData
        * @param {string} arg1 - Go Type: string
        * @param {string} arg2 - Go Type: string
@@ -67,6 +78,18 @@ const go = {
        */
       "RedisReName": (arg1, arg2, arg3, arg4, arg5) => {
         return window.go.main.App.RedisReName(arg1, arg2, arg3, arg4, arg5);
+      },
+      /**
+       * RedisUpTtl
+       * @param {string} arg1 - Go Type: string
+       * @param {string} arg2 - Go Type: string
+       * @param {string} arg3 - Go Type: string
+       * @param {string} arg4 - Go Type: string
+       * @param {string} arg5 - Go Type: string
+       * @returns {Promise<void>} 
+       */
+      "RedisUpTtl": (arg1, arg2, arg3, arg4, arg5) => {
+        return window.go.main.App.RedisUpTtl(arg1, arg2, arg3, arg4, arg5);
       },
       /**
        * TestConnection

@@ -298,3 +298,66 @@ func RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
 		return "unknown error"
 	}
 }
+
+// RedisUpTtl 更新redis剩余时间
+func RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr string) string {
+	//todo 当ttl=-1时会出现数据直接丢失的情况
+	ttl, err := strconv.Atoi(ttlStr)
+	if err != nil {
+		return "ttl is not number"
+	}
+	if connType == "" ||
+		connName == "" {
+		return "parameter is missing"
+	}
+	ctx := context.Background()
+	switch connType {
+	case "redis":
+		initRedis(connName)
+		nodeId, _ := strconv.Atoi(nodeIdStr)
+		redisKit.ChangeDb(ctx, nodeId)
+		// 通过键获取值
+		var v error
+		if ttl == -1 {
+			// 表示需要永久存储
+			v = redisKit.UpPermanent(ctx, key)
+		} else {
+			v = redisKit.UpTtl(ctx, key, ttl)
+		}
+		if v != nil {
+			return v.Error()
+		}
+		return "success"
+	default:
+		return "unknown error"
+	}
+}
+
+// RedisDel 删除redis数据
+func RedisDel(connType, connName, nodeIdStr, key string) string {
+	if connType == "" ||
+		connName == "" {
+		return "parameter is missing"
+	}
+	ctx := context.Background()
+	switch connType {
+	case "redis":
+		initRedis(connName)
+		nodeId, _ := strconv.Atoi(nodeIdStr)
+		redisKit.ChangeDb(ctx, nodeId)
+		// 通过键获取值
+		v := redisKit.Del(ctx, key)
+		if v == 0 {
+			return "del error"
+		}
+		return "success"
+	default:
+		return "unknown error"
+	}
+}
+
+// BuildCommand 构建命令
+func BuildCommand(connType, connName, nodeIdStr, key string) string {
+
+	return ""
+}

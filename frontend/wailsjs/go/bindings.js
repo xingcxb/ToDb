@@ -5,6 +5,17 @@ const go = {
   "main": {
     "App": {
       /**
+       * BuildCommand
+       * @param {string} arg1 - Go Type: string
+       * @param {string} arg2 - Go Type: string
+       * @param {string} arg3 - Go Type: string
+       * @param {string} arg4 - Go Type: string
+       * @returns {Promise<string>}  - Go Type: string
+       */
+      "BuildCommand": (arg1, arg2, arg3, arg4) => {
+        return window.go.main.App.BuildCommand(arg1, arg2, arg3, arg4);
+      },
+      /**
        * GetNodeData
        * @param {string} arg1 - Go Type: string
        * @param {string} arg2 - Go Type: string

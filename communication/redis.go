@@ -357,29 +357,36 @@ func RedisDel(connType, connName, nodeIdStr, key string) string {
 }
 
 // BuildCommand 构建命令
-func BuildCommand(key,keyType,value string) string {
+func BuildCommand(key, keyType, value string) string {
 	lowerCaseKeyType := strings.ToLower(keyType)
+	var command strings.Builder
 	switch lowerCaseKeyType {
 	case "string":
 		// 构建set命令
-		return "set " + key + " " + value
+		// return "set " + key + " " + value
+		command.WriteString("SET ")
 	case "hash":
 		// 构建hash命令
-		return "HMSET " + key + " " + value
+		// return "HMSET " + key + " " + value
+		command.WriteString("HMSET ")
 	case "list":
 		// 构建list命令
-		return "RPUSH " + key + " " + value
+		// return "RPUSH " + key + " " + value
+		command.WriteString("RPUSH ")
 	case "set":
 		// 构建set命令
-		return "SADD " + key + " " + value
+		// return "SADD " + key + " " + value
+		command.WriteString("SADD ")
 	case "zset":
 		// 构建zset命令
-		return "ZADD " + key + " " + value
+		// return "ZADD " + key + " " + value
+		command.WriteString("ZADD ")
 	case "stream":
 		// 构建stream命令
-		return "XADD " + key + " " + value
+		// return "XADD " + key + " " + value
+		command.WriteString("XADD ")
 	default:
 		return ""
 	}
-	return ""
+	return command.String()
 }

@@ -388,5 +388,6 @@ func BuildCommand(key, keyType, value string) string {
 	default:
 		return ""
 	}
+	command.WriteString(key)
 	return command.String()
 }

@@ -83,7 +83,7 @@
   </a-row>
   <a-row style="margin-top:10px;">
     <a-col :offset="1" :span="22">
-      <a-textarea v-model:value="content" :auto-size="{ minRows: 6, maxRows: 6 }"></a-textarea>
+      <a-textarea v-model:value="content" :size="large" :rows="4" />
     </a-col>
   </a-row>
 </template>

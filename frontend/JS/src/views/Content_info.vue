@@ -180,7 +180,9 @@ if (connType.value == "redis") {
     // 从redis获取数据
     window.go.main.App.RedisGetData(connType.value, connName.value, nodeId.value, nowKey.value).then(res => {
       // 此处如果是空值，则应该是该键没有填充值
+      console.log("=========",res);
       value.data = JSON.parse(res);
+      console.log("=========",value.data);
       content.value = value.data.value
       ttl.value = value.data.ttl
     })

@@ -3,6 +3,7 @@ package communication
 import (
 	"ToDb/core/redisKit"
 	"ToDb/lib"
+	"ToDb/model"
 	"context"
 	"encoding/json"
 	"errors"
@@ -256,11 +257,12 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 }
 
 // RedisGetData 通过key获取连接信息
-func RedisGetData(connType, connName, nodeIdStr, key string) (string, error) {
-	var value strings.Builder
+func RedisGetData(connType, connName, nodeIdStr, key string) (model.GetValue, error) {
+	// var value strings.Builder
+	var getValue model.GetValue
 	if connType == "" ||
 		connName == "" {
-		return value.String(), errors.New("parameter is missing")
+		return getValue, errors.New("parameter is missing")
 	}
 	ctx := context.Background()
 	switch connType {
@@ -268,11 +270,24 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (string, error) {
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.ChangeDb(ctx, nodeId)
-		// 通过键获取值
-		v := redisKit.GetKeyInfo(ctx, key)
-		return v, nil
+		// 获取数据类型
+		valueType := redisKit.GetType(ctx, key)
+		switch valueType {
+		case "string":
+			// 通过键获取值
+			v := redisKit.GetKeyInfo(ctx, key)
+			command := BuildCommand(key, "string", v)
+			getValue.Type = "string"
+			getValue.Key = key
+			getValue.Ttl = redisKit.GetTTL(ctx, key)
+			getValue.Value = v
+			getValue.CommandStr = command
+			return getValue, nil
+		default:
+		}
+		return getValue, errors.New("unknown error")
 	default:
-		return "", errors.New("unknown error")
+		return getValue, errors.New("unknown error")
 	}
 }
 
@@ -363,31 +378,39 @@ func BuildCommand(key, keyType, value string) string {
 	switch lowerCaseKeyType {
 	case "string":
 		// 构建set命令
-		// return "set " + key + " " + value
+		// SET "1:2:34" "你好啊😂"
 		command.WriteString("SET ")
+		command.WriteString(key)
+		command.WriteString(" ")
+		command.WriteString(value)
 	case "hash":
 		// 构建hash命令
+		// HMSET "1:2:hash" "New field" "New value" "123" "321"
 		// return "HMSET " + key + " " + value
 		command.WriteString("HMSET ")
 	case "list":
 		// 构建list命令
+		// RPUSH "1:2:list" "New member" "12312213"
 		// return "RPUSH " + key + " " + value
 		command.WriteString("RPUSH ")
 	case "set":
 		// 构建set命令
+		// SADD "1:2:set" "New member" "sdfsdf"
 		// return "SADD " + key + " " + value
 		command.WriteString("SADD ")
 	case "zset":
 		// 构建zset命令
+		// XADD "1:2:stream" 1650445322163-0  "New key" "New value"
+		// XADD "1:2:stream" 21312312312312-0  "New key" "New value"
 		// return "ZADD " + key + " " + value
 		command.WriteString("ZADD ")
 	case "stream":
 		// 构建stream命令
+		// ZADD "1:2:zset" 12 "321" 0 "New member"
 		// return "XADD " + key + " " + value
 		command.WriteString("XADD ")
 	default:
 		return ""
 	}
-	command.WriteString(key)
 	return command.String()
 }

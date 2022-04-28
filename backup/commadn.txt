@@ -1,0 +1,18 @@
+string
+SET "1:2:34" "你好啊😂"
+
+hash
+HMSET "1:2:hash" "New field" "New value" "123" "321"
+
+list
+RPUSH "1:2:list" "New member" "12312213"
+
+set
+SADD "1:2:set" "New member" "sdfsdf"
+
+stream
+XADD "1:2:stream" 1650445322163-0  "New key" "New value"
+XADD "1:2:stream" 21312312312312-0  "New key" "New value"
+
+zset
+ZADD "1:2:zset" 12 "321" 0 "New member"

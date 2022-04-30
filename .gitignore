@@ -7,3 +7,4 @@ build/bin/ToDb.app/Contents/Resources/iconfile.icns
 .github/
 .idea/
 .history/
+node_modules/

@@ -272,15 +272,17 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (model.GetValue, er
 		redisKit.ChangeDb(ctx, nodeId)
 		// 获取数据类型
 		valueType := redisKit.GetType(ctx, key)
+		valueType = strings.ToLower(valueType)
 		switch valueType {
 		case "string":
 			// 通过键获取值
-			v := redisKit.GetKeyInfo(ctx, key)
+			v := redisKit.GetValue(ctx, key)
 			command := BuildCommand(key, "string", v)
 			getValue.Type = "string"
 			getValue.Key = key
 			getValue.Ttl = redisKit.GetTTL(ctx, key)
 			getValue.Value = v
+			getValue.Size = len(v)
 			getValue.CommandStr = command
 			return getValue, nil
 		default:
@@ -371,6 +373,28 @@ func RedisDel(connType, connName, nodeIdStr, key string) string {
 	}
 }
 
+func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value string, ttl int) error {
+	if connType == "" ||
+		connName == "" {
+		return errors.New("parameter is missing")
+	}
+	ctx := context.Background()
+	switch connType {
+	case "redis":
+		initRedis(connName)
+		nodeId, _ := strconv.Atoi(nodeIdStr)
+		redisKit.ChangeDb(ctx, nodeId)
+		// 通过键获取值
+		err := redisKit.AddData(ctx, key, value, ttl)
+		if err != nil {
+			return err
+		}
+		return nil
+	default:
+		return errors.New("unknown error")
+	}
+}
+
 // BuildCommand 构建命令
 func BuildCommand(key, keyType, value string) string {
 	lowerCaseKeyType := strings.ToLower(keyType)
@@ -380,9 +404,13 @@ func BuildCommand(key, keyType, value string) string {
 		// 构建set命令
 		// SET "1:2:34" "你好啊😂"
 		command.WriteString("SET ")
+		command.WriteString("\"")
 		command.WriteString(key)
+		command.WriteString("\"")
 		command.WriteString(" ")
+		command.WriteString("\"")
 		command.WriteString(value)
+		command.WriteString("\"")
 	case "hash":
 		// 构建hash命令
 		// HMSET "1:2:hash" "New field" "New value" "123" "321"

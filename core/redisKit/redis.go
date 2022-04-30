@@ -343,7 +343,8 @@ type VObj struct {
 // GetKeyInfo 通过key获取该键下值的所有信息
 func GetKeyInfo(ctx context.Context, key string) string {
 	// 获取值
-	v, size := GetValue(ctx, key)
+	v := GetValue(ctx, key)
+	size := len(v)
 	ttl := GetTTL(ctx, key)
 	keyType := GetType(ctx, key)
 	info := VObj{
@@ -369,13 +370,12 @@ func GetType(ctx context.Context, key string) string {
 }
 
 // Get 获取redis数据，返回值和大小
-func GetValue(ctx context.Context, key string) (string, int) {
+func GetValue(ctx context.Context, key string) string {
 	val, err := rdb.Get(ctx, key).Result()
 	if err != nil {
-		return "", 0
+		return ""
 	}
-	s := len(val)
-	return val, s
+	return val
 }
 
 // GetTTL 获取redis数据剩余时间，返回剩余时间的秒数；如果是永久有效，返回-1
@@ -390,7 +390,8 @@ func GetTTL(ctx context.Context, key string) string {
 	return strconv.FormatInt(int64(val.Seconds()), 10)
 }
 
-func AddData(ctx context.Context, key, value, dataType string, ttl int) error {
+// 添加数据
+func AddData(ctx context.Context, key, value string, ttl int) error {
 	if ttl == -1 {
 		return rdb.Set(ctx, key, value, 0).Err()
 	}

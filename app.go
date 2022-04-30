@@ -6,6 +6,7 @@ import (
 	"ToDb/lib"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -134,6 +135,7 @@ func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
 func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 	_v, _ := communication.RedisGetData(connType, connName, nodeIdStr, key)
 	v, _ := json.Marshal(_v)
+	fmt.Println(string(v))
 	return string(v)
 }
 
@@ -214,7 +216,6 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	}
 }
 
-// 构建redis命令
-func (a *App) BuildCommand(connType, connName, key, value string) string {
-	return ""
+func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value string) {
+
 }

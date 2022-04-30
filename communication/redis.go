@@ -373,6 +373,7 @@ func RedisDel(connType, connName, nodeIdStr, key string) string {
 	}
 }
 
+// RedisUpdateStringValue 更新redis数据
 func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value string, ttl int) error {
 	if connType == "" ||
 		connName == "" {

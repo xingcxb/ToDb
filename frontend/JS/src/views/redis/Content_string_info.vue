@@ -121,13 +121,15 @@
       <a-textarea v-model:value="content" :size="large" :rows="4" />
     </a-col>
   </a-row>
-  <a-row :offset="1" style="margin-top: 10px">
-    <a-button type="primary" @click="saveValue">
-      <template #icon>
-        <!--保存value-->
-        <save-outlined />
-      </template>
-    </a-button>
+  <a-row style="margin-top: 10px">
+    <a-col :offset="1">
+      <a-button type="primary" @click="saveValue">
+        <template #icon>
+          <!--保存value-->
+          <save-outlined />
+        </template>
+      </a-button>
+    </a-col>
   </a-row>
 </template>
 

@@ -216,6 +216,24 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	}
 }
 
-func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value string) {
-
+// 更新redis值
+func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value string, ttl int) {
+	err := communication.RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
+	if err != nil {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.ErrorDialog,
+			Title:         "错误",
+			Message:       err.Error(),
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	} else {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Type:          runtime.ErrorDialog,
+			Title:         "错误",
+			Message:       "修改成功",
+			Buttons:       []string{"确定"},
+			DefaultButton: "确定",
+		})
+	}
 }

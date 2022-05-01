@@ -9,3 +9,5 @@ build/bin/ToDb.app/Contents/Resources/iconfile.icns
 .history/
 node_modules/
 build/bin/ToDb.exe
+build/bin/ToDb-dev.exe
+.gitignore

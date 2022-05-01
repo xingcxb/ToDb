@@ -123,12 +123,7 @@
   </a-row>
   <a-row style="margin-top: 10px">
     <a-col :offset="1" :span="1">
-      <a-button type="primary" @click="saveValue">
-        <template #icon>
-          <!--保存value-->
-          <save-outlined />
-        </template>
-      </a-button>
+      <a-button type="primary" @click="saveValue"> 保存 </a-button>
     </a-col>
   </a-row>
 </template>
@@ -273,7 +268,14 @@ function getInfo() {
 
 // 保存值
 function saveValue() {
-  window.go.main.App.RedisSaveStringValue(connType.value,connName.value,nodeId.value,nowKey.value,content.value,ttl.value)
+  window.go.main.App.RedisSaveStringValue(
+    connType.value,
+    connName.value,
+    nodeId.value,
+    nowKey.value,
+    content.value,
+    ttl.value
+  );
 }
 
 // 改变现实格式

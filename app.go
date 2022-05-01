@@ -60,24 +60,11 @@ func (a *App) shutdown(ctx context.Context) {
 func (a *App) TestConnection(connectionInfo string) {
 	//var responseJson lib.JsonResponse
 	code, message := communication.RedisPing(connectionInfo)
-	//responseJson = lib.JsonResponse{
-	//	Code:    code,
-	//	Message: message,
-	//}
-	title := "成功"
-	typeV := runtime.InfoDialog
 	if code != http.StatusOK {
-		title = "错误"
-		typeV = runtime.ErrorDialog
+		lib.DefaultDialog(a.ctx, "错误", message, icon)
+	} else {
+		lib.DefaultDialog(a.ctx, "成功", message, icon)
 	}
-	runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-		Type:          typeV,
-		Title:         title,
-		Message:       message,
-		Buttons:       []string{"确定"},
-		DefaultButton: "确定",
-	})
-	//return responseJson.String()
 }
 
 // Ok 确定按钮
@@ -89,13 +76,7 @@ func (a App) Ok(connectionInfo string) string {
 		Message: message,
 	}
 	if code != http.StatusOK {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.ErrorDialog,
-			Title:         "错误",
-			Message:       message,
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "错误", message, icon)
 	}
 	return responseJson.String()
 }
@@ -109,13 +90,7 @@ func (a *App) LoadingConnKey() string {
 func (a *App) LoadingConnInfo(key string) string {
 	code, message := communication.LoadingHistoryInfo(key)
 	if code != http.StatusOK {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.ErrorDialog,
-			Title:         "错误",
-			Message:       message,
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "错误", message, icon)
 	}
 	return message
 }
@@ -135,7 +110,6 @@ func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
 func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 	_v, _ := communication.RedisGetData(connType, connName, nodeIdStr, key)
 	v, _ := json.Marshal(_v)
-	fmt.Println(string(v))
 	return string(v)
 }
 
@@ -143,21 +117,9 @@ func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) {
 	v := communication.RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
 	if v != "success" {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.ErrorDialog,
-			Title:         "错误",
-			Message:       v,
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.InfoDialog,
-			Title:         "成功",
-			Message:       "修改成功",
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "成功", "修改成功", icon)
 	}
 }
 
@@ -165,21 +127,9 @@ func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) 
 func (a *App) RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr string) {
 	v := communication.RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr)
 	if v != "success" {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.ErrorDialog,
-			Title:         "错误",
-			Message:       v,
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.InfoDialog,
-			Title:         "成功",
-			Message:       "修改成功",
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "成功", "修改成功", icon)
 	}
 }
 
@@ -198,21 +148,9 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	}
 	v := communication.RedisDel(connType, connName, nodeIdStr, key)
 	if v != "success" {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.ErrorDialog,
-			Title:         "错误",
-			Message:       v,
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.InfoDialog,
-			Title:         "成功",
-			Message:       "删除成功",
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "成功", "删除成功", icon)
 	}
 }
 
@@ -222,20 +160,8 @@ func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value, tt
 	err := communication.RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
 	fmt.Println("this is error from RedisSaveStringValue", err)
 	if err != nil {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.ErrorDialog,
-			Title:         "错误",
-			Message:       err.Error(),
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "错误", err.Error(), icon)
 	} else {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.InfoDialog,
-			Title:         "错误",
-			Message:       "修改成功",
-			Buttons:       []string{"确定"},
-			DefaultButton: "确定",
-		})
+		lib.DefaultDialog(a.ctx, "成功", "修改成功", icon)
 	}
 }

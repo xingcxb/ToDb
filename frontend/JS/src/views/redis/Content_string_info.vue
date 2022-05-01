@@ -122,7 +122,7 @@
     </a-col>
   </a-row>
   <a-row style="margin-top: 10px">
-    <a-col :offset="1">
+    <a-col :offset="1" :span="1">
       <a-button type="primary" @click="saveValue">
         <template #icon>
           <!--保存value-->
@@ -272,7 +272,9 @@ function getInfo() {
 }
 
 // 保存值
-function saveValue() {}
+function saveValue() {
+  window.go.main.App.RedisSaveStringValue(connType.value,connName.value,nodeId.value,nowKey.value,content.value,ttl.value)
+}
 
 // 改变现实格式
 function handleChange() {

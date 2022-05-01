@@ -86,10 +86,11 @@ const go = {
        * @param {string} arg3 - Go Type: string
        * @param {string} arg4 - Go Type: string
        * @param {string} arg5 - Go Type: string
+       * @param {string} arg6 - Go Type: string
        * @returns {Promise<void>} 
        */
-      "RedisSaveStringValue": (arg1, arg2, arg3, arg4, arg5) => {
-        return window.go.main.App.RedisSaveStringValue(arg1, arg2, arg3, arg4, arg5);
+      "RedisSaveStringValue": (arg1, arg2, arg3, arg4, arg5, arg6) => {
+        return window.go.main.App.RedisSaveStringValue(arg1, arg2, arg3, arg4, arg5, arg6);
       },
       /**
        * RedisUpTtl

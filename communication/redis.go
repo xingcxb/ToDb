@@ -374,7 +374,7 @@ func RedisDel(connType, connName, nodeIdStr, key string) string {
 }
 
 // RedisUpdateStringValue 更新redis数据
-func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value string, ttl int) error {
+func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttlStr string) error {
 	if connType == "" ||
 		connName == "" {
 		return errors.New("parameter is missing")
@@ -386,6 +386,7 @@ func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value string, tt
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.ChangeDb(ctx, nodeId)
 		// 通过键获取值
+		ttl, _ := strconv.Atoi(ttlStr)
 		err := redisKit.AddData(ctx, key, value, ttl)
 		if err != nil {
 			return err

@@ -13,7 +13,8 @@
     "timers": "^0.1.1",
     "vue": "^3.2.23",
     "vue-i18n": "^9.1.9",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "@soerenmartius/vue3-clipboard": "^0.1.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.10.2",

@@ -217,8 +217,10 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 }
 
 // 更新redis值
-func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value string, ttl int) {
+func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value, ttl string) {
+	fmt.Println("come here")
 	err := communication.RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
+	fmt.Println("this is error from RedisSaveStringValue", err)
 	if err != nil {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
 			Type:          runtime.ErrorDialog,
@@ -229,7 +231,7 @@ func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value str
 		})
 	} else {
 		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:          runtime.ErrorDialog,
+			Type:          runtime.InfoDialog,
 			Title:         "错误",
 			Message:       "修改成功",
 			Buttons:       []string{"确定"},

@@ -73,7 +73,7 @@
         <!--广告-->
       </a-col>
     </a-row>
-      <Connection :visible="visible"></Connection>
+      <Connection :visible="visible" @ChangeVisible="visible = $event.visible "></Connection>
   </div>
   <div class="box" ref="box">
     <div class="left">

@@ -1,5 +1,5 @@
 <template>
-<a-modal v-model:visible="props.visible" title="Basic Modal" @ok="handleOk">
+<a-modal v-model:visible="props.visible" title="Basic Modal" :afterClose="handleOk">
   <a-row>
     <a-col :span="24" class="imageRow">
       <!--  //540*72-->
@@ -79,8 +79,22 @@ import {useRouter} from "vue-router";
 
 // const router = useRouter()
 
+// 接收父组件参数
 const props = defineProps(['visible'])
-console.log("++++++++++ ",props)
+// 子组件中声明 
+const visible = ref<boolean>(props.visible)
+// 声明提交事件
+const emit = defineEmits([`handleOk`])
+// 监听props变化
+watch([props,visible],()=>{
+  visible.value = props.visible
+})
+
+// 弹窗关闭的回调
+function handleOk(){
+  props.visible = false
+  emit("ChangeVisible",visible)
+}
 
 let connectionInfo = reactive({
   //连接别名
@@ -101,11 +115,7 @@ let connectionInfo = reactive({
 
 // console.log("=========" + router.currentRoute.value.query.type)
 
-function handleOk(){
-  console.log("[[[[[[[[[[[[",props.visible)
-  props.visible = false
-  console.log("]]]]]]]]",props.visible)
-}
+
 
 // 测试连接
 function testConnection() {

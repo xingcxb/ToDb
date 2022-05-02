@@ -1,4 +1,5 @@
 <template>
+<a-modal v-model:visible="visible" title="Basic Modal" @ok="handleOk">
   <a-row>
     <a-col :span="24" class="imageRow">
       <!--  //540*72-->
@@ -69,6 +70,7 @@
       <a-button @click="cancel">取消</a-button>
     </a-col>
   </a-row>
+</a-modal>
 </template>
 
 <script setup>
@@ -90,10 +92,10 @@ let connectionInfo = reactive({
   //是否保存密码
   savePassword: false,
   //类型
-  connType: router.currentRoute.value.query.connType,
+  // connType: router.currentRoute.value.query.connType,
 })
 
-console.log("=========" + router.currentRoute.value.query.type)
+// console.log("=========" + router.currentRoute.value.query.type)
 
 // 测试连接
 function testConnection() {
@@ -101,25 +103,25 @@ function testConnection() {
   });
 }
 
-// 确定按钮
-function ok() {
-  window.go.main.App.Ok(JSON.stringify(connectionInfo)).then((resolve) => {
-    var result = JSON.parse(resolve)
-    if (result.code === 200) {
-      //跳转到主页面
-      router.push({
-        name: 'Home'
-      })
-    }
-  });
-}
+// // 确定按钮
+// function ok() {
+//   window.go.main.App.Ok(JSON.stringify(connectionInfo)).then((resolve) => {
+//     var result = JSON.parse(resolve)
+//     if (result.code === 200) {
+//       //跳转到主页面
+//       router.push({
+//         name: 'Home'
+//       })
+//     }
+//   });
+// }
 
-// 取消按钮
-function cancel() {
-  router.push({
-    name: 'Home'
-  })
-}
+// // 取消按钮
+// function cancel() {
+//   router.push({
+//     name: 'Home'
+//   })
+// }
 
 
 </script>

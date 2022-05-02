@@ -73,7 +73,7 @@
         <!--广告-->
       </a-col>
     </a-row>
-      <Connection></Connection>
+      <Connection :visible="visible"></Connection>
   </div>
   <div class="box" ref="box">
     <div class="left">
@@ -110,9 +110,14 @@ const router = useRouter();
 let listData = reactive({
   data: [],
 });
-let visible = ref(true);
+let visible = ref(false);
 const expandedKeys = ref([]);
 const selectedKeys = ref([]);
+
+// 暴露数据给子组件
+defineExpose({
+  visible
+})
 
 onBeforeMount(() => {
   router.push({

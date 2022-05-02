@@ -74,10 +74,15 @@
 </template>
 
 <script setup>
-import {reactive} from 'vue';
+import {reactive, ref} from 'vue';
 import {useRouter} from "vue-router";
 
-const router = useRouter()
+// const router = useRouter()
+
+props:{
+  visible : Boolean
+}
+
 let connectionInfo = reactive({
   //连接别名
   alias: "",

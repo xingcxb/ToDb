@@ -1,5 +1,5 @@
 <template>
-<a-modal v-model:visible="visible" title="Basic Modal" @ok="handleOk">
+<a-modal v-model:visible="props.visible" title="Basic Modal" @ok="handleOk">
   <a-row>
     <a-col :span="24" class="imageRow">
       <!--  //540*72-->
@@ -79,9 +79,8 @@ import {useRouter} from "vue-router";
 
 // const router = useRouter()
 
-props:{
-  visible : Boolean
-}
+const props = defineProps(['visible'])
+console.log("++++++++++ ",props)
 
 let connectionInfo = reactive({
   //连接别名
@@ -101,6 +100,12 @@ let connectionInfo = reactive({
 })
 
 // console.log("=========" + router.currentRoute.value.query.type)
+
+function handleOk(){
+  console.log("[[[[[[[[[[[[",props.visible)
+  props.visible = false
+  console.log("]]]]]]]]",props.visible)
+}
 
 // 测试连接
 function testConnection() {

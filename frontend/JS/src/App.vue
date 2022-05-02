@@ -115,9 +115,9 @@ const expandedKeys = ref([]);
 const selectedKeys = ref([]);
 
 // 暴露数据给子组件
-defineExpose({
-  visible
-})
+// defineExpose({
+//   visible
+// })
 
 onBeforeMount(() => {
   router.push({

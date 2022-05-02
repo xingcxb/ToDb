@@ -74,9 +74,13 @@
       <router-view :key="$route.path + Date.now()"/>
     </div>
   </div>
+      <a-modal v-model:visible="visible" title="Basic Modal" @ok="handleOk">
+      <Connection></Connection>
+    </a-modal>
 </template>
 
 <script setup>
+import Connection from "./views/NewConnection.vue";
 import {onBeforeMount, reactive, ref} from 'vue';
 import {useRouter} from "vue-router";
 

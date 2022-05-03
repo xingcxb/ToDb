@@ -75,6 +75,7 @@ func (a App) Ok(connectionInfo string) string {
 		Code:    code,
 		Message: message,
 	}
+	fmt.Println(responseJson)
 	if code != http.StatusOK {
 		lib.DefaultDialog(a.ctx, "错误", message, icon)
 	}

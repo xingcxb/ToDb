@@ -25,7 +25,7 @@
                 <!--                <span :click="toView('redis')">Redis</span>-->
               </a-menu-item>
               <a-menu-item key="1">
-                <a href="http://www.taobao.com/">MySQL</a>
+                <a @click="toView('MySQL')">MySQL</a>
               </a-menu-item>
               <a-menu-divider />
               <a-menu-item key="3">other</a-menu-item>
@@ -73,7 +73,12 @@
         <!--广告-->
       </a-col>
     </a-row>
-      <Connection :visible="visible" @ChangeVisible="visible = $event.visible "></Connection>
+    <Connection
+      :visible="visible"
+      :connType="connType"
+      @ChangeVisible="visible = $event.visible"
+      @ChangeConnType="connType = $event.connType"
+    ></Connection>
   </div>
   <div class="box" ref="box">
     <div class="left">
@@ -110,14 +115,11 @@ const router = useRouter();
 let listData = reactive({
   data: [],
 });
+
 let visible = ref(false);
+let connType = ref("");
 const expandedKeys = ref([]);
 const selectedKeys = ref([]);
-
-// 暴露数据给子组件
-// defineExpose({
-//   visible
-// })
 
 onBeforeMount(() => {
   router.push({
@@ -132,15 +134,9 @@ onBeforeMount(() => {
 });
 
 function toView(v) {
-  console.log(visible.value,v)
-  visible.value = true
-  console.log(visible.value)
-  // router.push({
-  //   path: "/newConnection",
-  //   query: {
-  //     connType: v,
-  //   },
-  // });
+  visible.value = true;
+  connType.value = v;
+  console.log(visible.value, connType.value);
 }
 
 // 选中文字也可以进行操作

@@ -114,7 +114,6 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 		filename := dirBuild.String()
 		f, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
 		if err != nil {
-			fmt.Println("创建文件错误", err)
 			newFile, err := os.Create(filename)
 			if err != nil {
 				return code, message

@@ -121,6 +121,7 @@ let connectionInfo = reactive({
 watch([props, visible, connType], () => {
   visible.value = props.visible;
   connType.value = props.connType;
+  // 将连接信息注入connectionInfo中
   connectionInfo.connType = connType.value
 });
 // 弹窗异步属性

@@ -1,9 +1,9 @@
 package main
 
 import (
-	"ToDb/appview"
 	"ToDb/communication"
 	"ToDb/lib"
+	"ToDb/menu"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -29,7 +29,7 @@ func (a *App) startup(ctx context.Context) {
 	// Perform your setup here
 	// 在这里执行初始化设置
 	a.ctx = ctx
-	appview.InitMenu(ctx)
+	menu.InitMenu(ctx)
 }
 
 // domReady is called after the front-end dom has been loaded
@@ -84,7 +84,7 @@ func (a App) Ok(connectionInfo string) string {
 
 // LoadingConnKey 加载已保存的连接信息
 func (a *App) LoadingConnKey() string {
-	return communication.LoadingBaseHistoryInfo()
+	return communication.LoadingBaseHistoryInfo(a.ctx)
 }
 
 // LoadingConnInfo 获取链接信息详情

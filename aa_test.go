@@ -23,7 +23,7 @@ func TestGetHistoryInfo(t *testing.T) {
 }
 
 func TestFilePath(t *testing.T) {
-	fmt.Println(communication.LoadingBaseHistoryInfo())
+	fmt.Println(communication.LoadingBaseHistoryInfo(context.Background()))
 }
 
 func TestTest(t *testing.T) {

@@ -1,8 +1,10 @@
 package communication
 
 import (
-	"ToDb/core/redisKit"
+	"ToDb/internal/structs"
 	"ToDb/lib"
+	"ToDb/lib/os"
+	"ToDb/lib/redis"
 	"ToDb/model"
 	"context"
 	"encoding/json"
@@ -10,7 +12,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -107,42 +108,23 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 		Password: parameter["password"].String(),
 	}
 	if parameter["savePassword"].Bool() {
-		var dirBuild strings.Builder
-		dirBuild.WriteString(lib.GetProgramSafePath())
-		dirBuild.WriteString(info.Alias)
-		dirBuild.WriteString(".json")
-		filename := dirBuild.String()
-		f, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
+		// 创建文件或文件夹
+		err := os.File().CreateFile(ctx, info.Alias, true)
 		if err != nil {
-			newFile, err := os.Create(filename)
-			if err != nil {
-				return code, message
-			}
-			defer newFile.Close()
-			f, err = os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
+			return code, message
 		}
-		_v, _ := json.MarshalIndent(info, "", "    ")
-		f.WriteString(string(_v))
-		defer f.Close()
+		value, _ := json.MarshalIndent(info, "", "    ")
+		os.File().SaveFile(ctx, info.Alias, string(value))
 	}
 	return code, message
 }
 
-type BaseConnInfo struct {
-	Title        string `json:"title"`        //别名
-	Key          string `json:"key"`          //适配tree
-	ConnType     string `json:"connType"`     //类型
-	IconPath     string `json:"iconPath"`     //图标路径
-	ConnFileAddr string `json:"ConnFileAddr"` //连接信息文件存放地址
-	//Children     string `json:"children"`
-}
-
 // LoadingBaseHistoryInfo 加载已经存储的连接别名
-func LoadingBaseHistoryInfo() string {
+func LoadingBaseHistoryInfo(ctx context.Context) string {
 	// 获取所有连接文件的路径
 	allFilesPath := lib.GetProgramSafePath()
-	files, _ := ioutil.ReadDir(allFilesPath)
-	datas := make([]BaseConnInfo, 0, 1)
+	files, _ := os.File().ReadFiles(ctx)
+	datas := make([]structs.BaseConnInfo, 0, 1)
 	for _, f := range files {
 		fileName := f.Name()
 		var filePath strings.Builder
@@ -159,7 +141,7 @@ func LoadingBaseHistoryInfo() string {
 		key.WriteString(t)
 		key.WriteString(",")
 		key.WriteString(alias)
-		bci := BaseConnInfo{
+		bci := structs.BaseConnInfo{
 			Title:        alias,
 			Key:          key.String(),
 			ConnType:     t,

@@ -1,4 +1,4 @@
-package appview
+package menu
 
 import (
 	"context"

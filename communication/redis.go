@@ -9,7 +9,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -20,14 +19,14 @@ import (
 )
 
 // 连接信息
-type connectionType struct {
-	Type     string `tag:"类型" json:"type"`      //类型
-	Alias    string `tag:"连接名" json:"alias"`    //别名
-	HostURL  string `tag:"连接地址" json:"hostURL"` //连接地址
-	Port     string `tag:"端口号" json:"port"`     //端口号
-	Username string `tag:"用户名" json:"username"` //用户名
-	Password string `tag:"密码" json:"password"`  //密码
-}
+//type connectionType struct {
+//	Type     string `tag:"类型" json:"type"`      //类型
+//	Alias    string `tag:"连接名" json:"alias"`    //别名
+//	HostURL  string `tag:"连接地址" json:"hostURL"` //连接地址
+//	Port     string `tag:"端口号" json:"port"`     //端口号
+//	Username string `tag:"用户名" json:"username"` //用户名
+//	Password string `tag:"密码" json:"password"`  //密码
+//}
 
 // 检查参数
 func checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
@@ -43,7 +42,7 @@ func checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
 		}
 		if v.String() == "" {
 			code = http.StatusBadRequest
-			fieldV, _ := reflect.TypeOf(connectionType{}).FieldByName(k)
+			fieldV, _ := reflect.TypeOf(structs.ConnectionType{}).FieldByName(k)
 			tag := fieldV.Tag.Get("tag")
 			message = tag + "不能为空"
 			fail = true
@@ -64,7 +63,7 @@ func RedisPing(connectionInfo string) (int, string) {
 	parameter := gjson.Parse(connectionInfo).Map()
 	code, message, fail = checkParameter(parameter)
 
-	info := connectionType{
+	info := structs.ConnectionType{
 		Alias:    parameter["alias"].String(),
 		HostURL:  parameter["hostURL"].String(),
 		Port:     parameter["port"].String(),
@@ -96,10 +95,9 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 	message := "连接成功"
 	//状态码
 	code := http.StatusOK
-	fmt.Println("connectionInfo", connectionInfo)
 	parameter := gjson.Parse(connectionInfo).Map()
 	code, message, _ = checkParameter(parameter)
-	info := connectionType{
+	info := structs.ConnectionType{
 		Type:     parameter["connType"].String(),
 		Alias:    parameter["alias"].String(),
 		HostURL:  parameter["hostURL"].String(),
@@ -109,12 +107,15 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 	}
 	if parameter["savePassword"].Bool() {
 		// 创建文件或文件夹
-		err := os.File().CreateFile(ctx, info.Alias, true)
+		err := os.File().CreateFile(ctx, info.Alias)
 		if err != nil {
 			return code, message
 		}
 		value, _ := json.MarshalIndent(info, "", "    ")
-		os.File().SaveFile(ctx, info.Alias, string(value))
+		err = os.File().SaveFile(ctx, info.Alias, string(value))
+		if err != nil {
+			return 0, "保存失败"
+		}
 	}
 	return code, message
 }
@@ -122,7 +123,7 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 // LoadingBaseHistoryInfo 加载已经存储的连接别名
 func LoadingBaseHistoryInfo(ctx context.Context) string {
 	files, _ := os.File().ReadFiles(ctx)
-	datas := make([]structs.BaseConnInfo, 0, 1)
+	datas := make([]structs.BaseTreeInfo, 0, 1)
 	homeDir, _ := os.File().HomeDir(ctx)
 	for _, f := range files {
 		fileName := f.Name()
@@ -140,7 +141,7 @@ func LoadingBaseHistoryInfo(ctx context.Context) string {
 		key.WriteString(t)
 		key.WriteString(",")
 		key.WriteString(alias)
-		bci := structs.BaseConnInfo{
+		bci := structs.BaseTreeInfo{
 			Title:        alias,
 			Key:          key.String(),
 			ConnType:     t,

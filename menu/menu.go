@@ -1,8 +1,8 @@
 package menu
 
 import (
+	"ToDb/lib"
 	"context"
-	"fmt"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -27,7 +27,7 @@ func InitMenu(ctx context.Context) {
 		appMenu = windows(ctx)
 	default:
 		//linux
-		fmt.Println("暂不支持")
+		lib.DefaultDialog(ctx, "错误", "暂不支持该系统", nil)
 	}
 	runtime.MenuSetApplicationMenu(ctx, appMenu)
 }

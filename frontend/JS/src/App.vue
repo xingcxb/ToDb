@@ -7,8 +7,7 @@
       <a-col :span="4">
         <a-dropdown :trigger="['click']" :placement="top">
           <a
-            class="ant-dropdown-link"
-            style="text-align: center; display: block"
+            class="ant-dropdown-link header-a"
             @click.prevent
           >
             <img
@@ -34,13 +33,13 @@
         </a-dropdown>
       </a-col>
       <a-col :span="4">
-        <a href="" style="text-align: center; display: block">
+        <a href="" class="header-a">
           <img src="./assets/images/quick/table.png" class="quickIcon" alt="" />
           <p style="font-size: 10px; text-align: center">表</p>
         </a>
       </a-col>
       <a-col :span="4">
-        <a href="" style="text-align: center; display: block">
+        <a href="" class="header-a">
           <img
             src="./assets/images/quick/select.png"
             class="quickIcon"
@@ -50,7 +49,7 @@
         </a>
       </a-col>
       <a-col :span="4">
-        <a href="" style="text-align: center; display: block">
+        <a @click="importFile" class="header-a">
           <img
             src="./assets/images/quick/import.png"
             class="quickIcon"
@@ -60,7 +59,7 @@
         </a>
       </a-col>
       <a-col :span="4">
-        <a href="" style="text-align: center; display: block">
+        <a @click="exportConn" class="header-a">
           <img
             src="./assets/images/quick/export.png"
             class="quickIcon"
@@ -133,10 +132,20 @@ onBeforeMount(() => {
   });
 });
 
+// 打开弹窗
 function toView(v) {
   visible.value = true;
   connType.value = v;
-  console.log(visible.value, connType.value);
+}
+
+// 导入连接
+function importFile() {
+  window.go.main.App.ImportConn()
+}
+
+// 导出连接
+function exportConn() {
+  window.go.main.App.ExportConn()
 }
 
 // 选中文字也可以进行操作
@@ -285,6 +294,12 @@ body {
   height: 64px;
   width: 100%;
   background: #f0efee;
+}
+
+.header-a{
+  text-align: center;
+  display: block;
+  cursor: default;
 }
 
 .box {

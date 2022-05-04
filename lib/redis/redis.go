@@ -4,7 +4,6 @@ import (
 	"ToDb/lib"
 	"context"
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -41,7 +40,6 @@ func InitDb() {
 func Ping(ctx context.Context) error {
 	err := rdb.Ping(ctx).Err()
 	if err != nil {
-		fmt.Println("error: ", err)
 		return err
 	}
 	return nil
@@ -52,7 +50,6 @@ func GetDbCount(ctx context.Context, dbId int) int {
 	ChangeDb(ctx, dbId)
 	count, err := rdb.DBSize(ctx).Result()
 	if err != nil {
-		fmt.Println("error:", err)
 		return 0
 	}
 	return int(count)

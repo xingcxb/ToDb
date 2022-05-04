@@ -3,7 +3,9 @@ import * as models from './models';
 export interface go {
   "main": {
     "App": {
+		ExportConn():Promise<void>
 		GetNodeData(arg1:string,arg2:string,arg3:string):Promise<string>
+		ImportConn():Promise<void>
 		LoadingConnInfo(arg1:string):Promise<string>
 		LoadingConnKey():Promise<string>
 		LoadingDbResource(arg1:string):Promise<string>

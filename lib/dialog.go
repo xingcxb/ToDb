@@ -1,11 +1,13 @@
-/*
- * @Author: symbol
- * @Date: 2022-05-01 22:39:52
- * @LastEditTime: 2022-05-01 22:54:13
- * @LastEditors: symbol
- * @Description: 对话框控制工具
- * @FilePath: \ToDb\lib\dialog.go
- */
+// package lib
+// @Author: symbol
+// @Date: 2022-05-01 22:39:52
+// @LastEditTime: 2022-05-01 22:54:13
+// @LastEditors: symbol
+// @Description: 对话框控制工具
+// @FilePath: \ToDb\lib\dialog.go
+
+// Copyright (c) 2022 by easymbol, All Rights Reserved.
+
 package lib
 
 import (

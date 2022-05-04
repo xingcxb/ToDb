@@ -5,6 +5,13 @@ const go = {
   "main": {
     "App": {
       /**
+       * ExportConn
+       * @returns {Promise<void>} 
+       */
+      "ExportConn": () => {
+        return window.go.main.App.ExportConn();
+      },
+      /**
        * GetNodeData
        * @param {string} arg1 - Go Type: string
        * @param {string} arg2 - Go Type: string
@@ -13,6 +20,13 @@ const go = {
        */
       "GetNodeData": (arg1, arg2, arg3) => {
         return window.go.main.App.GetNodeData(arg1, arg2, arg3);
+      },
+      /**
+       * ImportConn
+       * @returns {Promise<void>} 
+       */
+      "ImportConn": () => {
+        return window.go.main.App.ImportConn();
       },
       /**
        * LoadingConnInfo

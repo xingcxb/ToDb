@@ -46,9 +46,8 @@ func (o *sFile) HomeDir(ctx context.Context) (string, error) {
 // CreateFile 创建文件夹或文件
 // @param {[type]} ctx context.Context [description]
 // @param {string} fileName 文件名 如果文件名不存在则创建文件夹
-// @param {bool}   hide 	是否隐藏 true 隐藏 false 不隐藏
 // @return error
-func (o *sFile) CreateFile(ctx context.Context, fileName string, hide bool) error {
+func (o *sFile) CreateFile(ctx context.Context, fileName string) error {
 	// 文件夹路径
 	folderPath, err := o.HomeDir(ctx)
 	if err != nil {
@@ -110,7 +109,7 @@ func (o *sFile) SaveFile(ctx context.Context, fileName, content string) error {
 	return nil
 }
 
-// ReadFiles 读取文件内容
+// ReadFiles 读取文件夹中的文件
 // @param {[type]} ctx context.Context [description]
 // @return []fs.FileInfo,error
 func (o *sFile) ReadFiles(ctx context.Context) ([]fs.FileInfo, error) {
@@ -124,9 +123,17 @@ func (o *sFile) ReadFiles(ctx context.Context) ([]fs.FileInfo, error) {
 		return nil, err
 	}
 	for i, v := range f {
+		// macOS下会存在这个隐藏文件，所以需要过滤掉
 		if v.Name() == ".DS_Store" {
 			f = append(f[:i], f[i+1:]...)
 		}
 	}
 	return f, nil
+}
+
+// InputFile 导入文件
+// @param {[type]} ctx context.Context [description]
+// @return error
+func (o *sFile) InputFile(ctx context.Context) error {
+	return nil
 }

@@ -7,7 +7,7 @@
   >
     <a-row>
       <a-col :span="24" class="imageRow">
-        <!--  //540*72-->
+        <!--  //472*72-->
         <a-image
           :width="100"
           :height="72"
@@ -167,6 +167,6 @@ function ok() {
 <style scoped>
 .imageRow {
   height: 72px;
-  background: #7cb305;
+  /*background: #7cb305;*/
 }
 </style>

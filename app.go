@@ -6,7 +6,6 @@ import (
 	"ToDb/menu"
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -56,6 +55,23 @@ func (a *App) shutdown(ctx context.Context) {
 	// 在此处做一些资源释放的操作
 }
 
+// ImportConn 导入
+func (a *App) ImportConn() {
+	err := communication.General().ImportConn(a.ctx)
+	if err != nil {
+		lib.DefaultDialog(a.ctx, "错误", err.Error(), icon)
+		return
+	}
+	lib.DefaultDialog(a.ctx, "成功", "导入成功", icon)
+	// 导入成功后窗口重载
+	runtime.WindowReload(a.ctx)
+}
+
+// ExportConn 导出
+func (a *App) ExportConn() {
+	communication.General().ExportConn(a.ctx)
+}
+
 // TestConnection 测试连接
 func (a *App) TestConnection(connectionInfo string) {
 	//var responseJson lib.JsonResponse
@@ -75,7 +91,6 @@ func (a App) Ok(connectionInfo string) string {
 		Code:    code,
 		Message: message,
 	}
-	fmt.Println(responseJson)
 	if code != http.StatusOK {
 		lib.DefaultDialog(a.ctx, "错误", message, icon)
 	}
@@ -114,7 +129,7 @@ func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 	return string(v)
 }
 
-// RedisReName rediskey重命名
+// RedisReName redis key重命名
 func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) {
 	v := communication.RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
 	if v != "success" {
@@ -155,11 +170,9 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	}
 }
 
-// 更新redis值
+// RedisSaveStringValue 更新redis值
 func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value, ttl string) {
-	fmt.Println("come here")
 	err := communication.RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
-	fmt.Println("this is error from RedisSaveStringValue", err)
 	if err != nil {
 		lib.DefaultDialog(a.ctx, "错误", err.Error(), icon)
 	} else {

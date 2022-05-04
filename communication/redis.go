@@ -121,14 +121,13 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 
 // LoadingBaseHistoryInfo 加载已经存储的连接别名
 func LoadingBaseHistoryInfo(ctx context.Context) string {
-	// 获取所有连接文件的路径
-	allFilesPath := lib.GetProgramSafePath()
 	files, _ := os.File().ReadFiles(ctx)
 	datas := make([]structs.BaseConnInfo, 0, 1)
+	homeDir, _ := os.File().HomeDir(ctx)
 	for _, f := range files {
 		fileName := f.Name()
 		var filePath strings.Builder
-		filePath.WriteString(allFilesPath)
+		filePath.WriteString(homeDir)
 		filePath.WriteString(fileName)
 		valueByte, _ := ioutil.ReadFile(filePath.String())
 		t := gjson.Get(string(valueByte), "type").String()
@@ -194,9 +193,9 @@ func LoadingHistoryInfo(key string) (int, string) {
 // 连接redis
 func initRedis(key string) []byte {
 	// 获取所有连接文件的路径
-	allFilesPath := lib.GetProgramSafePath()
+	homeDir, _ := os.File().HomeDir(context.Background())
 	var filePath strings.Builder
-	filePath.WriteString(allFilesPath)
+	filePath.WriteString(homeDir)
 	filePath.WriteString(key)
 	filePath.WriteString(".json")
 	valueByte, _ := ioutil.ReadFile(filePath.String())

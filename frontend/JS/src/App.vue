@@ -214,9 +214,7 @@ let onLoadData = (treeNode) => {
     //如果只有一个key，说明不是根节点
     return;
   }
-  console.log("获取本地的连接信息", key);
   return new Promise((resolve) => {
-    console.log("测试");
     window.go.main.App.LoadingConnInfo(key[1]).then((resolve) => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作

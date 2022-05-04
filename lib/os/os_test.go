@@ -12,9 +12,18 @@ package os
 
 import (
 	"context"
+	"fmt"
 	"testing"
 )
 
 func TestCreateFile(t *testing.T) {
 	File().CreateFile(context.Background(), "test.txt", true)
+}
+
+func TestReadFiles(t *testing.T) {
+	files, err := File().ReadFiles(context.Background())
+	if err != nil {
+		t.Error(err)
+	}
+	fmt.Println(files)
 }

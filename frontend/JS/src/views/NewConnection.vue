@@ -92,13 +92,11 @@
 <script setup>
 import { reactive, ref, defineEmits, watch } from "vue";
 
-// const router = useRouter()
-
 // 接收父组件参数
 const props = defineProps(["visible", "connType"]);
 // 子组件中声明
-const visible = ref<boolean>(props.visible)
-const connType = ref<String>(props.connType)
+const visible = ref(props.visible)
+const connType = ref(props.connType.value)
 // 声明提交事件
 const emit = defineEmits([`handleOk`]);
 let connectionInfo = reactive({
@@ -122,6 +120,7 @@ watch([props, visible, connType], () => {
   visible.value = props.visible;
   connType.value = props.connType;
   // 将连接信息注入connectionInfo中
+  console.log("this connType",connType)
   connectionInfo.connType = connType.value
 });
 // 弹窗异步属性
@@ -129,8 +128,6 @@ let confirmLoading = ref(false)
 
 // 弹窗关闭的回调
 function handleClose() {
-  props.visible = false;
-  props.connType = "";
   emit("ChangeVisible", visible);
   emit("ChangeConnType", connType);
 }

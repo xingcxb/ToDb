@@ -14,7 +14,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-// Dialog 显示默认的对话框
+// DefaultDialog 显示默认的对话框
 func DefaultDialog(ctx context.Context, title, message string, icon []byte) {
 	runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
 		Type: func(title string) runtime.DialogType {

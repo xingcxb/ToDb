@@ -10,3 +10,4 @@ build/bin/ToDb.app/Contents/Resources/iconfile.icns
 node_modules/
 build/bin/
 .gitignore
+/frontend/package-lock.json

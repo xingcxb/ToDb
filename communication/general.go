@@ -13,7 +13,6 @@ package communication
 import (
 	"ToDb/lib/os"
 	"context"
-	"fmt"
 	"github.com/tidwall/gjson"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"io/ioutil"
@@ -65,8 +64,12 @@ func (s *sGeneral) ImportConn(ctx context.Context) error {
 // ExportConn 导出连接
 // @param {[type]} ctx context.Context [description]
 // @return error
-func (s *sGeneral) ExportConn(ctx context.Context) {
+func (s *sGeneral) ExportConn(ctx context.Context) error {
+	homeDir, err := os.File().HomeDir(ctx)
+	if err != nil {
+		return err
+	}
 	// 打开文件资源管理器
-	err := exec.Command(`cmd`, `open -R "~/.ToDb"`).Run()
-	fmt.Println(err.Error())
+	exec.Command("open", homeDir).Start()
+	return nil
 }

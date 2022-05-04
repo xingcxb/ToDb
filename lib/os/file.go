@@ -16,6 +16,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/user"
+	"strings"
 )
 
 var (
@@ -31,6 +32,14 @@ func File() *sFile {
 	return &insFile
 }
 
+// FormatOsPath
+// 基于系统替换路径中的分隔符
+// @param {[type]} ctx context.Context
+// @return string,error
+func (s *sFile) FormatOsPath(ctx context.Context, path string) string {
+	return strings.ReplaceAll(path, "/", string(os.PathSeparator))
+}
+
 // HomeDir
 // 获取系统当前使用的用户名
 // @param {[type]} ctx context.Context
@@ -40,7 +49,8 @@ func (o *sFile) HomeDir(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return user.HomeDir + lastPath + "/", nil
+	path := user.HomeDir + lastPath + string(os.PathSeparator)
+	return path, nil
 }
 
 // CreateFile 创建文件夹或文件

@@ -140,6 +140,7 @@ function toView(v) {
 
 // 导入连接
 function importFile() {
+  console.log("点击了导入连接")
   window.go.main.App.ImportConn()
 }
 

@@ -16,7 +16,9 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"io/ioutil"
+	sysOs "os"
 	"os/exec"
+	"os/user"
 )
 
 var (
@@ -35,8 +37,15 @@ func General() *sGeneral {
 // @param {[type]} ctx context.Context [description]
 // @return error
 func (s *sGeneral) ImportConn(ctx context.Context) error {
+	user, err := user.Current()
+	if err != nil {
+		return err
+	}
+	defaultPath := user.HomeDir + string(sysOs.PathSeparator) + "Downloads"
 	// 获取到文件的路径和错误信息
 	selection, err := runtime.OpenFileDialog(ctx, runtime.OpenDialogOptions{
+		// 默认对话框打开时显示的目录
+		DefaultDirectory: defaultPath,
 		// 对话框标题
 		Title: "选择导入文件",
 		// 默认文件名

@@ -26,10 +26,10 @@ func main() {
 	// 使用选项创建应用
 	err := wails.Run(&options.App{
 		Title:             "ToDb",
-		Width:             1100,
-		Height:            727,
-		MinWidth:          1100,
-		MinHeight:         727,
+		Width:             1342,
+		Height:            728,
+		MinWidth:          1342,
+		MinHeight:         728,
 		MaxWidth:          1200,
 		MaxHeight:         800,
 		DisableResize:     true,

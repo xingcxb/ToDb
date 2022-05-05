@@ -267,9 +267,9 @@ function handleMouseMoveLine() {
         var maxT = box[i].clientWidth - resize[i].offsetWidth;
 
         // 左边区域的最小宽度为32px
-        if (moveLen < 32) moveLen = 32;
+        if (moveLen < 406) moveLen = 406;
         //右边区域最小宽度为150px
-        if (moveLen > maxT - 150) moveLen = maxT - 150;
+        if (moveLen > maxT - 150) moveLen = maxT - 936;
 
         // 设置左侧区域的宽度
         resize[i].style.left = moveLen;

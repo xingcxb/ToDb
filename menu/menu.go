@@ -24,7 +24,7 @@ func InitMenu(ctx context.Context) {
 		appMenu = windows(ctx)
 	case "darwin":
 		//macos
-		appMenu = windows(ctx)
+		appMenu = macOs(ctx)
 	default:
 		//linux
 		lib.DefaultDialog(ctx, "错误", "暂不支持该系统", nil)
@@ -32,13 +32,29 @@ func InitMenu(ctx context.Context) {
 	runtime.MenuSetApplicationMenu(ctx, appMenu)
 }
 
+// macOS菜单
+func macOs(ctx context.Context) *menu.Menu {
+	return menu.NewMenuFromItems(
+		macOsAbout(ctx),
+		files(ctx),
+		edit(ctx),
+	)
+}
+
+// macOs关于
+func macOsAbout(ctx context.Context) *menu.MenuItem {
+	aboutMenu := menu.AppMenu()
+	aboutMenu.Prepend(menu.Text("关于", nil, nil))
+	return aboutMenu
+}
+
+// windows菜单
 func windows(ctx context.Context) *menu.Menu {
 	return menu.NewMenuFromItems(
 		files(ctx),
 		edit(ctx),
 		about(ctx),
 	)
-
 }
 
 // 文件菜单
@@ -89,8 +105,9 @@ func edit(ctx context.Context) *menu.MenuItem {
 // 关于
 func about(ctx context.Context) *menu.MenuItem {
 	if osInfo == "darwin" {
-		return menu.SubMenu("ToDb帮助",
+		return menu.SubMenu("ToDb",
 			menu.NewMenuFromItems(
+
 				menu.Text("帮助中心", nil, nil),
 				menu.SubMenu("在线文档",
 					menu.NewMenuFromItems(

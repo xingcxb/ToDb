@@ -17,7 +17,7 @@ import (
 )
 
 func TestCreateFile(t *testing.T) {
-	File().CreateFile(context.Background(), "test.txt", true)
+	File().CreateFile(context.Background(), "test.txt")
 }
 
 func TestReadFiles(t *testing.T) {

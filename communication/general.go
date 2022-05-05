@@ -19,6 +19,7 @@ import (
 	sysOs "os"
 	"os/exec"
 	"os/user"
+	sysRuntime "runtime"
 )
 
 var (
@@ -79,6 +80,15 @@ func (s *sGeneral) ExportConn(ctx context.Context) error {
 		return err
 	}
 	// 打开文件资源管理器
-	exec.Command("open", homeDir).Start()
+	osName := sysRuntime.GOOS
+
+	switch osName {
+	case "windows":
+		exec.Command("explorer", homeDir).Start()
+	case "linux":
+		exec.Command("xdg-open", homeDir).Start()
+	case "darwin":
+		exec.Command("open", homeDir).Start()
+	}
 	return nil
 }

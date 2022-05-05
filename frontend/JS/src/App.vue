@@ -242,7 +242,15 @@ function handleMouseMoveLine() {
   var left = document.getElementsByClassName("left");
   var mid = document.getElementsByClassName("mid");
   var box = document.getElementsByClassName("box");
+  console.log(document)
+  console.log(resize[0].left+"xxxxx")
+  console.log("resize:", resize);
+  console.log("left:",left);
+  console.log("mid:",mid);
+  console.log("box:", box)
+
   for (let i = 0; i < resize.length; i++) {
+    console.log("resize:", resize[i]);
     // 鼠标按下事件
     resize[i].onmousedown = function (e) {
       //颜色改变提醒
@@ -251,6 +259,7 @@ function handleMouseMoveLine() {
       resize[i].left = resize[i].offsetLeft;
       // 鼠标拖动事件
       document.onmousemove = function (e) {
+        console.log("this is e    ",e)
         var endX = e.clientX;
         // （endx-startx）=移动的距离。resize[i].left+移动的距离=左边区域最后的宽度
         var moveLen = resize[i].left + (endX - startX);
@@ -266,6 +275,7 @@ function handleMouseMoveLine() {
         resize[i].style.left = moveLen;
 
         for (let j = 0; j < left.length; j++) {
+          console.log("this is moveLen ", moveLen)
           left[j].style.width = moveLen + "px";
           mid[j].style.width = box[i].clientWidth - moveLen - 10 + "px";
         }

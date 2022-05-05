@@ -269,7 +269,7 @@ function handleMouseMoveLine() {
         // 左边区域的最小宽度为32px
         if (moveLen < 406) moveLen = 406;
         //右边区域最小宽度为150px
-        if (moveLen > maxT - 150) moveLen = maxT - 936;
+        if (moveLen > maxT - 655) moveLen = maxT - 655;
 
         // 设置左侧区域的宽度
         resize[i].style.left = moveLen;
@@ -325,7 +325,8 @@ body {
  * 左侧区域
  */
 .left {
-  width: calc(20% - 10px);
+  /*width: calc(20% - 10px);*/
+  width: 406px;
   min-height: 661px;
   height: 100%;
   float: left;

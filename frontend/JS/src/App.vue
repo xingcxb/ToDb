@@ -334,6 +334,12 @@ body {
   background: rgba(224, 225, 225, 0.1);
 }
 
+.ant-tree-title {
+  max-width:80px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .resize {
   min-height: 661px;
   height: 100%;
@@ -349,7 +355,7 @@ body {
 
 .mid {
   float: left;
-  width: 80%; /*右侧初始化宽度*/
+  width: calc(100% - 406px); /*右侧初始化宽度*/
   min-height: 661px;
   height: 100%;
 }

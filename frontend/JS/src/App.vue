@@ -258,7 +258,7 @@ function handleMouseMoveLine() {
       var startX = e.clientX;
       resize[i].left = resize[i].offsetLeft;
       // 鼠标拖动事件
-      document.onmousemove = function (e) {
+      document.getElementById("app").onmousemove = function (e) {
         console.log("this is e    ",e)
         var endX = e.clientX;
         // （endx-startx）=移动的距离。resize[i].left+移动的距离=左边区域最后的宽度

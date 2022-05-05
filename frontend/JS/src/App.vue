@@ -90,7 +90,8 @@
         @select="onSelect"
         style="
           min-width: 210px;
-          width: calc(20% - 10px);
+          /**width: calc(20% - 10px);*/
+          width: 406px;
           background: rgba(224, 225, 225, 0.1);
         "
       >

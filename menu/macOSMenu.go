@@ -22,6 +22,7 @@ func MacOSMenu() *sMacOSMenu {
 // About macOS菜单关于
 func (s *sMacOSMenu) About(ctx context.Context) *menu.MenuItem {
 	//todo 由于目前不可变暂时使用默认
+	//看了别人的的代码，可以考虑使用自定义的对话框来实现
 	return menu.AppMenu()
 }
 

@@ -7,13 +7,13 @@
       <a-col :span="4">
         <a-dropdown :trigger="['click']" :placement="top">
           <a
-            class="ant-dropdown-link header-a"
-            @click.prevent
+              class="ant-dropdown-link header-a"
+              @click.prevent
           >
             <img
-              src="./assets/images/quick/conn.png"
-              class="quickIcon"
-              alt=""
+                src="./assets/images/quick/conn.png"
+                class="quickIcon"
+                alt=""
             />
             <p style="font-size: 10px">连接</p>
           </a>
@@ -26,7 +26,7 @@
               <a-menu-item key="1">
                 <a @click="toView('MySQL')">MySQL</a>
               </a-menu-item>
-              <a-menu-divider />
+              <a-menu-divider/>
               <a-menu-item key="3">other</a-menu-item>
             </a-menu>
           </template>
@@ -34,16 +34,16 @@
       </a-col>
       <a-col :span="4">
         <a href="" class="header-a">
-          <img src="./assets/images/quick/table.png" class="quickIcon" alt="" />
+          <img src="./assets/images/quick/table.png" class="quickIcon" alt=""/>
           <p style="font-size: 10px; text-align: center">表</p>
         </a>
       </a-col>
       <a-col :span="4">
         <a href="" class="header-a">
           <img
-            src="./assets/images/quick/select.png"
-            class="quickIcon"
-            alt=""
+              src="./assets/images/quick/select.png"
+              class="quickIcon"
+              alt=""
           />
           <p style="font-size: 10px; text-align: center">查询</p>
         </a>
@@ -51,9 +51,9 @@
       <a-col :span="4">
         <a @click="importFile" class="header-a">
           <img
-            src="./assets/images/quick/import.png"
-            class="quickIcon"
-            alt=""
+              src="./assets/images/quick/import.png"
+              class="quickIcon"
+              alt=""
           />
           <p style="font-size: 10px; text-align: center">导入</p>
         </a>
@@ -61,9 +61,9 @@
       <a-col :span="4">
         <a @click="exportConn" class="header-a">
           <img
-            src="./assets/images/quick/export.png"
-            class="quickIcon"
-            alt=""
+              src="./assets/images/quick/export.png"
+              class="quickIcon"
+              alt=""
           />
           <p style="font-size: 10px; text-align: center">导出</p>
         </a>
@@ -73,24 +73,26 @@
       </a-col>
     </a-row>
     <Connection
-      :visible="visible"
-      :connType="connType"
-      @ChangeVisible="visible = $event.visible"
-      @ChangeConnType="connType = $event.connType"
+        :visible="visible"
+        :connType="connType"
+        @ChangeVisible="visible = $event.visible"
+        @ChangeConnType="connType = $event.connType"
     ></Connection>
   </div>
   <div class="box" ref="box">
     <div class="left">
       <!--左侧div内容-->
       <a-directory-tree
-        v-model:expandedKeys="expandedKeys"
-        v-model:selectedKeys="selectedKeys"
-        :tree-data="listData.data"
-        :load-data="onLoadData"
-        @select="onSelect"
-        style="
+          v-model:expandedKeys="expandedKeys"
+          v-model:selectedKeys="selectedKeys"
+          :tree-data="listData.data"
+          :load-data="onLoadData"
+          @select="onSelect"
+          style="
           min-width: 210px;
           /**width: calc(20% - 10px);*/
+          overflow: hidden;
+          white-space: nowrap;
           width: 406px;
           background: rgba(224, 225, 225, 0.1);
         "
@@ -100,15 +102,15 @@
     <div class="resize" @mousedown="handleMouseMoveLine"></div>
     <div class="mid">
       <!--右侧div内容-->
-      <router-view :key="$route.path + Date.now()" />
+      <router-view :key="$route.path + Date.now()"/>
     </div>
   </div>
 </template>
 
 <script setup>
 import Connection from "./views/NewConnection.vue";
-import { onBeforeMount, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
+import {onBeforeMount, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
 
 const router = useRouter();
 
@@ -133,6 +135,15 @@ onBeforeMount(() => {
   });
 });
 
+// 创建连接的方法暴露给go
+window.runtime.EventsOn("createConn", function (data) {
+  toView(data)
+})
+// 导入的方法暴露给go
+window.runtime.EventsOn("importConn", function () {
+  importFile()
+})
+
 // 打开弹窗
 function toView(v) {
   visible.value = true;
@@ -141,7 +152,6 @@ function toView(v) {
 
 // 导入连接
 function importFile() {
-  console.log("点击了导入连接")
   window.go.main.App.ImportConn()
 }
 
@@ -168,9 +178,9 @@ function onSelect(selectedKeys, info) {
     let connName = parentKeyArr[1];
     //selectKey是显示具体的节点key，parent显示的是父节点
     window.go.main.App.GetNodeData(
-      connType,
-      connName,
-      selectedKeys[0] + ""
+        connType,
+        connName,
+        selectedKeys[0] + ""
     ).then((resolve) => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
@@ -244,10 +254,10 @@ function handleMouseMoveLine() {
   var mid = document.getElementsByClassName("mid");
   var box = document.getElementsByClassName("box");
   console.log(document)
-  console.log(resize[0].left+"xxxxx")
+  console.log(resize[0].left + "xxxxx")
   console.log("resize:", resize);
-  console.log("left:",left);
-  console.log("mid:",mid);
+  console.log("left:", left);
+  console.log("mid:", mid);
   console.log("box:", box)
 
   for (let i = 0; i < resize.length; i++) {
@@ -260,7 +270,7 @@ function handleMouseMoveLine() {
       resize[i].left = resize[i].offsetLeft;
       // 鼠标拖动事件
       document.getElementById("app").onmousemove = function (e) {
-        console.log("this is e    ",e)
+        console.log("this is e    ", e)
         var endX = e.clientX;
         // （endx-startx）=移动的距离。resize[i].left+移动的距离=左边区域最后的宽度
         var moveLen = resize[i].left + (endX - startX);
@@ -308,7 +318,7 @@ body {
   background: #f0efee;
 }
 
-.header-a{
+.header-a {
   text-align: center;
   display: block;
   cursor: default;
@@ -332,12 +342,6 @@ body {
   height: 100%;
   float: left;
   background: rgba(224, 225, 225, 0.1);
-}
-
-.ant-tree-title {
-  max-width:80px;
-  overflow: hidden;
-  white-space: nowrap;
 }
 
 .resize {

@@ -20,11 +20,10 @@
     "email": "xingcxb@hotmail.com"
   },
   "Info": {
-    "companyName": "ToDb",
+    "companyName": "Symbol",
     "productName": "ToDb",
     "productVersion": "0.1.0",
-    "copyright": "Copyright©️ 2022- Symbol. All Rights Reserved.",
-    "comments": "Built using Wails (https://wails.app)"
+    "copyright": "Copyright©️ 2022- Symbol. All Rights Reserved."
   },
   "debounceMS": 2000,
   "devserverurl": "http://localhost:34115",

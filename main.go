@@ -75,7 +75,7 @@ func main() {
 			WindowIsTranslucent:  true,
 			About: &mac.AboutInfo{
 				Title:   "ToDb",
-				Message: "",
+				Message: "Copyright©️ 2022- Symbol. All Rights Reserved.",
 				Icon:    icon,
 			},
 		},

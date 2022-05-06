@@ -10,7 +10,7 @@
 -->
 <template>
   <a-row
-    style="min-height: 661px; height: 100%"
+    style="min-height: 600px; height: 100%"
     justify="space-around"
     align="middle"
     type="flex"

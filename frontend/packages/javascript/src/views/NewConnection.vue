@@ -99,7 +99,7 @@ const props = defineProps(["visible", "connType"]);
 const visible = ref(props.visible)
 const connType = ref(props.connType)
 // 声明提交事件
-const emit = defineEmits([`handleOk`]);
+const emit = defineEmits([`ChangeVisible`, `ChangeConnType`]);
 let connectionInfo = reactive({
   //连接别名
   alias: "",
@@ -127,8 +127,8 @@ let confirmLoading = ref(false)
 
 // 弹窗关闭的回调
 function handleClose() {
-  emit("EmitsChangeVisible", visible.value);
-  emit("EmitsChangeConnType", connType.value);
+  emit("ChangeVisible", visible.value);
+  emit("ChangeConnType", connType.value);
 }
 
 

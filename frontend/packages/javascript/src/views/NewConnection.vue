@@ -1,7 +1,7 @@
 <template>
   <a-modal
-    v-model:visible="props.visible"
-    v-model:title="props.connType"
+    v-model:visible="visible"
+    v-model:title="connType"
     :confirm-loading="confirmLoading"
     :afterClose="handleClose"
   >
@@ -97,7 +97,7 @@ import {TestConnection,Ok} from '../../../../wailsjs/go/main/App'
 const props = defineProps(["visible", "connType"]);
 // 子组件中声明
 const visible = ref(props.visible)
-const connType = ref(props.connType.value)
+const connType = ref(props.connType)
 // 声明提交事件
 const emit = defineEmits([`handleOk`]);
 let connectionInfo = reactive({
@@ -117,12 +117,9 @@ let connectionInfo = reactive({
   connType: "",
 });
 // 监听props变化
-watch([props, visible, connType], () => {
+watch([props], () => {
   visible.value = props.visible;
-  console.log(visible)
   connType.value = props.connType;
-  // 将连接信息注入connectionInfo中
-  console.log("this connType",connType)
   connectionInfo.connType = connType.value
 });
 // 弹窗异步属性

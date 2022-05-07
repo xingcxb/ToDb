@@ -75,8 +75,8 @@
     <Connection
         :visible="visible"
         :connType="connType"
-        @ChangeVisible="visible = $event.visible"
-        @ChangeConnType="connType = $event.connType"
+        @ChangeVisible="visible.value = $event.visible"
+        @ChangeConnType="connType.value = $event.connType"
     ></Connection>
   </div>
   <div class="box" ref="box">

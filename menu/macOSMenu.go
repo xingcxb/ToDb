@@ -45,7 +45,9 @@ func (s *sMacOSMenu) File(ctx context.Context) *menu.MenuItem {
 			menu.Text("导入连接...", keys.CmdOrCtrl("I"), func(data *menu.CallbackData) {
 				runtime.EventsEmit(ctx, "importConn")
 			}),
-			menu.Text("导出连接...", nil, nil),
+			menu.Text("导出连接...", nil, func(data *menu.CallbackData) {
+				runtime.EventsEmit(ctx, "exportConn")
+			}),
 		),
 	)
 }

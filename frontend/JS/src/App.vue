@@ -144,6 +144,11 @@ window.runtime.EventsOn("importConn", function () {
   importFile()
 })
 
+// 导出方法暴露给go
+window.runtime.EventsOn("exportConn", function () {
+  exportConn()
+})
+
 // 打开弹窗
 function toView(v) {
   visible.value = true;

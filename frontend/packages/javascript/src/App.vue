@@ -75,8 +75,9 @@
     <Connection
         :visible="visible"
         :connType="connType"
-        @ChangeVisible="visible.value = $event.visible"
-        @ChangeConnType="connType.value = $event.connType"
+        @ChangeVisible="visible = $event.visible"
+        @ChangeConnType="connType = $event.connType"
+        console.log($event)
     ></Connection>
   </div>
   <div class="box" ref="box">
@@ -153,6 +154,7 @@ window.runtime.EventsOn("exportConn", function () {
 
 // 打开弹窗
 function toView(v) {
+  console.log("这是V ", v);
   visible.value = true;
   connType.value = v;
 }

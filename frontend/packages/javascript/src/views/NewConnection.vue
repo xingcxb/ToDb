@@ -83,14 +83,15 @@
         <a-button @click="ok">确定</a-button>
       </a-col>
       <a-col :span="3">
-        <a-button @click="cancel">取消</a-button>
+        <a-button >取消</a-button>
       </a-col>
     </a-row>
   </a-modal>
 </template>
 
 <script setup>
-import { reactive, ref, defineEmits, watch } from "vue";
+import { reactive, ref, watch } from "vue";
+import {TestConnection,Ok} from '../../../../wailsjs/go/main/App'
 
 // 接收父组件参数
 const props = defineProps(["visible", "connType"]);
@@ -118,6 +119,7 @@ let connectionInfo = reactive({
 // 监听props变化
 watch([props, visible, connType], () => {
   visible.value = props.visible;
+  console.log(visible)
   connType.value = props.connType;
   // 将连接信息注入connectionInfo中
   console.log("this connType",connType)
@@ -128,8 +130,8 @@ let confirmLoading = ref(false)
 
 // 弹窗关闭的回调
 function handleClose() {
-  emit("ChangeVisible", visible);
-  emit("ChangeConnType", connType);
+  emit("ChangeVisible", visible.value);
+  emit("ChangeConnType", connType.value);
 }
 
 
@@ -137,14 +139,14 @@ function handleClose() {
 
 // 测试连接
 function testConnection() {
-  window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then(
+  TestConnection(JSON.stringify(connectionInfo)).then(
     () => {}
   );
 }
 
 // 确定按钮
 function ok() {
-  window.go.main.App.Ok(JSON.stringify(connectionInfo)).then((resolve) => {
+  Ok(JSON.stringify(connectionInfo)).then((resolve) => {
     var result = JSON.parse(resolve)
     if (result.code === 200) {
       confirmLoading.value = true

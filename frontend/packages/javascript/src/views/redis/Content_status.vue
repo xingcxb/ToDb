@@ -163,6 +163,7 @@
 import { SyncOutlined } from "@ant-design/icons-vue";
 import { onBeforeMount, onBeforeUnmount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import {LoadingDbResource,GetNodeData} from '../../../../../wailsjs/go/main/App'
 
 const router = useRouter();
 //是否刷新
@@ -221,7 +222,7 @@ onBeforeMount(() => {
     return;
   }
   // 获取基本数据
-  window.go.main.App.LoadingDbResource(
+  LoadingDbResource(
     router.currentRoute.value.query.key
   ).then((resolve) => {
     if (resolve !== "") {
@@ -290,7 +291,7 @@ function changeAutoRefresh() {
     // 开启定时器
     timer = setInterval(() => {
       // 刷新
-      window.go.main.App.LoadingDbResource(
+      LoadingDbResource(
         router.currentRoute.value.query.data
       ).then((resolve) => {
         if (resolve !== "") {

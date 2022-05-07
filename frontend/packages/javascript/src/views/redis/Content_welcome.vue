@@ -16,7 +16,7 @@
     type="flex"
   >
     <a-col :span="12" :push="8">
-      <img src="../../../public/logo.png" alt="ToDB" />
+      <img src="../../assets/logos/logo.png" alt="ToDB" />
     </a-col>
     <a-col :span="12">
       <span class="app_name">ToDB </span><span class="tail">.app</span>
@@ -26,11 +26,11 @@
         >Powered by
         <span
           class="open_source"
-          @click="openBrower('https://github.com/wailsapp/wails')"
+          @click="openBrowser('https://github.com/wailsapp/wails')"
           >wails</span
         >
         and
-        <span class="open_source" @click="openBrower('https://icons8.com')"
+        <span class="open_source" @click="openBrowser('https://icons8.com')"
           >Icons8</span
         >
       </span>
@@ -39,8 +39,9 @@
 </template>
 
 <script setup>
-function openBrower(v) {
-  runtime.BrowserOpenURL(v);
+import {BrowserOpenURL} from '../../../../../wailsjs/runtime/runtime'
+function openBrowser(v) {
+  BrowserOpenURL(v);
 }
 </script>
 

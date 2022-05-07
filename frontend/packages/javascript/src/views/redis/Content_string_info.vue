@@ -140,6 +140,7 @@ import {
 } from "@ant-design/icons-vue";
 import { onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import {RedisDelKey,RedisUpTtl,RedisReName,RedisGetData,RedisSaveStringValue} from '../../../../../wailsjs/go/main/App'
 
 const router = useRouter();
 
@@ -216,7 +217,7 @@ function close() {
 
 // 删除
 function del() {
-  window.go.main.App.RedisDelKey(
+  RedisDelKey(
     connType.value,
     connName.value,
     nodeId.value,
@@ -226,7 +227,7 @@ function del() {
 
 // 更新剩余时间
 function updateTtl() {
-  window.go.main.App.RedisUpTtl(
+  RedisUpTtl(
     connType.value,
     connName.value,
     nodeId.value,
@@ -237,7 +238,7 @@ function updateTtl() {
 
 // 修改redis的键
 function rename() {
-  window.go.main.App.RedisReName(
+  RedisReName(
     connType.value,
     connName.value,
     nodeId.value,
@@ -250,7 +251,7 @@ function rename() {
 function getInfo() {
   if (connType.value == "redis") {
     // 从redis获取数据
-    window.go.main.App.RedisGetData(
+    RedisGetData(
       connType.value,
       connName.value,
       nodeId.value,
@@ -268,7 +269,7 @@ function getInfo() {
 
 // 保存值
 function saveValue() {
-  window.go.main.App.RedisSaveStringValue(
+  RedisSaveStringValue(
     connType.value,
     connName.value,
     nodeId.value,

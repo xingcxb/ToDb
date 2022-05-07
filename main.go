@@ -5,10 +5,7 @@ import (
 	"log"
 
 	"github.com/wailsapp/wails/v2"
-	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
-	"github.com/wailsapp/wails/v2/pkg/options/mac"
-	"github.com/wailsapp/wails/v2/pkg/options/windows"
 )
 
 //go:embed frontend/dist
@@ -25,59 +22,18 @@ func main() {
 	// Create application with options
 	// 使用选项创建应用
 	err := wails.Run(&options.App{
-		Title:             "ToDb",
-		Width:             1342,
-		Height:            728,
-		MinWidth:          1342,
-		MinHeight:         728,
-		MaxWidth:          1342,
-		MaxHeight:         728,
-		DisableResize:     true,
-		Fullscreen:        false,
-		Frameless:         false,
-		StartHidden:       false,
-		HideWindowOnClose: false,
-		RGBA:              &options.RGBA{R: 255, G: 255, B: 255, A: 0},
-		Assets:            assets,
-		Menu:              nil,
-		Logger:            nil,
-		LogLevel:          logger.DEBUG,
-		OnStartup:         app.startup,
-		OnDomReady:        app.domReady,
-		OnBeforeClose:     app.beforeClose,
-		OnShutdown:        app.shutdown,
-		WindowStartState:  options.Normal,
+		Title:            "ToDb",
+		Width:            1342,
+		Height:           728,
+		DisableResize:    true,
+		Assets:           assets,
+		OnStartup:        app.startup,
+		OnDomReady:       app.domReady,
+		OnBeforeClose:    app.beforeClose,
+		OnShutdown:       app.shutdown,
+		WindowStartState: options.Normal,
 		Bind: []interface{}{
 			app,
-		},
-		// Windows platform specific options
-		// Windows平台特定选项
-		Windows: &windows.Options{
-			WebviewIsTransparent: true,
-			WindowIsTranslucent:  false,
-			DisableWindowIcon:    false,
-			//DisableFramelessWindowDecorations: true,
-			WebviewUserDataPath: "",
-		},
-		// Mac platform specific options
-		// Mac平台特定选项
-		Mac: &mac.Options{
-			TitleBar: &mac.TitleBar{
-				TitlebarAppearsTransparent: false,
-				HideTitle:                  false,
-				HideTitleBar:               false,
-				FullSizeContent:            false,
-				UseToolbar:                 false,
-				HideToolbarSeparator:       true,
-			},
-			Appearance:           mac.NSAppearanceNameVibrantLight,
-			WebviewIsTransparent: true,
-			WindowIsTranslucent:  true,
-			About: &mac.AboutInfo{
-				Title:   "ToDb",
-				Message: "Copyright©️ 2022- Symbol. All Rights Reserved.",
-				Icon:    icon,
-			},
 		},
 	})
 

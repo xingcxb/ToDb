@@ -77,7 +77,6 @@
         :connType="connType"
         @ChangeVisible="visible = $event.visible"
         @ChangeConnType="connType = $event.connType"
-        console.log($event)
     ></Connection>
   </div>
   <div class="box" ref="box">

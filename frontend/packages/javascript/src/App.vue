@@ -11,7 +11,7 @@
               @click.prevent
           >
             <img
-                src="./assets/images/quick/conn.png"
+                src="../public/images/quick/conn.png"
                 class="quickIcon"
                 alt=""
             />
@@ -34,14 +34,14 @@
       </a-col>
       <a-col :span="4">
         <a href="" class="header-a">
-          <img src="./assets/images/quick/table.png" class="quickIcon" alt=""/>
+          <img src="../public/images/quick/table.png" class="quickIcon" alt=""/>
           <p style="font-size: 10px; text-align: center">表</p>
         </a>
       </a-col>
       <a-col :span="4">
         <a href="" class="header-a">
           <img
-              src="./assets/images/quick/select.png"
+              src="../public/images/quick/select.png"
               class="quickIcon"
               alt=""
           />
@@ -51,7 +51,7 @@
       <a-col :span="4">
         <a @click="importFile" class="header-a">
           <img
-              src="./assets/images/quick/import.png"
+              src="../public/images/quick/import.png"
               class="quickIcon"
               alt=""
           />
@@ -61,7 +61,7 @@
       <a-col :span="4">
         <a @click="exportConn" class="header-a">
           <img
-              src="./assets/images/quick/export.png"
+              src="../public/images/quick/export.png"
               class="quickIcon"
               alt=""
           />
@@ -355,7 +355,7 @@ body {
   width: 2px;
   float: left;
   border-right: 2px solid #d5d6d6;
-  background-image: url("./assets/line.png");
+  background-image: url("assets/line.png");
 }
 
 .resize:hover {

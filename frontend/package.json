@@ -9,15 +9,9 @@
   },
   "author": "Symbol",
   "license": "ISC",
-  "workspaces": [
-    "JS",
-    "TS"
-  ],
+  "workspaces": ["packages/*"],
   "engines": {
     "node": ">=15.0.0",
     "npm": ">=7.0.0"
-  },
-  "dependencies": {
-    "ant-design-vue": "^3.2.2"
   }
 }

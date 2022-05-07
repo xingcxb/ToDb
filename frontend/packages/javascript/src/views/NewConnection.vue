@@ -127,8 +127,8 @@ let confirmLoading = ref(false)
 
 // 弹窗关闭的回调
 function handleClose() {
-  emit("ChangeVisible", visible.value);
-  emit("ChangeConnType", connType.value);
+  emit("EmitsChangeVisible", visible.value);
+  emit("EmitsChangeConnType", connType.value);
 }
 
 

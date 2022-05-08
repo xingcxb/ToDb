@@ -17,14 +17,9 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item command="Redis">Redis
-<!--                    <a @click="toView('redis')">Redis</a>-->
-                  </el-dropdown-item>
-                  <el-dropdown-item command="MySQL">
-<!--                    <a @click="toView('MySQL')">MySQL</a>-->
-                  </el-dropdown-item>
-                  <el-divider/>
-                  <el-dropdown-item command="other">other</el-dropdown-item>
+                  <el-dropdown-item command="Redis">Redis</el-dropdown-item>
+                  <el-dropdown-item command="MySQL">MySQL</el-dropdown-item>
+                  <el-dropdown-item command="other" divided disabled>other</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>

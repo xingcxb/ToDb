@@ -1,168 +1,168 @@
 <template>
-  <br />
+  <br/>
   <!--自动刷新-->
-  <a-row style="width: 100%; margin-right: 2px">
-    <a-col :span="24">
+  <el-row style="width: 100%; margin-right: 2px">
+    <el-col :span="24">
       <div style="float: right">
-        <a-tag type="card">
-          <sync-outlined spin />
+        <el-tag type="card">
+          <sync-outlined spin/>
           自动刷新
-        </a-tag>
-        <a-tooltip placement="bottom">
-          <template #title>
-            <span>自动刷新开关，每5秒刷新一次</span>
-          </template>
-          <a-switch
-            @click="changeAutoRefresh"
-            v-model:checked="autoRefresh"
-            checked-children="开"
-            un-checked-children="关"
-            >{{ autoRefresh }}
-          </a-switch>
-        </a-tooltip>
+        </el-tag>
+        <el-tooltip placement="bottom" content="自动刷新开关，每5秒刷新一次">
+          <el-switch
+              change="changeAutoRefresh"
+              v-model="autoRefresh"
+              active-text="开"
+              inactive-text="关"
+          >{{ autoRefresh }}
+          </el-switch>
+        </el-tooltip>
       </div>
-    </a-col>
-  </a-row>
-  <br />
+    </el-col>
+  </el-row>
+  <br/>
   <!--基础信息-->
-  <a-row :gutter="16" justify="space-around" style="margin-left: 2px">
+  <el-row :gutter="16" justify="space-around" style="margin-left: 2px">
     <!-- server status row -->
-    <a-col :span="8" class="gutter-row">
-      <a-card>
-        <template #title>
+    <el-col :span="8" class="gutter-row">
+      <el-card shadow="hover">
+        <template #header>
           <img
-            src="../../public/status/service.png"
-            alt="service"
-            style="width: 40px; height: 40px"
+              src="../../public/status/service.png"
+              alt="service"
+              style="width: 40px; height: 40px"
           />
           <span>服务器</span>
         </template>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info">
+          <el-tag class="server-status-container" type="info">
             Redis版本：
             <span class="server-status-text">{{
-              serviceInfo.data.version
-            }}</span>
-          </a-tag>
+                serviceInfo.data.version
+              }}</span>
+          </el-tag>
         </p>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info" size="big">
+          <el-tag class="server-status-container" type="info" size="big">
             OS：
             <span class="server-status-text">{{ serviceInfo.data.os }}</span>
-          </a-tag>
+          </el-tag>
         </p>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info" size="big">
+          <el-tag class="server-status-container" type="info" size="big">
             进程ID：
             <span class="server-status-text">{{
-              serviceInfo.data.process
-            }}</span>
-          </a-tag>
+                serviceInfo.data.process
+              }}</span>
+          </el-tag>
         </p>
-      </a-card>
-    </a-col>
+      </el-card>
+    </el-col>
     <!-- memory row -->
-    <a-col :span="8" class="gutter-row">
-      <a-card>
-        <template #title>
+    <el-col :span="8" class="gutter-row">
+      <el-card shadow="hover">
+        <template #header>
           <img
-            src="../../public/status/memory.png"
-            alt="service"
-            style="width: 40px; height: 40px"
+              src="../../public/status/memory.png"
+              alt="service"
+              style="width: 40px; height: 40px"
           />
           <span>内存</span>
         </template>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info" size="big">
+          <el-tag class="server-status-container" type="info" size="big">
             已用内存：
             <span class="server-status-text">{{
-              memoryInfo.data.usedMemory
-            }}</span>
-          </a-tag>
+                memoryInfo.data.usedMemory
+              }}</span>
+          </el-tag>
         </p>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info" size="big">
+          <el-tag class="server-status-container" type="info" size="big">
             内存占用峰值：
             <span class="server-status-text">{{
-              memoryInfo.data.usedBigMemory
-            }}</span>
-          </a-tag>
+                memoryInfo.data.usedBigMemory
+              }}</span>
+          </el-tag>
         </p>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info" size="big">
+          <el-tag class="server-status-container" type="info" size="big">
             Lua占用内存：
             <span class="server-status-text">{{
-              memoryInfo.data.luaMemory
-            }}</span>
-          </a-tag>
+                memoryInfo.data.luaMemory
+              }}</span>
+          </el-tag>
         </p>
-      </a-card>
-    </a-col>
-    <a-col :span="8" class="gutter-row">
-      <a-card>
-        <template #title>
+      </el-card>
+    </el-col>
+    <el-col :span="8" class="gutter-row">
+      <el-card shadow="hover">
+        <template #header>
           <img
-            src="../../public/status/history.png"
-            alt="service"
-            style="width: 40px; height: 40px"
+              src="../../public/status/history.png"
+              alt="service"
+              style="width: 40px; height: 40px"
           />
           <span>历史</span>
         </template>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info" size="big">
+          <el-tag class="server-status-container" type="info" size="big">
             客户端连接数：
             <span class="server-status-text">{{
-              historyInfo.data.connectCount
-            }}</span>
-          </a-tag>
+                historyInfo.data.connectCount
+              }}</span>
+          </el-tag>
         </p>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info" size="big">
+          <el-tag class="server-status-container" type="info" size="big">
             历史连接数：
             <span class="server-status-text">{{
-              historyInfo.data.historyCount
-            }}</span>
-          </a-tag>
+                historyInfo.data.historyCount
+              }}</span>
+          </el-tag>
         </p>
         <p class="server-status-tag-p">
-          <a-tag class="server-status-container" type="info" size="big">
+          <el-tag class="server-status-container" type="info" size="big">
             历史命令数：
             <span class="server-status-text">{{
-              historyInfo.data.historyInstructions
-            }}</span>
-          </a-tag>
+                historyInfo.data.historyInstructions
+              }}</span>
+          </el-tag>
         </p>
-      </a-card>
-    </a-col>
-  </a-row>
-  <br />
+      </el-card>
+    </el-col>
+  </el-row>
+  <br/>
   <!--键值信息-->
-  <a-row style="width: 100%; margin-right: 2px">
-    <a-col :span="24">
-      <a-card>
+  <el-row style="width: 100%; margin-right: 2px">
+    <el-col :span="24">
+      <el-card shadow="hover">
         <template #title>
           <img
-            src="../../public/status/kv.png"
-            alt="service"
-            style="width: 40px; height: 40px"
+              src="../../public/status/kv.png"
+              alt="service"
+              style="width: 40px; height: 40px"
           />
           <span>键值统计</span>
         </template>
-        <a-table
-          :dataSource="kvInfo.data"
-          :columns="columns"
-          :pagination="false"
+        <el-table
+            :data="kvInfo.data"
+            style="width: 100%"
+            border
         >
-        </a-table>
-      </a-card>
-    </a-col>
-  </a-row>
+          <el-table-column prop="db" label="DB" />
+          <el-table-column prop="keys" label="Keys" />
+          <el-table-column prop="expires" label="Expires" />
+          <el-table-column prop="avgTtl" label="Avg TTL" />
+        </el-table>
+      </el-card>
+    </el-col>
+  </el-row>
 </template>
 
 <script setup>
-import { SyncOutlined } from "@ant-design/icons-vue";
-import { onBeforeMount, onBeforeUnmount, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
+import {onBeforeMount, onBeforeUnmount, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
 
 const router = useRouter();
 //是否刷新
@@ -186,29 +186,6 @@ let historyInfo = reactive({
 let kvInfo = reactive({
   data: [],
 });
-// 表格标题
-const columns = [
-  {
-    title: "DB",
-    dataIndex: "db",
-    key: "db",
-  },
-  {
-    title: "Keys",
-    dataIndex: "keys",
-    key: "keys",
-  },
-  {
-    title: "Expires",
-    dataIndex: "expires",
-    key: "expires",
-  },
-  {
-    title: "Avg TTL",
-    dataIndex: "avgTtl",
-    key: "avgTtl",
-  },
-];
 
 // 页面加载时同步加载redis数据
 onBeforeMount(() => {
@@ -221,9 +198,7 @@ onBeforeMount(() => {
     return;
   }
   // 获取基本数据
-  window.go.main.App.LoadingDbResource(
-    router.currentRoute.value.query.key
-  ).then((resolve) => {
+  window.go.main.App.LoadingDbResource(router.currentRoute.value.query.key).then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
       // console.log(resolve)
@@ -291,7 +266,7 @@ function changeAutoRefresh() {
     timer = setInterval(() => {
       // 刷新
       window.go.main.App.LoadingDbResource(
-        router.currentRoute.value.query.data
+          router.currentRoute.value.query.data
       ).then((resolve) => {
         if (resolve !== "") {
           // 如果返回值中不为空字符串才进行操作

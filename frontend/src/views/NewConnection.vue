@@ -1,96 +1,101 @@
 <template>
-  <a-modal
-    v-model:visible="visible"
-    v-model:title="connType"
-    :confirm-loading="confirmLoading"
-    :afterClose="handleClose"
+  <el-dialog
+      v-model:visible="visible"
+      title="connType"
+      width="30%"
+      v-model="confirmLoading"
+      before-close="handleClose"
   >
-    <a-row>
-      <a-col :span="24" class="imageRow">
+    <el-row>
+      <el-col :span="24" class="imageRow">
         <!--  //472*72-->
-        <a-image
-          :width="100"
-          :height="72"
-          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+        <img
+            :width="100"
+            :height="72"
+            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         />
-      </a-col>
-    </a-row>
-    <br />
-    <a-row>
-      <a-col :span="1"></a-col>
-      <a-col :span="4">连接名:</a-col>
-      <a-col :span="18">
-        <a-input v-model:value="connectionInfo.alias" placeholder="连接别名" />
-      </a-col>
-      <a-col :span="1"></a-col>
-    </a-row>
-    <br />
-    <a-row>
-      <a-col :span="1"></a-col>
-      <a-col :span="4">主机:</a-col>
-      <a-col :span="18">
-        <a-input
-          v-model:value="connectionInfo.hostURL"
-          placeholder="连接地址"
+      </el-col>
+    </el-row>
+    <br/>
+    <el-row>
+      <el-col :span="1"></el-col>
+      <el-col :span="4">连接名:</el-col>
+      <el-col :span="18">
+        <el-input v-model="connectionInfo.alias" placeholder="连接别名"/>
+      </el-col>
+      <el-col :span="1"></el-col>
+    </el-row>
+    <br/>
+    <el-row>
+      <el-col :span="1"></el-col>
+      <el-col :span="4">主机:</el-col>
+      <el-col :span="18">
+        <el-input
+            v-model="connectionInfo.hostURL"
+            placeholder="连接地址"
         />
-      </a-col>
-      <a-col :span="1"></a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="1"></a-col>
-      <a-col :span="4">端口</a-col>
-      <a-col :span="5">
-        <a-input v-model:value="connectionInfo.port" placeholder="连接端口" />
-      </a-col>
-      <a-col :span="14"></a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="1"></a-col>
-      <a-col :span="4">用户名:</a-col>
-      <a-col :span="10">
-        <a-input v-model:value="connectionInfo.username" placeholder="用户名" />
-      </a-col>
-      <a-col :span="9"></a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="1"></a-col>
-      <a-col :span="4">密码:</a-col>
-      <a-col :span="10">
-        <a-input-password
-          v-model:value="connectionInfo.password"
-          placeholder="密码"
+      </el-col>
+      <el-col :span="1"></el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="1"></el-col>
+      <el-col :span="4">端口</el-col>
+      <el-col :span="5">
+        <el-input v-model="connectionInfo.port" placeholder="连接端口"/>
+      </el-col>
+      <el-col :span="14"></el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="1"></el-col>
+      <el-col :span="4">用户名:</el-col>
+      <el-col :span="10">
+        <el-input v-model="connectionInfo.username" placeholder="用户名"/>
+      </el-col>
+      <el-col :span="9"></el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="1"></el-col>
+      <el-col :span="4">密码:</el-col>
+      <el-col :span="10">
+        <el-input
+            type="password"
+            v-model="connectionInfo.password"
+            placeholder="密码"
+            show-password
         />
-      </a-col>
-      <a-col :span="9"></a-col>
-    </a-row>
-    <a-row>
-      <a-col :span="5"></a-col>
-      <a-col :span="18">
-        <a-checkbox v-model:checked="connectionInfo.savePassword"
-          >保存密码</a-checkbox
+      </el-col>
+      <el-col :span="9"></el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="5"></el-col>
+      <el-col :span="18">
+        <el-checkbox
+            v-model="connectionInfo.savePassword"
+        >保存密码
+        </el-checkbox
         >
-      </a-col>
-      <a-col :span="1"></a-col>
-    </a-row>
-    <br />
-    <a-row>
-      <a-col :span="1"></a-col>
-      <a-col :span="3">
-        <a-button type="primary" @click="testConnection">测试连接</a-button>
-      </a-col>
-      <a-col :span="13"></a-col>
-      <a-col :span="3">
-        <a-button @click="ok">确定</a-button>
-      </a-col>
-      <a-col :span="3">
-        <a-button >取消</a-button>
-      </a-col>
-    </a-row>
-  </a-modal>
+      </el-col>
+      <el-col :span="1"></el-col>
+    </el-row>
+    <br/>
+    <el-row>
+      <el-col :span="1"></el-col>
+      <el-col :span="3">
+        <el-button type="primary" @click="testConnection">测试连接</el-button>
+      </el-col>
+      <el-col :span="13"></el-col>
+      <el-col :span="3">
+        <el-button @click="ok">确定</el-button>
+      </el-col>
+      <el-col :span="3">
+        <el-button>取消</el-button>
+      </el-col>
+    </el-row>
+  </el-dialog>
 </template>
 
 <script setup>
-import { reactive, ref, watch } from "vue";
+import {reactive, ref, watch} from "vue";
 
 // 接收父组件参数
 const props = defineProps(["visible", "connType"]);
@@ -131,12 +136,11 @@ function handleClose() {
 }
 
 
-
-
 // 测试连接
 function testConnection() {
   window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then(
-    () => {}
+      () => {
+      }
   );
 }
 

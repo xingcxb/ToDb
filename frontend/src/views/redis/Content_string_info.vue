@@ -1,14 +1,14 @@
 <template>
-  <a-row :align="middle" style="margin-top: 10px">
-    <a-col :offset="10" :span="4">
+  <el-row :align="middle" style="margin-top: 10px">
+    <el-col :offset="10" :span="4">
       <img
         src="../../public/info/key.png"
         alt="nowKey"
         style="vertical-align: middle"
       />
       <span style="font-size: 26px; vertical-align: middle">{{ nowKey }}</span>
-    </a-col>
-    <a-col :offset="8" :span="1">
+    </el-col>
+    <el-col :offset="8" :span="1">
       <!--关闭图片-->
       <img
         src="../../public/info/close.png"
@@ -16,57 +16,57 @@
         style="vertical-align: middle; cursor: pointer"
         @click="close"
       />
-    </a-col>
-  </a-row>
-  <a-row style="margin-top: 20px">
-    <a-col :offset="1" :span="10">
-      <a-input-group compact>
-        <a-input
+    </el-col>
+  </el-row>
+  <el-row style="margin-top: 20px">
+    <el-col :offset="1" :span="10">
+      <el-input-group compact>
+        <el-input
           :addon-before="value.data.type"
           v-model:value="nowKey"
           style="width: calc(100% - 30px)"
         >
-        </a-input>
-        <a-button style="width: 30px" @click="rename">
+        </el-input>
+        <el-button style="width: 30px" @click="rename">
           <!--设置新的key-->
           <template #icon>
             <check-outlined />
           </template>
-        </a-button>
-      </a-input-group>
-    </a-col>
-    <a-col :offset="1" :span="6">
-      <a-input-group compact>
-        <a-input
+        </el-button>
+      </el-input-group>
+    </el-col>
+    <el-col :offset="1" :span="6">
+      <el-input-group compact>
+        <el-input
           addon-before="TTL"
           v-model:value="ttl"
           style="width: calc(100% - 60px)"
         >
-        </a-input>
-        <a-button style="width: 30px">
+        </el-input>
+        <el-button style="width: 30px">
           <!--设置为持久化数据 无效废弃-->
           <template #icon>
             <close-outlined />
           </template>
-        </a-button>
-        <a-button style="width: 30px" @click="updateTtl">
+        </el-button>
+        <el-button style="width: 30px" @click="updateTtl">
           <!--设置数据过期时间-->
           <template #icon>
             <check-outlined />
           </template>
-        </a-button>
-      </a-input-group>
-    </a-col>
-    <a-col :offset="2" :span="1">
-      <a-button type="primary" danger :size="size" @click="del">
+        </el-button>
+      </el-input-group>
+    </el-col>
+    <el-col :offset="2" :span="1">
+      <el-button type="primary" danger :size="size" @click="del">
         <template #icon>
           <!--删除-->
           <delete-outlined />
         </template>
-      </a-button>
-    </a-col>
-    <a-col :span="1">
-      <a-button
+      </el-button>
+    </el-col>
+    <el-col :span="1">
+      <el-button
         type="primary"
         @click="getInfo"
         :size="size"
@@ -76,10 +76,10 @@
           <!--刷新-->
           <redo-outlined />
         </template>
-      </a-button>
-    </a-col>
-    <a-col :span="1">
-      <a-button
+      </el-button>
+    </el-col>
+    <el-col :span="1">
+      <el-button
         type="primary"
         :size="size"
         style="background: #07c245; border: none"
@@ -89,43 +89,46 @@
           <!--获取命令-->
           <code-outlined />
         </template>
-      </a-button>
-    </a-col>
-  </a-row>
-  <a-row style="margin-top: 20px">
-    <a-col :offset="1">
-      <a-select
-        ref="select"
-        v-model:value="formatType"
+      </el-button>
+    </el-col>
+  </el-row>
+  <el-row style="margin-top: 20px">
+    <el-col :offset="1">
+      <el-select
+        v-model="formatType"
         style="width: 120px"
-        :options="formatTypeList"
-        @focus="focus"
-        @change="handleChange"
+        change="handleChange"
       >
-      </a-select>
-    </a-col>
-    <a-col>
-      <a-button>Size：{{ contentSize }}B</a-button>
-    </a-col>
-    <a-col>
-      <a-button
+        <el-option
+            v-for="item in formatTypeList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+      </el-select>
+    </el-col>
+    <el-col>
+      <el-button>Size：{{ contentSize }}B</el-button>
+    </el-col>
+    <el-col>
+      <el-button
         style="border: none; padding-left: 5px"
         v-clipboard:copy="content"
       >
         <copy-outlined />复制
-      </a-button>
-    </a-col>
-  </a-row>
-  <a-row style="margin-top: 10px">
-    <a-col :offset="1" :span="22">
-      <a-textarea v-model:value="content" :size="large" :rows="4" />
-    </a-col>
-  </a-row>
-  <a-row style="margin-top: 10px">
-    <a-col :offset="1" :span="1">
-      <a-button type="primary" @click="saveValue"> 保存 </a-button>
-    </a-col>
-  </a-row>
+      </el-button>
+    </el-col>
+  </el-row>
+  <el-row style="margin-top: 10px">
+    <el-col :offset="1" :span="22">
+      <el-input v-model="content" size="large" :rows="4" />
+    </el-col>
+  </el-row>
+  <el-row style="margin-top: 10px">
+    <el-col :offset="1" :span="1">
+      <el-button type="primary" @click="saveValue"> 保存 </el-button>
+    </el-col>
+  </el-row>
 </template>
 
 <script setup>

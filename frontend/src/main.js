@@ -8,18 +8,18 @@
  *
  * Copyright (c) 2022 by symbol, All Rights Reserved.
  */
-import { createApp } from "vue";
+import {createApp} from "vue";
 import App from "./App.vue";
 import router from "./router";
 import i18n from "./i18n";
-import Antd from "ant-design-vue";
-import "ant-design-vue/dist/antd.css";
-import { VueClipboard } from "@soerenmartius/vue3-clipboard";
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import {VueClipboard} from "@soerenmartius/vue3-clipboard";
 
 
 createApp(App)
-  .use(router)
-  .use(i18n)
-  .use(Antd)
-  .use(VueClipboard)
-  .mount("#app");
+    .use(router)
+    .use(i18n)
+    .use(ElementPlus)
+    .use(VueClipboard)
+    .mount("#app");

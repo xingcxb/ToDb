@@ -1,109 +1,92 @@
 <template>
-  <!--header-->
-  <!--头部-->
-  <div class="header" data-wails-drag>
-    <!--导航-->
-    <a-row style="height: 66px">
-      <a-col :span="4">
-        <a-dropdown :trigger="['click']" :placement="top">
-          <a
-              class="ant-dropdown-link header-a"
-              @click.prevent
-          >
-            <img
-                src="./assets/images/quick/conn.png"
-                class="quickIcon"
-                alt=""
-            />
-            <p style="font-size: 10px">连接</p>
-          </a>
-          <template #overlay>
-            <a-menu>
-              <a-menu-item key="0">
-                <a @click="toView('redis')">Redis</a>
-                <!--                <span :click="toView('redis')">Redis</span>-->
-              </a-menu-item>
-              <a-menu-item key="1">
-                <a @click="toView('MySQL')">MySQL</a>
-              </a-menu-item>
-              <a-menu-divider/>
-              <a-menu-item key="3">other</a-menu-item>
-            </a-menu>
-          </template>
-        </a-dropdown>
-      </a-col>
-      <a-col :span="4">
-        <a href="" class="header-a">
-          <img src="./assets/images/quick/table.png" class="quickIcon" alt=""/>
-          <p style="font-size: 10px; text-align: center">表</p>
-        </a>
-      </a-col>
-      <a-col :span="4">
-        <a href="" class="header-a">
-          <img
-              src="./assets/images/quick/select.png"
-              class="quickIcon"
-              alt=""
-          />
-          <p style="font-size: 10px; text-align: center">查询</p>
-        </a>
-      </a-col>
-      <a-col :span="4">
-        <a @click="importFile" class="header-a">
-          <img
-              src="./assets/images/quick/import.png"
-              class="quickIcon"
-              alt=""
-          />
-          <p style="font-size: 10px; text-align: center">导入</p>
-        </a>
-      </a-col>
-      <a-col :span="4">
-        <a @click="exportConn" class="header-a">
-          <img
-              src="./assets/images/quick/export.png"
-              class="quickIcon"
-              alt=""
-          />
-          <p style="font-size: 10px; text-align: center">导出</p>
-        </a>
-      </a-col>
-      <a-col :span="4">
-        <!--广告-->
-      </a-col>
-    </a-row>
-    <Connection
-        :visible="visible"
-        :connType="connType"
-        @ChangeVisible="visible = $event.visible"
-        @ChangeConnType="connType = $event.connType"
-    ></Connection>
-  </div>
-  <div class="box" ref="box">
-    <div class="left">
-      <!--左侧div内容-->
-      <a-directory-tree
-          v-model:expandedKeys="expandedKeys"
-          v-model:selectedKeys="selectedKeys"
-          :tree-data="listData.data"
-          :load-data="onLoadData"
-          @select="onSelect"
-          style="
-          min-width: 210px;
-          /**width: calc(20% - 10px);*/
-          overflow: hidden;
-          white-space: nowrap;
-          width: 406px;
-          background: rgba(224, 225, 225, 0.1);
-        "
-      >
-      </a-directory-tree>
-    </div>
-    <div class="resize" @mousedown="handleMouseMoveLine"></div>
-    <div class="mid">
-      <!--右侧div内容-->
-      <router-view :key="$route.path + Date.now()"/>
-    </div>
+    <div class="common-layout">
+<!--  <div class="header" data-wails-drag>-->
+    <el-container>
+      <el-header>
+        <!--头部 导航-->
+        <el-row style="height: 66px">
+          <el-col :span="4">
+            <el-dropdown trigger="click">
+              <span class="el-dropdown-link">
+                <img src="./assets/images/quick/conn.png"
+                     class="quickIcon"
+                     alt=""
+                />
+                <br/>
+                <span style="font-size: 10px">连接</span>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item command="Redis">Redis
+<!--                    <a @click="toView('redis')">Redis</a>-->
+                  </el-dropdown-item>
+                  <el-dropdown-item command="MySQL">
+<!--                    <a @click="toView('MySQL')">MySQL</a>-->
+                  </el-dropdown-item>
+                  <el-divider/>
+                  <el-dropdown-item command="other">other</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-col>
+          <el-col :span="4">
+            <a href="" class="header-a">
+              <img src="./assets/images/quick/table.png" class="quickIcon" alt=""/>
+              <span style="font-size: 10px; text-align: center">表</span>
+            </a>
+          </el-col>
+          <el-col :span="4">
+            <a href="" class="header-a">
+              <img
+                  src="./assets/images/quick/select.png"
+                  class="quickIcon"
+                  alt=""
+              />
+              <span style="font-size: 10px; text-align: center">查询</span>
+            </a>
+          </el-col>
+          <el-col :span="4">
+            <a @click="importFile" class="header-a">
+              <img
+                  src="./assets/images/quick/import.png"
+                  class="quickIcon"
+                  alt=""
+              />
+              <span style="font-size: 10px; text-align: center">导入</span>
+            </a>
+          </el-col>
+          <el-col :span="4">
+            <a @click="exportConn" class="header-a">
+              <img
+                  src="./assets/images/quick/export.png"
+                  class="quickIcon"
+                  alt=""
+              />
+              <span style="font-size: 10px; text-align: center">导出</span>
+            </a>
+          </el-col>
+          <span-col :span="4">
+            <!--未想到-->
+          </span-col>
+        </el-row>
+        <Connection
+            :visible="visible"
+            :connType="connType"
+            @ChangeVisible="visible = $event.visible"
+            @ChangeConnType="connType = $event.connType"
+        ></Connection>
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <!--左侧内容-->
+          <el-tree-v2 :data="listData.data"></el-tree-v2>
+        </el-aside>
+        <el-main>
+          <!--右侧内容-->
+          <router-view :key="$route.path + Date.now()"/>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
@@ -120,8 +103,6 @@ let listData = reactive({
 
 let visible = ref(false);
 let connType = ref("");
-const expandedKeys = ref([]);
-const selectedKeys = ref([]);
 
 onBeforeMount(() => {
   router.push({
@@ -253,68 +234,9 @@ let onLoadData = (treeNode) => {
     resolve();
   });
 };
-
-//鼠标移动到边线
-function handleMouseMoveLine() {
-  var resize = document.getElementsByClassName("resize");
-  var left = document.getElementsByClassName("left");
-  var mid = document.getElementsByClassName("mid");
-  var box = document.getElementsByClassName("box");
-  console.log(document)
-  console.log(resize[0].left + "xxxxx")
-  console.log("resize:", resize);
-  console.log("left:", left);
-  console.log("mid:", mid);
-  console.log("box:", box)
-
-  for (let i = 0; i < resize.length; i++) {
-    console.log("resize:", resize[i]);
-    // 鼠标按下事件
-    resize[i].onmousedown = function (e) {
-      //颜色改变提醒
-      resize[i].style.background = "#818181";
-      var startX = e.clientX;
-      resize[i].left = resize[i].offsetLeft;
-      // 鼠标拖动事件
-      document.getElementById("app").onmousemove = function (e) {
-        console.log("this is e    ", e)
-        var endX = e.clientX;
-        // （endx-startx）=移动的距离。resize[i].left+移动的距离=左边区域最后的宽度
-        var moveLen = resize[i].left + (endX - startX);
-        // 容器宽度 - 左边区域的宽度 = 右边区域的宽度
-        var maxT = box[i].clientWidth - resize[i].offsetWidth;
-
-        // 左边区域的最小宽度为32px
-        if (moveLen < 406) moveLen = 406;
-        //右边区域最小宽度为150px
-        if (moveLen > maxT - 655) moveLen = maxT - 655;
-
-        // 设置左侧区域的宽度
-        resize[i].style.left = moveLen;
-
-        for (let j = 0; j < left.length; j++) {
-          console.log("this is moveLen ", moveLen)
-          left[j].style.width = moveLen + "px";
-          mid[j].style.width = box[i].clientWidth - moveLen - 10 + "px";
-        }
-      };
-      // 鼠标松开事件
-      document.onmouseup = function (evt) {
-        //颜色恢复
-        resize[i].style.background = "#d6d6d6";
-        document.onmousemove = null;
-        document.onmouseup = null;
-        //当你不在需要继续获得鼠标消息就要应该调用ReleaseCapture()释放掉
-        resize[i].releaseCapture && resize[i].releaseCapture();
-      };
-      //该函数在属于当前线程的指定窗口里设置鼠标捕获
-      resize[i].setCapture && resize[i].setCapture();
-      return false;
-    };
-  }
-}
 </script>
-<style>
+
+<style scoped>
 body {
   overscroll-behavior: none;
 }
@@ -325,54 +247,8 @@ body {
   background: #f0efee;
 }
 
-.header-a {
-  text-align: center;
-  display: block;
-  cursor: default;
-}
-
-.box {
-  min-height: 500px;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  /*border-top: 1px solid black;*/
-}
-
-/**
- * 左侧区域
- */
-.left {
-  /*width: calc(20% - 10px);*/
-  width: 406px;
-  min-height: 661px;
-  height: 100%;
-  float: left;
-  background: rgba(224, 225, 225, 0.1);
-}
-
-.resize {
-  min-height: 661px;
-  height: 100%;
-  width: 2px;
-  float: left;
-  border-right: 2px solid #d5d6d6;
-  background-image: url("src/assets/line.png");
-}
-
-.resize:hover {
-  cursor: col-resize;
-}
-
-.mid {
-  float: left;
-  width: calc(100% - 406px); /*右侧初始化宽度*/
-  min-height: 661px;
-  height: 100%;
-}
-
 .quickIcon {
-  padding: 0;
+  padding-top: 3px;
   text-align: center;
   height: 44px;
   width: auto;

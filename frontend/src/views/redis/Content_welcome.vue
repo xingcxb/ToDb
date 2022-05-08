@@ -9,16 +9,16 @@
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
 -->
 <template>
-  <a-row
+  <el-row
     style="min-height: 600px; height: 100%"
     justify="space-around"
     align="middle"
     type="flex"
   >
-    <a-col :span="12" :push="8">
+    <el-col :span="12" :push="8">
       <img src="../../assets/logos/logo.png" alt="ToDB" />
-    </a-col>
-    <a-col :span="12">
+    </el-col>
+    <el-col :span="12">
       <span class="app_name">ToDB </span><span class="tail">.app</span>
       <br />
       <span class="other">Version 0.1.0</span><br />
@@ -34,8 +34,8 @@
           >Icons8</span
         >
       </span>
-    </a-col>
-  </a-row>
+    </el-col>
+  </el-row>
 </template>
 
 <script setup>

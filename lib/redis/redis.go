@@ -354,7 +354,7 @@ func GetKeyInfo(ctx context.Context, key string) string {
 	return string(strByte)
 }
 
-// 获取值类型，返回类型
+// GetType 获取值类型，返回类型
 func GetType(ctx context.Context, key string) string {
 	allTypeStr := rdb.Type(ctx, key).String()
 	arr := strings.Split(allTypeStr, " ")
@@ -366,7 +366,7 @@ func GetType(ctx context.Context, key string) string {
 	return ""
 }
 
-// Get 获取redis数据，返回值和大小
+// GetValue 获取redis数据，返回值和大小
 func GetValue(ctx context.Context, key string) string {
 	val, err := rdb.Get(ctx, key).Result()
 	if err != nil {
@@ -387,7 +387,7 @@ func GetTTL(ctx context.Context, key string) string {
 	return strconv.FormatInt(int64(val.Seconds()), 10)
 }
 
-// 添加数据
+// AddData 添加数据
 func AddData(ctx context.Context, key, value string, ttl int) error {
 	if ttl == -1 {
 		return rdb.Set(ctx, key, value, 0).Err()

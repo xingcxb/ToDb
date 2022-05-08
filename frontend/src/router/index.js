@@ -9,7 +9,7 @@
  * Copyright (c) 2022 by symbol, All Rights Reserved.
  */
 import { createRouter, createWebHashHistory } from "vue-router";
-import Home from "@/views/Home.vue";
+import Home from "../views/Home.vue";
 
 const routes = [
   {
@@ -17,17 +17,6 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-  },
-  {
-    // 关于
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: function () {
-      return import(/* webpackChunkName: "about" */ "../views/About.vue");
-    },
   },
   {
     // 新建连接

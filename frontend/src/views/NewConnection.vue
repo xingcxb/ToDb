@@ -91,7 +91,6 @@
 
 <script setup>
 import { reactive, ref, watch } from "vue";
-import {TestConnection,Ok} from '../../../../wailsjs/go/main/App'
 
 // 接收父组件参数
 const props = defineProps(["visible", "connType"]);
@@ -136,14 +135,14 @@ function handleClose() {
 
 // 测试连接
 function testConnection() {
-  TestConnection(JSON.stringify(connectionInfo)).then(
+  window.go.main.App.TestConnection(JSON.stringify(connectionInfo)).then(
     () => {}
   );
 }
 
 // 确定按钮
 function ok() {
-  Ok(JSON.stringify(connectionInfo)).then((resolve) => {
+  window.go.main.App.Ok(JSON.stringify(connectionInfo)).then((resolve) => {
     var result = JSON.parse(resolve)
     if (result.code === 200) {
       confirmLoading.value = true

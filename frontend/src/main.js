@@ -10,20 +10,16 @@
  */
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "@/router";
-import i18n from "@/i18n";
+import router from "./router";
+import i18n from "./i18n";
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import { VueClipboard } from "@soerenmartius/vue3-clipboard";
 
-// Register global common components
-// 注册全局通用组件
-import publicComponents from "@/components/public";
 
 createApp(App)
   .use(router)
   .use(i18n)
-  .use(publicComponents)
   .use(Antd)
   .use(VueClipboard)
   .mount("#app");

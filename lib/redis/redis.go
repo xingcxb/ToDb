@@ -329,7 +329,7 @@ func GetDbKeys(ctx context.Context, cursor uint64) ([]string, error) {
 	return keys, nil
 }
 
-// 值信息
+// VObj 值信息
 type VObj struct {
 	Size  int    `json:"size"`  //值的大小
 	Value string `json:"value"` //值的内容

@@ -31,7 +31,7 @@
       <a-card>
         <template #title>
           <img
-            src="../../../public/status/service.png"
+            src="../../public/status/service.png"
             alt="service"
             style="width: 40px; height: 40px"
           />
@@ -66,7 +66,7 @@
       <a-card>
         <template #title>
           <img
-            src="../../../public/status/memory.png"
+            src="../../public/status/memory.png"
             alt="service"
             style="width: 40px; height: 40px"
           />
@@ -102,7 +102,7 @@
       <a-card>
         <template #title>
           <img
-            src="../../../public/status/history.png"
+            src="../../public/status/history.png"
             alt="service"
             style="width: 40px; height: 40px"
           />
@@ -142,7 +142,7 @@
       <a-card>
         <template #title>
           <img
-            src="../../../public/status/kv.png"
+            src="../../public/status/kv.png"
             alt="service"
             style="width: 40px; height: 40px"
           />
@@ -163,7 +163,6 @@
 import { SyncOutlined } from "@ant-design/icons-vue";
 import { onBeforeMount, onBeforeUnmount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import {LoadingDbResource,GetNodeData} from '../../../../../wailsjs/go/main/App'
 
 const router = useRouter();
 //是否刷新
@@ -222,7 +221,7 @@ onBeforeMount(() => {
     return;
   }
   // 获取基本数据
-  LoadingDbResource(
+  window.go.main.App.LoadingDbResource(
     router.currentRoute.value.query.key
   ).then((resolve) => {
     if (resolve !== "") {
@@ -291,7 +290,7 @@ function changeAutoRefresh() {
     // 开启定时器
     timer = setInterval(() => {
       // 刷新
-      LoadingDbResource(
+      window.go.main.App.LoadingDbResource(
         router.currentRoute.value.query.data
       ).then((resolve) => {
         if (resolve !== "") {

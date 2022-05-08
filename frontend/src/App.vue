@@ -111,7 +111,6 @@
 import Connection from "./views/NewConnection.vue";
 import {onBeforeMount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
-import {ExportConn, GetNodeData, ImportConn, LoadingConnKey,LoadingConnInfo} from '../../../wailsjs/go/main/App'
 
 const router = useRouter();
 
@@ -128,7 +127,7 @@ onBeforeMount(() => {
   router.push({
     path: "/rightContent/default",
   });
-  LoadingConnKey().then((resolve) => {
+  window.go.main.App.LoadingConnKey().then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
       listData.data = JSON.parse(resolve);
@@ -160,12 +159,12 @@ function toView(v) {
 
 // 导入连接
 function importFile() {
-  ImportConn()
+  window.go.main.App.ImportConn()
 }
 
 // 导出连接
 function exportConn() {
-  ExportConn()
+  window.go.main.App.ExportConn()
 }
 
 // 选中文字也可以进行操作
@@ -185,7 +184,7 @@ function onSelect(selectedKeys, info) {
     let connType = parentKeyArr[0];
     let connName = parentKeyArr[1];
     //selectKey是显示具体的节点key，parent显示的是父节点
-    GetNodeData(
+    window.go.main.App.GetNodeData(
         connType,
         connName,
         selectedKeys[0] + ""
@@ -244,7 +243,7 @@ let onLoadData = (treeNode) => {
     return;
   }
   return new Promise((resolve) => {
-    LoadingConnInfo(key[1]).then((resolve) => {
+    window.go.main.App.LoadingConnInfo(key[1]).then((resolve) => {
       if (resolve !== "") {
         // 如果返回值中不为空字符串才进行操作
         treeNode.dataRef.children = JSON.parse(resolve);
@@ -358,7 +357,7 @@ body {
   width: 2px;
   float: left;
   border-right: 2px solid #d5d6d6;
-  background-image: url("./assets/line.png");
+  background-image: url("src/assets/line.png");
 }
 
 .resize:hover {

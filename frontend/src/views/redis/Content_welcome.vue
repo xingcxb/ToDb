@@ -39,9 +39,8 @@
 </template>
 
 <script setup>
-import {BrowserOpenURL} from '../../../../../wailsjs/runtime/runtime'
 function openBrowser(v) {
-  BrowserOpenURL(v);
+  runtime.BrowserOpenURL(v);
 }
 </script>
 

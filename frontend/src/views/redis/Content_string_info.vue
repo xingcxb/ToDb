@@ -2,7 +2,7 @@
   <a-row :align="middle" style="margin-top: 10px">
     <a-col :offset="10" :span="4">
       <img
-        src="../../../public/info/key.png"
+        src="../../public/info/key.png"
         alt="nowKey"
         style="vertical-align: middle"
       />
@@ -11,7 +11,7 @@
     <a-col :offset="8" :span="1">
       <!--关闭图片-->
       <img
-        src="../../../public/info/close.png"
+        src="../../public/info/close.png"
         alt="close"
         style="vertical-align: middle; cursor: pointer"
         @click="close"
@@ -140,7 +140,6 @@ import {
 } from "@ant-design/icons-vue";
 import { onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import {RedisDelKey,RedisUpTtl,RedisReName,RedisGetData,RedisSaveStringValue} from '../../../../../wailsjs/go/main/App'
 
 const router = useRouter();
 
@@ -217,7 +216,7 @@ function close() {
 
 // 删除
 function del() {
-  RedisDelKey(
+  window.go.main.App.RedisDelKey(
     connType.value,
     connName.value,
     nodeId.value,
@@ -227,7 +226,7 @@ function del() {
 
 // 更新剩余时间
 function updateTtl() {
-  RedisUpTtl(
+  window.go.main.App.RedisUpTtl(
     connType.value,
     connName.value,
     nodeId.value,
@@ -238,7 +237,7 @@ function updateTtl() {
 
 // 修改redis的键
 function rename() {
-  RedisReName(
+  window.go.main.App.RedisReName(
     connType.value,
     connName.value,
     nodeId.value,
@@ -251,7 +250,7 @@ function rename() {
 function getInfo() {
   if (connType.value == "redis") {
     // 从redis获取数据
-    RedisGetData(
+    window.go.main.App.RedisGetData(
       connType.value,
       connName.value,
       nodeId.value,
@@ -269,7 +268,7 @@ function getInfo() {
 
 // 保存值
 function saveValue() {
-  RedisSaveStringValue(
+  window.go.main.App.RedisSaveStringValue(
     connType.value,
     connName.value,
     nodeId.value,

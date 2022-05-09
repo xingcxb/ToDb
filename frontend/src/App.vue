@@ -1,25 +1,23 @@
 <template>
-    <div class="common-layout">
-<!--  <div class="header" data-wails-drag>-->
+  <div class="common-layout">
+    <!--  <div class="header" data-wails-drag>-->
     <el-container>
-      <el-header>
+      <el-header height="69px">
         <!--头部 导航-->
-        <el-row style="height: 66px">
-          <el-col :span="4">
-            <el-dropdown trigger="click">
-              <span class="el-dropdown-link">
-                <img src="./assets/images/quick/conn.png"
-                     class="quickIcon"
-                     alt=""
-                />
-                <br/>
-                <span style="font-size: 10px">连接</span>
-              </span>
+        <el-row style="height: 69px">
+          <el-col :offset="1" :span="3">
+            <el-dropdown trigger="click" style="cursor:default">
+              <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+                <div class="quickText_div">
+                  <img src="./assets/images/quick/conn.png" class="quickImg"><br>
+                  <span class="quickText">连接</span>
+                </div>
+              </el-card>
               <template #dropdown>
                 <el-dropdown-menu>
                   <el-dropdown-item command="Redis">Redis</el-dropdown-item>
                   <el-dropdown-item command="MySQL">MySQL</el-dropdown-item>
-                  <el-dropdown-item command="other" divided disabled>other</el-dropdown-item>
+                  <el-dropdown-item command="Other" divided disabled>Other</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -60,9 +58,9 @@
               <span style="font-size: 10px; text-align: center">导出</span>
             </a>
           </el-col>
-          <span-col :span="4">
+          <el-col :span="4">
             <!--未想到-->
-          </span-col>
+          </el-col>
         </el-row>
         <Connection
             :visible="visible"
@@ -236,16 +234,32 @@ body {
   overscroll-behavior: none;
 }
 
-.header {
-  height: 64px;
-  width: 100%;
-  background: #f0efee;
+/*.quickIcon {*/
+/*  padding-top: 3px;*/
+/*  text-align: center;*/
+/*  height: 44px;*/
+/*  width: auto;*/
+/*}*/
+
+.card {
+  width: 80px;
+  height: 67px;
+  border: 0px;
 }
 
-.quickIcon {
-  padding-top: 3px;
+.quickText_div {
   text-align: center;
-  height: 44px;
-  width: auto;
+  align-items: center;
+  /*width: 1px;*/
+  /*height: 60px;*/
+}
+
+.quickImg {
+  width: 49px;
+  height: 49px;
+}
+
+.quickText {
+  font-size: 10px;
 }
 </style>

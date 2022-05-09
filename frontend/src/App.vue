@@ -24,40 +24,48 @@
             </el-dropdown>
           </el-col>
           <el-col :offset="1" :span="3">
-            <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
-              <div class="quickText_div">
-                <img src="./assets/images/quick/table.png" class="quickImg">
-                <br/>
-                <span class="quickText">表</span>
-              </div>
-            </el-card>
+            <el-dropdown>
+              <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+                <div class="quickText_div">
+                  <img src="./assets/images/quick/table.png" class="quickImg">
+                  <br/>
+                  <span class="quickText">表</span>
+                </div>
+              </el-card>
+            </el-dropdown>
           </el-col>
           <el-col :offset="1" :span="3">
-            <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
-              <div class="quickText_div">
-                <img src="./assets/images/quick/select.png" class="quickImg">
-                <br/>
-                <span class="quickText">查询</span>
-              </div>
-            </el-card>
+            <el-dropdown>
+              <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+                <div class="quickText_div">
+                  <img src="./assets/images/quick/select.png" class="quickImg">
+                  <br/>
+                  <span class="quickText">查询</span>
+                </div>
+              </el-card>
+            </el-dropdown>
           </el-col>
           <el-col :offset="1" :span="3">
-            <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
-              <div class="quickText_div">
-                <img src="./assets/images/quick/import.png" class="quickImg">
-                <br/>
-                <span class="quickText">导入</span>
-              </div>
-            </el-card>
+            <el-dropdown>
+              <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+                <div class="quickText_div">
+                  <img src="./assets/images/quick/import.png" class="quickImg">
+                  <br/>
+                  <span class="quickText">导入</span>
+                </div>
+              </el-card>
+            </el-dropdown>
           </el-col>
           <el-col :offset="1" :span="3">
-            <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
-              <div class="quickText_div">
-                <img src="./assets/images/quick/export.png" class="quickImg">
-                <br/>
-                <span class="quickText">导出</span>
-              </div>
-            </el-card>
+            <el-dropdown>
+              <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+                <div class="quickText_div">
+                  <img src="./assets/images/quick/export.png" class="quickImg">
+                  <br/>
+                  <span class="quickText">导出</span>
+                </div>
+              </el-card>
+            </el-dropdown>
           </el-col>
           <el-col :span="4">
             <!--未想到-->
@@ -71,10 +79,15 @@
         ></Connection>
       </el-header>
       <el-container>
-        <el-aside width="200px">
-          <!--左侧内容-->
-          <el-tree-v2 :data="listData.data"></el-tree-v2>
-        </el-aside>
+        <div class="aside-drag-container" :style="{width: sideWidth + 'px'}">
+          <el-aside class="aside-connection">
+            <Aside></Aside>
+          </el-aside>
+          <!-- drag area -->
+          <div id="drag-resize-container">
+            <div id="drag-resize-pointer"></div>
+          </div>
+        </div>
         <el-main>
           <!--右侧内容-->
           <router-view :key="$route.path + Date.now()"/>
@@ -86,6 +99,7 @@
 
 <script setup>
 import Connection from "./views/NewConnection.vue";
+import Aside from "./Aside.vue";
 import {onBeforeMount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 
@@ -95,6 +109,7 @@ let listData = reactive({
   data: [],
 });
 
+let sideWidth = ref(265);
 let visible = ref(false);
 let connType = ref("");
 
@@ -106,6 +121,7 @@ onBeforeMount(() => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
       listData.data = JSON.parse(resolve);
+      console.log(listData.data);
     }
   });
 });
@@ -228,19 +244,14 @@ let onLoadData = (treeNode) => {
     resolve();
   });
 };
+
+
 </script>
 
 <style scoped>
 body {
   overscroll-behavior: none;
 }
-
-/*.quickIcon {*/
-/*  padding-top: 3px;*/
-/*  text-align: center;*/
-/*  height: 44px;*/
-/*  width: auto;*/
-/*}*/
 
 .card {
   width: 80px;
@@ -262,4 +273,49 @@ body {
 .quickText {
   font-size: 10px;
 }
+
+.aside-drag-container {
+  position: relative;
+  user-select: none;
+  /*max-width: 50%;*/
+}
+
+.aside-connection {
+  height: 100%;
+  border-right: 1px solid #e4e0e0;
+  overflow: hidden;
+}
+
+#drag-resize-container {
+  position: absolute;
+  /*height: 100%;*/
+  width: 10px;
+  right: -12px;
+  top: 0px;
+}
+#drag-resize-pointer {
+  position: fixed;
+  height: 100%;
+  width: 10px;
+  cursor: col-resize;
+}
+#drag-resize-pointer::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 20px;
+  border-left: 1px solid #adabab;
+  border-right: 1px solid #adabab;
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.dark-mode #drag-resize-pointer::after {
+  border-left: 1px solid #b9b8b8;
+  border-right: 1px solid #b9b8b8;
+}
+
 </style>

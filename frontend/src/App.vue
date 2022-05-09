@@ -6,10 +6,11 @@
         <!--头部 导航-->
         <el-row style="height: 69px">
           <el-col :offset="1" :span="3">
-            <el-dropdown trigger="click" style="cursor:default">
+            <el-dropdown trigger="click">
               <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
                 <div class="quickText_div">
-                  <img src="./assets/images/quick/conn.png" class="quickImg"><br>
+                  <img src="./assets/images/quick/conn.png" class="quickImg">
+                  <br/>
                   <span class="quickText">连接</span>
                 </div>
               </el-card>
@@ -22,41 +23,41 @@
               </template>
             </el-dropdown>
           </el-col>
-          <el-col :span="4">
-            <a href="" class="header-a">
-              <img src="./assets/images/quick/table.png" class="quickIcon" alt=""/>
-              <span style="font-size: 10px; text-align: center">表</span>
-            </a>
+          <el-col :offset="1" :span="3">
+            <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+              <div class="quickText_div">
+                <img src="./assets/images/quick/table.png" class="quickImg">
+                <br/>
+                <span class="quickText">表</span>
+              </div>
+            </el-card>
           </el-col>
-          <el-col :span="4">
-            <a href="" class="header-a">
-              <img
-                  src="./assets/images/quick/select.png"
-                  class="quickIcon"
-                  alt=""
-              />
-              <span style="font-size: 10px; text-align: center">查询</span>
-            </a>
+          <el-col :offset="1" :span="3">
+            <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+              <div class="quickText_div">
+                <img src="./assets/images/quick/select.png" class="quickImg">
+                <br/>
+                <span class="quickText">查询</span>
+              </div>
+            </el-card>
           </el-col>
-          <el-col :span="4">
-            <a @click="importFile" class="header-a">
-              <img
-                  src="./assets/images/quick/import.png"
-                  class="quickIcon"
-                  alt=""
-              />
-              <span style="font-size: 10px; text-align: center">导入</span>
-            </a>
+          <el-col :offset="1" :span="3">
+            <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+              <div class="quickText_div">
+                <img src="./assets/images/quick/import.png" class="quickImg">
+                <br/>
+                <span class="quickText">导入</span>
+              </div>
+            </el-card>
           </el-col>
-          <el-col :span="4">
-            <a @click="exportConn" class="header-a">
-              <img
-                  src="./assets/images/quick/export.png"
-                  class="quickIcon"
-                  alt=""
-              />
-              <span style="font-size: 10px; text-align: center">导出</span>
-            </a>
+          <el-col :offset="1" :span="3">
+            <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
+              <div class="quickText_div">
+                <img src="./assets/images/quick/export.png" class="quickImg">
+                <br/>
+                <span class="quickText">导出</span>
+              </div>
+            </el-card>
           </el-col>
           <el-col :span="4">
             <!--未想到-->
@@ -245,13 +246,12 @@ body {
   width: 80px;
   height: 67px;
   border: 0px;
+  cursor: default;
 }
 
 .quickText_div {
   text-align: center;
   align-items: center;
-  /*width: 1px;*/
-  /*height: 60px;*/
 }
 
 .quickImg {

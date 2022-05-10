@@ -1,9 +1,22 @@
-package lib
+package kit
 
 import (
+	"context"
 	"encoding/json"
 	"strings"
 )
+
+var (
+	insStrKit = sStrKit{}
+)
+
+type sStrKit struct {
+	ctx context.Context
+}
+
+func StrKit() *sStrKit {
+	return &insStrKit
+}
 
 type Node struct {
 	Title    string  `json:"title"`
@@ -13,9 +26,9 @@ type Node struct {
 	Children []*Node `json:"children"`
 }
 
-func PackageTree(v []string) string {
+func (s *sStrKit) PackageTree(v []string) string {
 	// 根据数组中的中的冒号数量进行排序，最多的冒号数量的元素放在最前面
-	v = BubbleDescSort(v)
+	v = s.BubbleDescSort(v)
 
 	// 声明切片存放树形数据
 	var treeNode []Node
@@ -42,7 +55,7 @@ func PackageTree(v []string) string {
 			node.Count = 0
 		}
 		if len(sl) > 1 {
-			GetChildren(sl[1], val, &node)
+			s.GetChildren(sl[1], val, &node)
 			if !flag {
 				for i, v := range treeNode {
 					if v.Key == node.Key {
@@ -62,7 +75,7 @@ func PackageTree(v []string) string {
 	return string(res)
 }
 
-func GetChildren(nodeStr, fullStr string, parentNode *Node) {
+func (s *sStrKit) GetChildren(nodeStr, fullStr string, parentNode *Node) {
 	node := &Node{}
 	sl := strings.SplitN(nodeStr, ":", 2)
 	for _, v := range parentNode.Children {
@@ -85,7 +98,7 @@ func GetChildren(nodeStr, fullStr string, parentNode *Node) {
 	}
 
 	if len(sl) > 1 {
-		GetChildren(sl[1], fullStr, node)
+		s.GetChildren(sl[1], fullStr, node)
 	} else {
 		// 如果没有子节点说明是最终节点
 		node.Key = fullStr
@@ -97,7 +110,7 @@ func GetChildren(nodeStr, fullStr string, parentNode *Node) {
 }
 
 // BubbleDescSort 冒泡排序 倒序
-func BubbleDescSort(values []string) []string {
+func (s *sStrKit) BubbleDescSort(values []string) []string {
 	for i := 0; i < len(values)-1; i++ {
 		for j := i + 1; j < len(values); j++ {
 			if strings.Count(values[i], ":") < strings.Count(values[j], ":") {
@@ -109,7 +122,7 @@ func BubbleDescSort(values []string) []string {
 }
 
 // BubbleAscSort 冒泡排序 正序
-func BubbleAscSort(values []string) []string {
+func (s *sStrKit) BubbleAscSort(values []string) []string {
 	for i := 0; i < len(values)-1; i++ {
 		for j := i + 1; j < len(values); j++ {
 			if strings.Count(values[i], ":") > strings.Count(values[j], ":") {
@@ -121,17 +134,17 @@ func BubbleAscSort(values []string) []string {
 }
 
 // FirstUpper 字符串首字母大写
-func FirstUpper(s string) string {
-	if s == "" {
+func (s *sStrKit) FirstUpper(str string) string {
+	if str == "" {
 		return ""
 	}
-	return strings.ToUpper(s[:1]) + s[1:]
+	return strings.ToUpper(str[:1]) + str[1:]
 }
 
 // FirstLower 字符串首字母小写
-func FirstLower(s string) string {
-	if s == "" {
+func (s *sStrKit) FirstLower(str string) string {
+	if str == "" {
 		return ""
 	}
-	return strings.ToLower(s[:1]) + s[1:]
+	return strings.ToLower(str[:1]) + str[1:]
 }

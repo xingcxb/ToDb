@@ -22,8 +22,8 @@ type ConnectionType struct {
 
 // BaseTreeInfo 基础连接信息
 type BaseTreeInfo struct {
+	Label        string `json:"label"`        //适配tree
 	Title        string `json:"title"`        //别名
-	Key          string `json:"key"`          //适配tree
 	ConnType     string `json:"connType"`     //类型
 	IconPath     string `json:"iconPath"`     //图标路径
 	ConnFileAddr string `json:"ConnFileAddr"` //连接信息文件存放地址

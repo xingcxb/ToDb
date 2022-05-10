@@ -2,7 +2,7 @@ package main
 
 import (
 	"ToDb/communication"
-	"ToDb/lib"
+	"ToDb/kit"
 	"ToDb/menu"
 	"context"
 	"encoding/json"
@@ -59,10 +59,10 @@ func (a *App) shutdown(ctx context.Context) {
 func (a *App) ImportConn() {
 	err := communication.General().ImportConn(a.ctx)
 	if err != nil {
-		lib.DefaultDialog(a.ctx, "错误", err.Error(), icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
 		return
 	}
-	lib.DefaultDialog(a.ctx, "成功", "导入成功", icon)
+	kit.DiaLogKit().DefaultDialog(a.ctx, "成功", "导入成功", icon)
 	// 导入成功后窗口重载
 	runtime.WindowReload(a.ctx)
 }
@@ -77,22 +77,22 @@ func (a *App) TestConnection(connectionInfo string) {
 	//var responseJson lib.JsonResponse
 	code, message := communication.RedisPing(connectionInfo)
 	if code != http.StatusOK {
-		lib.DefaultDialog(a.ctx, "错误", message, icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", message, icon)
 	} else {
-		lib.DefaultDialog(a.ctx, "成功", message, icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "成功", message, icon)
 	}
 }
 
 // Ok 确定按钮
 func (a App) Ok(connectionInfo string) string {
-	var responseJson lib.JsonResponse
+	var responseJson kit.JsonResponse
 	code, message := communication.Ok(a.ctx, connectionInfo)
-	responseJson = lib.JsonResponse{
+	responseJson = kit.JsonResponse{
 		Code:    code,
 		Message: message,
 	}
 	if code != http.StatusOK {
-		lib.DefaultDialog(a.ctx, "错误", message, icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", message, icon)
 	}
 	return responseJson.String()
 }
@@ -106,7 +106,7 @@ func (a *App) LoadingConnKey() string {
 func (a *App) LoadingConnInfo(key string) string {
 	code, message := communication.LoadingHistoryInfo(key)
 	if code != http.StatusOK {
-		lib.DefaultDialog(a.ctx, "错误", message, icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", message, icon)
 	}
 	return message
 }
@@ -133,9 +133,9 @@ func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) {
 	v := communication.RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
 	if v != "success" {
-		lib.DefaultDialog(a.ctx, "错误", v, icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
-		lib.DefaultDialog(a.ctx, "成功", "修改成功", icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "成功", "修改成功", icon)
 	}
 }
 
@@ -143,9 +143,9 @@ func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) 
 func (a *App) RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr string) {
 	v := communication.RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr)
 	if v != "success" {
-		lib.DefaultDialog(a.ctx, "错误", v, icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
-		lib.DefaultDialog(a.ctx, "成功", "修改成功", icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "成功", "修改成功", icon)
 	}
 }
 
@@ -164,9 +164,9 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	}
 	v := communication.RedisDel(connType, connName, nodeIdStr, key)
 	if v != "success" {
-		lib.DefaultDialog(a.ctx, "错误", v, icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
-		lib.DefaultDialog(a.ctx, "成功", "删除成功", icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "成功", "删除成功", icon)
 	}
 }
 
@@ -174,8 +174,8 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value, ttl string) {
 	err := communication.RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
 	if err != nil {
-		lib.DefaultDialog(a.ctx, "错误", err.Error(), icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
 	} else {
-		lib.DefaultDialog(a.ctx, "成功", "修改成功", icon)
+		kit.DiaLogKit().DefaultDialog(a.ctx, "成功", "修改成功", icon)
 	}
 }

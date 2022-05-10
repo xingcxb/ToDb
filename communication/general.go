@@ -11,7 +11,7 @@
 package communication
 
 import (
-	"ToDb/lib/os"
+	"ToDb/kit/os"
 	"context"
 	"github.com/tidwall/gjson"
 	"github.com/wailsapp/wails/v2/pkg/runtime"

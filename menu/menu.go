@@ -1,7 +1,7 @@
 package menu
 
 import (
-	"ToDb/lib"
+	"ToDb/kit"
 	"context"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -35,7 +35,7 @@ func InitMenu(ctx context.Context) {
 		appMenu = macOs(ctx)
 	default:
 		//linux
-		lib.DefaultDialog(ctx, "错误", "暂不支持该系统", nil)
+		kit.DiaLogKit().DefaultDialog(ctx, "错误", "暂不支持该系统", nil)
 	}
 	runtime.MenuSetApplicationMenu(ctx, appMenu)
 }

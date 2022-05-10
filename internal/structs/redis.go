@@ -1,4 +1,4 @@
-package model
+package structs
 
 // @Author: symbol
 // @Date: 2022-04-28 10:57:39

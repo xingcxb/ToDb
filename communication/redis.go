@@ -2,10 +2,9 @@ package communication
 
 import (
 	"ToDb/internal/structs"
-	"ToDb/lib"
-	"ToDb/lib/os"
-	"ToDb/lib/redis"
-	"ToDb/model"
+	"ToDb/kit"
+	"ToDb/kit/os"
+	redisKit "ToDb/kit/redis"
 	"context"
 	"encoding/json"
 	"errors"
@@ -143,7 +142,7 @@ func LoadingBaseHistoryInfo(ctx context.Context) string {
 		key.WriteString(alias)
 		bci := structs.BaseTreeInfo{
 			Title:        alias,
-			Key:          key.String(),
+			Label:        key.String(),
 			ConnType:     t,
 			IconPath:     ipt.String(),
 			ConnFileAddr: filePath.String(),
@@ -233,7 +232,7 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		value := lib.PackageTree(arr)
+		value := kit.StrKit().PackageTree(arr)
 		return value, nil
 	default:
 		return "", errors.New("unknown error")
@@ -241,9 +240,9 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 }
 
 // RedisGetData 通过key获取连接信息
-func RedisGetData(connType, connName, nodeIdStr, key string) (model.GetValue, error) {
+func RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, error) {
 	// var value strings.Builder
-	var getValue model.GetValue
+	var getValue structs.GetValue
 	if connType == "" ||
 		connName == "" {
 		return getValue, errors.New("parameter is missing")
@@ -277,7 +276,7 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (model.GetValue, er
 	}
 }
 
-// 重命名key
+// RedisReName 重命名key
 func RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
 	if connType == "" ||
 		connName == "" {

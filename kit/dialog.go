@@ -8,7 +8,7 @@
 
 // Copyright (c) 2022 by easymbol, All Rights Reserved.
 
-package lib
+package kit
 
 import (
 	"context"
@@ -16,8 +16,20 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+var (
+	insDiaLogKit = sDiaLogKit{}
+)
+
+type sDiaLogKit struct {
+	ctx context.Context
+}
+
+func DiaLogKit() *sDiaLogKit {
+	return &insDiaLogKit
+}
+
 // DefaultDialog 显示默认的对话框
-func DefaultDialog(ctx context.Context, title, message string, icon []byte) {
+func (d *sDiaLogKit) DefaultDialog(ctx context.Context, title, message string, icon []byte) {
 	runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
 		Type: func(title string) runtime.DialogType {
 			if title == "错误" {

@@ -1,7 +1,7 @@
 package redisKit
 
 import (
-	"ToDb/lib"
+	"ToDb/kit"
 	"context"
 	"encoding/json"
 	"strconv"
@@ -360,7 +360,7 @@ func GetType(ctx context.Context, key string) string {
 	arr := strings.Split(allTypeStr, " ")
 	if len(arr) == 3 {
 		typeStr := arr[2]
-		typeStr = lib.FirstUpper(typeStr)
+		typeStr = kit.StrKit().FirstUpper(typeStr)
 		return typeStr
 	}
 	return ""

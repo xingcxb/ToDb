@@ -71,7 +71,7 @@ func (s *sGeneral) ImportConn(ctx context.Context) error {
 	return os.File().SaveFile(ctx, alias, string(bData))
 }
 
-// ExportConn 导出连接
+// ExportConn 导出连接[由于需要第二个窗口，基础框架未实现故暂时未实现]
 // @param {[type]} ctx context.Context [description]
 // @return error
 func (s *sGeneral) ExportConn(ctx context.Context) error {

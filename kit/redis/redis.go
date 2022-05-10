@@ -18,7 +18,16 @@ var (
 	Port     = "" //端口号
 	Db       = 0  //操作数据库
 	rdb      *redis.Client
+	insRedis = sRedis{}
 )
+
+type sRedis struct {
+	ctx context.Context
+}
+
+func Redis() *sRedis {
+	return &insRedis
+}
 
 func InitDb() {
 	var url strings.Builder
@@ -37,7 +46,7 @@ func InitDb() {
 }
 
 // Ping redis测试是否联通
-func Ping(ctx context.Context) error {
+func (s *sRedis) Ping(ctx context.Context) error {
 	err := rdb.Ping(ctx).Err()
 	if err != nil {
 		return err
@@ -46,7 +55,7 @@ func Ping(ctx context.Context) error {
 }
 
 // GetDbCount 获取单个库的数量
-func GetDbCount(ctx context.Context, dbId int) int {
+func (s *sRedis) GetDbCount(ctx context.Context, dbId int) int {
 	ChangeDb(ctx, dbId)
 	count, err := rdb.DBSize(ctx).Result()
 	if err != nil {
@@ -56,7 +65,7 @@ func GetDbCount(ctx context.Context, dbId int) int {
 }
 
 // ChangeDb 切换数据库
-func ChangeDb(ctx context.Context, dbId int) {
+func (s *sRedis) ChangeDb(ctx context.Context, dbId int) {
 	pipe := rdb.Pipeline()
 	_ = pipe.Select(ctx, dbId)
 	_, _ = pipe.Exec(ctx)
@@ -250,7 +259,7 @@ func ChangeDb(ctx context.Context, dbId int) {
 // endregion
 
 // GetBaseAllInfo  获取redis基础信息
-func GetBaseAllInfo(ctx context.Context) map[string]string {
+func (s *sRedis) GetBaseAllInfo(ctx context.Context) map[string]string {
 	_info := rdb.Info(ctx).String()
 	defer rdb.Close()
 	_vs := strings.Split(_info, "\r\n")
@@ -266,7 +275,7 @@ func GetBaseAllInfo(ctx context.Context) map[string]string {
 }
 
 // GetMainViewInfo 获取主要信息展示信息
-func GetMainViewInfo(ctx context.Context) string {
+func (s *sRedis) GetMainViewInfo(ctx context.Context) string {
 	allInfo := GetBaseAllInfo(ctx)
 	if len(allInfo) == 0 {
 		return ""
@@ -320,7 +329,7 @@ func GetMainViewInfo(ctx context.Context) string {
 }
 
 // GetDbKeys 获取指定库中的key
-func GetDbKeys(ctx context.Context, cursor uint64) ([]string, error) {
+func (s *sRedis) GetDbKeys(ctx context.Context, cursor uint64) ([]string, error) {
 	keys := make([]string, 0, 1)
 	keys, cursor, err := rdb.Scan(ctx, cursor, "*", 10000).Result()
 	if err != nil {
@@ -338,7 +347,7 @@ type VObj struct {
 }
 
 // GetKeyInfo 通过key获取该键下值的所有信息
-func GetKeyInfo(ctx context.Context, key string) string {
+func (s *sRedis) GetKeyInfo(ctx context.Context, key string) string {
 	// 获取值
 	v := GetValue(ctx, key)
 	size := len(v)
@@ -355,7 +364,7 @@ func GetKeyInfo(ctx context.Context, key string) string {
 }
 
 // GetType 获取值类型，返回类型
-func GetType(ctx context.Context, key string) string {
+func (s *sRedis) GetType(ctx context.Context, key string) string {
 	allTypeStr := rdb.Type(ctx, key).String()
 	arr := strings.Split(allTypeStr, " ")
 	if len(arr) == 3 {
@@ -367,7 +376,7 @@ func GetType(ctx context.Context, key string) string {
 }
 
 // GetValue 获取redis数据，返回值和大小
-func GetValue(ctx context.Context, key string) string {
+func (s *sRedis) GetValue(ctx context.Context, key string) string {
 	val, err := rdb.Get(ctx, key).Result()
 	if err != nil {
 		return ""
@@ -376,7 +385,7 @@ func GetValue(ctx context.Context, key string) string {
 }
 
 // GetTTL 获取redis数据剩余时间，返回剩余时间的秒数；如果是永久有效，返回-1
-func GetTTL(ctx context.Context, key string) string {
+func (s *sRedis) GetTTL(ctx context.Context, key string) string {
 	val, err := rdb.TTL(ctx, key).Result()
 	if err != nil {
 		return ""
@@ -388,7 +397,7 @@ func GetTTL(ctx context.Context, key string) string {
 }
 
 // AddData 添加数据
-func AddData(ctx context.Context, key, value string, ttl int) error {
+func (s *sRedis) AddData(ctx context.Context, key, value string, ttl int) error {
 	if ttl == -1 {
 		return rdb.Set(ctx, key, value, 0).Err()
 	}
@@ -396,19 +405,19 @@ func AddData(ctx context.Context, key, value string, ttl int) error {
 }
 
 // RenName 重命名key
-func RenName(ctx context.Context, key, newKey string) error {
+func (s *sRedis) RenName(ctx context.Context, key, newKey string) error {
 	err := rdb.Rename(ctx, key, newKey).Err()
 	return err
 }
 
 // UpTtl 更新key的过期时间
-func UpTtl(ctx context.Context, key string, ttl int) error {
+func (s *sRedis) UpTtl(ctx context.Context, key string, ttl int) error {
 	err := rdb.Expire(ctx, key, time.Duration(ttl)*time.Second).Err()
 	return err
 }
 
 // UpPermanent 更新key为永久有效
-func UpPermanent(ctx context.Context, key string) error {
+func (s *sRedis) UpPermanent(ctx context.Context, key string) error {
 	err := rdb.Persist(ctx, key).Err()
 	return err
 }

@@ -1,10 +1,11 @@
 <template>
   <el-dialog
-      v-model:visible="visible"
+      v-model="visible"
       title="connType"
-      width="30%"
-      v-model="confirmLoading"
-      before-close="handleClose"
+      width="600px"
+      :before-close="handleClose"
+      draggable
+      center
   >
     <el-row>
       <el-col :span="24" class="imageRow">
@@ -17,45 +18,39 @@
       </el-col>
     </el-row>
     <br/>
-    <el-row>
-      <el-col :span="1"></el-col>
-      <el-col :span="4">连接名:</el-col>
+    <el-row align="middle">
+      <el-col :offset="1" :span="4">
+        <span>连接名:</span>
+      </el-col>
       <el-col :span="18">
         <el-input v-model="connectionInfo.alias" placeholder="连接别名"/>
       </el-col>
       <el-col :span="1"></el-col>
     </el-row>
-    <br/>
-    <el-row>
-      <el-col :span="1"></el-col>
-      <el-col :span="4">主机:</el-col>
+    <el-row align="middle" class="rowInterval">
+      <el-col :offset="1" :span="4">主&nbsp;&nbsp;&nbsp;机:</el-col>
       <el-col :span="18">
         <el-input
             v-model="connectionInfo.hostURL"
             placeholder="连接地址"
         />
       </el-col>
-      <el-col :span="1"></el-col>
     </el-row>
-    <el-row>
-      <el-col :span="1"></el-col>
-      <el-col :span="4">端口</el-col>
+    <el-row align="middle" class="rowInterval">
+      <el-col :offset="1" :span="4">端&nbsp;&nbsp;&nbsp;口:</el-col>
       <el-col :span="5">
         <el-input v-model="connectionInfo.port" placeholder="连接端口"/>
       </el-col>
       <el-col :span="14"></el-col>
     </el-row>
-    <el-row>
-      <el-col :span="1"></el-col>
-      <el-col :span="4">用户名:</el-col>
+    <el-row align="middle" class="rowInterval">
+      <el-col :offset="1" :span="4">用户名:</el-col>
       <el-col :span="10">
         <el-input v-model="connectionInfo.username" placeholder="用户名"/>
       </el-col>
-      <el-col :span="9"></el-col>
     </el-row>
-    <el-row>
-      <el-col :span="1"></el-col>
-      <el-col :span="4">密码:</el-col>
+    <el-row align="middle" class="rowInterval">
+      <el-col :offset="1" :span="4">密&nbsp;&nbsp;&nbsp;码:</el-col>
       <el-col :span="10">
         <el-input
             type="password"
@@ -64,31 +59,27 @@
             show-password
         />
       </el-col>
-      <el-col :span="9"></el-col>
     </el-row>
     <el-row>
-      <el-col :span="5"></el-col>
-      <el-col :span="18">
-        <el-checkbox
-            v-model="connectionInfo.savePassword"
-        >保存密码
-        </el-checkbox
-        >
+      <el-col :offset="5" :span="18">
+        <el-checkbox v-model="connectionInfo.savePassword">
+          保存密码
+        </el-checkbox>
       </el-col>
       <el-col :span="1"></el-col>
     </el-row>
     <br/>
     <el-row>
-      <el-col :span="1"></el-col>
-      <el-col :span="3">
-        <el-button type="primary" @click="testConnection">测试连接</el-button>
+      <el-col :offset="1" :span="3">
+        <el-button type="primary" @click="testConnection">
+          测试连接
+        </el-button>
       </el-col>
-      <el-col :span="13"></el-col>
-      <el-col :span="3">
+      <el-col :offset="13" :span="3">
         <el-button @click="ok">确定</el-button>
       </el-col>
       <el-col :span="3">
-        <el-button>取消</el-button>
+        <el-button @click="handleClose">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
@@ -135,6 +126,11 @@ function handleClose() {
   emit("ChangeConnType", connType.value);
 }
 
+// 创建连接的方法暴露给go
+window.runtime.EventsOn("createConn", function (data) {
+  console.log("createConn", data);
+  toView(data)
+})
 
 // 测试连接
 function testConnection() {
@@ -170,5 +166,8 @@ function ok() {
 .imageRow {
   height: 72px;
   /*background: #7cb305;*/
+}
+.rowInterval{
+  margin-top: 3px;
 }
 </style>

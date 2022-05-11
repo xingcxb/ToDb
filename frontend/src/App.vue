@@ -9,6 +9,7 @@
       <el-container>
         <div class="aside-drag-container" :style="{width: sideWidth + 'px'}">
           <el-aside class="aside-connection">
+            <!--左侧导航-->
             <Aside></Aside>
           </el-aside>
           <!-- drag area -->
@@ -28,27 +29,16 @@
 <script setup>
 import Header from './Header.vue';
 import Aside from "./Aside.vue";
-import {onBeforeMount, reactive, ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
-
-let listData = reactive({
-  data: [],
-});
 
 let sideWidth = ref(265);
 
 onBeforeMount(() => {
   router.push({
     path: "/rightContent/default",
-  });
-  window.go.main.App.LoadingConnKey().then((resolve) => {
-    if (resolve !== "") {
-      // 如果返回值中不为空字符串才进行操作
-      listData.data = JSON.parse(resolve);
-      console.log(listData.data);
-    }
   });
 });
 
@@ -138,7 +128,6 @@ let onLoadData = (treeNode) => {
     resolve();
   });
 };
-
 
 </script>
 

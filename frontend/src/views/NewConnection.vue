@@ -1,7 +1,7 @@
 <template>
   <el-dialog
       v-model="visible"
-      title="connType"
+      :title="connType"
       width="600px"
       :before-close="handleClose"
       draggable

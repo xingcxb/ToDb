@@ -56,7 +56,7 @@ func (s *sRedis) Ping(ctx context.Context) error {
 
 // GetDbCount 获取单个库的数量
 func (s *sRedis) GetDbCount(ctx context.Context, dbId int) int {
-	ChangeDb(ctx, dbId)
+	s.ChangeDb(ctx, dbId)
 	count, err := rdb.DBSize(ctx).Result()
 	if err != nil {
 		return 0
@@ -276,7 +276,7 @@ func (s *sRedis) GetBaseAllInfo(ctx context.Context) map[string]string {
 
 // GetMainViewInfo 获取主要信息展示信息
 func (s *sRedis) GetMainViewInfo(ctx context.Context) string {
-	allInfo := GetBaseAllInfo(ctx)
+	allInfo := s.GetBaseAllInfo(ctx)
 	if len(allInfo) == 0 {
 		return ""
 	}
@@ -349,10 +349,10 @@ type VObj struct {
 // GetKeyInfo 通过key获取该键下值的所有信息
 func (s *sRedis) GetKeyInfo(ctx context.Context, key string) string {
 	// 获取值
-	v := GetValue(ctx, key)
+	v := s.GetValue(ctx, key)
 	size := len(v)
-	ttl := GetTTL(ctx, key)
-	keyType := GetType(ctx, key)
+	ttl := s.GetTTL(ctx, key)
+	keyType := s.GetType(ctx, key)
 	info := VObj{
 		Size:  size,
 		Value: v,
@@ -423,7 +423,7 @@ func (s *sRedis) UpPermanent(ctx context.Context, key string) error {
 }
 
 // Del 通过键删除redis数据，返回删除的数量
-func Del(ctx context.Context, key string) int64 {
+func (s *sRedis) Del(ctx context.Context, key string) int64 {
 	val, err := rdb.Del(ctx, key).Result()
 	if err != nil {
 		return 0

@@ -4,7 +4,7 @@ import (
 	"ToDb/internal/structs"
 	"ToDb/kit"
 	"ToDb/kit/os"
-	redisKit "ToDb/kit/redis"
+	"ToDb/kit/redis"
 	"context"
 	"encoding/json"
 	"errors"
@@ -76,7 +76,7 @@ func RedisPing(connectionInfo string) (int, string) {
 		redisKit.Username = info.Username
 		redisKit.Password = info.Password
 		redisKit.InitDb()
-		err := redisKit.Ping(context.Background())
+		err := redisKit.Redis().Ping(context.Background())
 		if err != nil {
 			code = http.StatusBadRequest
 			message = err.Error()
@@ -162,7 +162,7 @@ type Children struct {
 // LoadingHistoryInfo 加载已经存储的连接信息
 func LoadingHistoryInfo(key string) (int, string) {
 	valueByte := initRedis(key)
-	err := redisKit.Ping(context.Background())
+	err := redisKit.Redis().Ping(context.Background())
 	if err != nil {
 		return http.StatusBadRequest, err.Error()
 	}
@@ -177,7 +177,7 @@ func LoadingHistoryInfo(key string) (int, string) {
 			dbName.WriteString("db")
 			dbName.WriteString(strconv.Itoa(i))
 			dbName.WriteString("(")
-			dbName.WriteString(strconv.Itoa(redisKit.GetDbCount(context.Background(), i)))
+			dbName.WriteString(strconv.Itoa(redisKit.Redis().GetDbCount(context.Background(), i)))
 			dbName.WriteString(")")
 			data = append(data, Children{
 				Title: dbName.String(),
@@ -212,7 +212,7 @@ func initRedis(key string) []byte {
 // LoadingDbResource 加载数据库资源消耗
 func LoadingDbResource(key string) string {
 	initRedis(key)
-	return redisKit.GetMainViewInfo(context.Background())
+	return redisKit.Redis().GetMainViewInfo(context.Background())
 }
 
 // GetNodeData 获取节点数据
@@ -227,8 +227,8 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 	case "redis":
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.ChangeDb(ctx, nodeId)
-		arr, err := redisKit.GetDbKeys(ctx, 0)
+		redisKit.Redis().ChangeDb(ctx, nodeId)
+		arr, err := redisKit.Redis().GetDbKeys(ctx, 0)
 		if err != nil {
 			return "", err
 		}
@@ -252,18 +252,18 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, 
 	case "redis":
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.ChangeDb(ctx, nodeId)
+		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 获取数据类型
-		valueType := redisKit.GetType(ctx, key)
+		valueType := redisKit.Redis().GetType(ctx, key)
 		valueType = strings.ToLower(valueType)
 		switch valueType {
 		case "string":
 			// 通过键获取值
-			v := redisKit.GetValue(ctx, key)
+			v := redisKit.Redis().GetValue(ctx, key)
 			command := BuildCommand(key, "string", v)
 			getValue.Type = "string"
 			getValue.Key = key
-			getValue.Ttl = redisKit.GetTTL(ctx, key)
+			getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
 			getValue.Value = v
 			getValue.Size = len(v)
 			getValue.CommandStr = command
@@ -287,9 +287,9 @@ func RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
 	case "redis":
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.ChangeDb(ctx, nodeId)
+		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 通过键获取值
-		v := redisKit.RenName(ctx, oldKey, newKey)
+		v := redisKit.Redis().RenName(ctx, oldKey, newKey)
 		if v != nil {
 			return v.Error()
 		}
@@ -315,14 +315,14 @@ func RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr string) string
 	case "redis":
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.ChangeDb(ctx, nodeId)
+		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 通过键获取值
 		var v error
 		if ttl == -1 {
 			// 表示需要永久存储
-			v = redisKit.UpPermanent(ctx, key)
+			v = redisKit.Redis().UpPermanent(ctx, key)
 		} else {
-			v = redisKit.UpTtl(ctx, key, ttl)
+			v = redisKit.Redis().UpTtl(ctx, key, ttl)
 		}
 		if v != nil {
 			return v.Error()
@@ -344,9 +344,9 @@ func RedisDel(connType, connName, nodeIdStr, key string) string {
 	case "redis":
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.ChangeDb(ctx, nodeId)
+		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 通过键获取值
-		v := redisKit.Del(ctx, key)
+		v := redisKit.Redis().Del(ctx, key)
 		if v == 0 {
 			return "del error"
 		}
@@ -367,10 +367,10 @@ func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttlStr st
 	case "redis":
 		initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.ChangeDb(ctx, nodeId)
+		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 通过键获取值
 		ttl, _ := strconv.Atoi(ttlStr)
-		err := redisKit.AddData(ctx, key, value, ttl)
+		err := redisKit.Redis().AddData(ctx, key, value, ttl)
 		if err != nil {
 			return err
 		}

@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div style="background: #f5f4f2;">
     <!--  <div class="header" data-wails-drag>-->
     <el-container>
-      <el-header height="69px" style="background: #f5f4f2">
+      <el-header height="69px">
         <!--头部 导航-->
         <Header></Header>
       </el-header>

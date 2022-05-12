@@ -83,7 +83,7 @@ func (a *App) TestConnection(connectionInfo string) {
 	}
 }
 
-// Ok 确定按钮
+// Ok 确定按钮进行的操作
 func (a App) Ok(connectionInfo string) string {
 	var responseJson kit.JsonResponse
 	code, message := communication.Ok(a.ctx, connectionInfo)

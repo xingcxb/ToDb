@@ -17,16 +17,6 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-// 连接信息
-//type connectionType struct {
-//	Type     string `tag:"类型" json:"type"`      //类型
-//	Alias    string `tag:"连接名" json:"alias"`    //别名
-//	HostURL  string `tag:"连接地址" json:"hostURL"` //连接地址
-//	Port     string `tag:"端口号" json:"port"`     //端口号
-//	Username string `tag:"用户名" json:"username"` //用户名
-//	Password string `tag:"密码" json:"password"`  //密码
-//}
-
 // 检查参数
 func checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
 	//返回连接信息
@@ -153,11 +143,11 @@ func LoadingBaseHistoryInfo(ctx context.Context) string {
 	return string(jb)
 }
 
-type Children struct {
-	Title string `json:"title"` //别名
-	Key   string `json:"key"`   //key
-	//Children []*Children `json:"children"` //子集
-}
+//type Children struct {
+//	Title string `json:"title"` //别名
+//	Key   string `json:"key"`   //key
+//	//Children []*Children `json:"children"` //子集
+//}
 
 // LoadingHistoryInfo 加载已经存储的连接信息
 func LoadingHistoryInfo(key string) (int, string) {
@@ -168,7 +158,7 @@ func LoadingHistoryInfo(key string) (int, string) {
 	}
 
 	t := gjson.Get(string(valueByte), "type").String()
-	var data []Children
+	var data []structs.DbTreeInfo
 	switch t {
 	case "redis":
 		//如果是redis则直接显示15个库
@@ -179,7 +169,7 @@ func LoadingHistoryInfo(key string) (int, string) {
 			dbName.WriteString("(")
 			dbName.WriteString(strconv.Itoa(redisKit.Redis().GetDbCount(context.Background(), i)))
 			dbName.WriteString(")")
-			data = append(data, Children{
+			data = append(data, structs.DbTreeInfo{
 				Title: dbName.String(),
 				Key:   strconv.Itoa(i),
 			})

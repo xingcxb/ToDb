@@ -29,3 +29,12 @@ type BaseTreeInfo struct {
 	ConnFileAddr string `json:"ConnFileAddr"` //连接信息文件存放地址
 	//Children     string `json:"children"`	 //子节点
 }
+
+// DbTreeInfo 数据库内部信息
+type DbTreeInfo struct {
+	Label    string `json:"label"`    //名称
+	Title    string `json:"title"`    //别名
+	Key      string `json:key`        //键
+	IsLeaf   bool   `json:"isLeaf"`   //是否是叶子节点
+	Children string `json:"children"` //子节点
+}

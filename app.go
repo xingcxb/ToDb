@@ -6,6 +6,7 @@ import (
 	"ToDb/menu"
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -118,20 +119,42 @@ func (a *App) LoadingDbResource(key string) string {
 
 // GetNodeData 获取节点数据
 func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
-	sts, _ := communication.Redis().GetNodeData(connType, connName, nodeIdStr)
-	return sts
+	strs := ""
+	switch connType {
+	case "redis":
+		// 获取redis节点数据
+		strs, _ = communication.Redis().GetNodeData(connType, connName, nodeIdStr)
+	default:
+		strs = "暂不支持"
+	}
+	return strs
 }
 
 // RedisGetData 从redis获取数据
 func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
-	_v, _ := communication.Redis().RedisGetData(connType, connName, nodeIdStr, key)
-	v, _ := json.Marshal(_v)
-	return string(v)
+	v := ""
+	switch connType {
+	case "redis":
+		// 获取redis节点数据
+		getValue, _ := communication.Redis().RedisGetData(connType, connName, nodeIdStr, key)
+		_v, _ := json.Marshal(getValue)
+		v = string(_v)
+	default:
+		v = "暂不支持"
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
+	}
+	return v
 }
 
 // RedisReName redis key重命名
 func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) {
-	v := communication.Redis().RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
+	v := ""
+	switch connType {
+	case "redis":
+		v = communication.Redis().RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
+	default:
+		v = "暂不支持"
+	}
 	if v != "success" {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
@@ -141,7 +164,13 @@ func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) 
 
 // RedisUpTtl 更新redis剩余时间
 func (a *App) RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr string) {
-	v := communication.Redis().RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr)
+	v := ""
+	switch connType {
+	case "redis":
+		v = communication.Redis().RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr)
+	default:
+		v = "暂不支持"
+	}
 	if v != "success" {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
@@ -162,7 +191,13 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	if selection != "确定" {
 		return
 	}
-	v := communication.Redis().RedisDel(connType, connName, nodeIdStr, key)
+	v := ""
+	switch connType {
+	case "redis":
+		v = communication.Redis().RedisDel(connType, connName, nodeIdStr, key)
+	default:
+		v = "暂不支持"
+	}
 	if v != "success" {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
@@ -172,7 +207,13 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 
 // RedisSaveStringValue 更新redis值
 func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value, ttl string) {
-	err := communication.Redis().RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
+	var err error
+	switch connType {
+	case "redis":
+		err = communication.Redis().RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
+	default:
+		err = errors.New("暂不支持")
+	}
 	if err != nil {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
 	} else {

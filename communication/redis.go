@@ -211,60 +211,49 @@ func (s *sRedis) LoadingDbResource(key string) string {
 
 // GetNodeData 获取节点数据
 func (s *sRedis) GetNodeData(connType, connName, nodeIdStr string) (string, error) {
-	var value strings.Builder
+	var value string
 	if connType == "" ||
 		connName == "" {
-		return value.String(), errors.New("parameter is missing")
+		return value, errors.New("parameter is missing")
 	}
 	ctx := context.Background()
-	switch connType {
-	case "redis":
-		s.initRedis(connName)
-		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.Redis().ChangeDb(ctx, nodeId)
-		arr, err := redisKit.Redis().GetDbKeys(ctx, 0)
-		if err != nil {
-			return "", err
-		}
-		value := kit.StrKit().PackageTree(arr)
-		return value, nil
-	default:
-		return "", errors.New("unknown error")
+	s.initRedis(connName)
+	nodeId, _ := strconv.Atoi(nodeIdStr)
+	redisKit.Redis().ChangeDb(ctx, nodeId)
+	arr, err := redisKit.Redis().GetDbKeys(ctx, 0)
+	if err != nil {
+		return "", err
 	}
+	value = kit.StrKit().PackageTree(arr)
+	return value, nil
 }
 
 // RedisGetData 通过key获取连接信息
 func (s *sRedis) RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, error) {
-	// var value strings.Builder
 	var getValue structs.GetValue
 	if connType == "" ||
 		connName == "" {
 		return getValue, errors.New("parameter is missing")
 	}
 	ctx := context.Background()
-	switch connType {
-	case "redis":
-		s.initRedis(connName)
-		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.Redis().ChangeDb(ctx, nodeId)
-		// 获取数据类型
-		valueType := redisKit.Redis().GetType(ctx, key)
-		valueType = strings.ToLower(valueType)
-		switch valueType {
-		case "string":
-			// 通过键获取值
-			v := redisKit.Redis().GetValue(ctx, key)
-			command := s.BuildCommand(key, "string", v)
-			getValue.Type = "string"
-			getValue.Key = key
-			getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
-			getValue.Value = v
-			getValue.Size = len(v)
-			getValue.CommandStr = command
-			return getValue, nil
-		default:
-		}
-		return getValue, errors.New("unknown error")
+	s.initRedis(connName)
+	nodeId, _ := strconv.Atoi(nodeIdStr)
+	redisKit.Redis().ChangeDb(ctx, nodeId)
+	// 获取数据类型
+	valueType := redisKit.Redis().GetType(ctx, key)
+	valueType = strings.ToLower(valueType)
+	switch valueType {
+	case "string":
+		// 获取类型为string的数据
+		v := redisKit.Redis().GetValue(ctx, key)
+		command := s.BuildCommand(key, "string", v)
+		getValue.Type = "string"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		getValue.Value = v
+		getValue.Size = len(v)
+		getValue.CommandStr = command
+		return getValue, nil
 	default:
 		return getValue, errors.New("unknown error")
 	}
@@ -277,20 +266,15 @@ func (s *sRedis) RedisReName(connType, connName, nodeIdStr, oldKey, newKey strin
 		return "parameter is missing"
 	}
 	ctx := context.Background()
-	switch connType {
-	case "redis":
-		s.initRedis(connName)
-		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.Redis().ChangeDb(ctx, nodeId)
-		// 通过键获取值
-		v := redisKit.Redis().RenName(ctx, oldKey, newKey)
-		if v != nil {
-			return v.Error()
-		}
-		return "success"
-	default:
-		return "unknown error"
+	s.initRedis(connName)
+	nodeId, _ := strconv.Atoi(nodeIdStr)
+	redisKit.Redis().ChangeDb(ctx, nodeId)
+	// 通过键获取值
+	v := redisKit.Redis().RenName(ctx, oldKey, newKey)
+	if v != nil {
+		return v.Error()
 	}
+	return "success"
 }
 
 // RedisUpTtl 更新redis剩余时间
@@ -305,26 +289,21 @@ func (s *sRedis) RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr st
 		return "parameter is missing"
 	}
 	ctx := context.Background()
-	switch connType {
-	case "redis":
-		s.initRedis(connName)
-		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.Redis().ChangeDb(ctx, nodeId)
-		// 通过键获取值
-		var v error
-		if ttl == -1 {
-			// 表示需要永久存储
-			v = redisKit.Redis().UpPermanent(ctx, key)
-		} else {
-			v = redisKit.Redis().UpTtl(ctx, key, ttl)
-		}
-		if v != nil {
-			return v.Error()
-		}
-		return "success"
-	default:
-		return "unknown error"
+	s.initRedis(connName)
+	nodeId, _ := strconv.Atoi(nodeIdStr)
+	redisKit.Redis().ChangeDb(ctx, nodeId)
+	// 通过键获取值
+	var v error
+	if ttl == -1 {
+		// 表示需要永久存储
+		v = redisKit.Redis().UpPermanent(ctx, key)
+	} else {
+		v = redisKit.Redis().UpTtl(ctx, key, ttl)
 	}
+	if v != nil {
+		return v.Error()
+	}
+	return "success"
 }
 
 // RedisDel 删除redis数据
@@ -334,20 +313,15 @@ func (s *sRedis) RedisDel(connType, connName, nodeIdStr, key string) string {
 		return "parameter is missing"
 	}
 	ctx := context.Background()
-	switch connType {
-	case "redis":
-		s.initRedis(connName)
-		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.Redis().ChangeDb(ctx, nodeId)
-		// 通过键获取值
-		v := redisKit.Redis().Del(ctx, key)
-		if v == 0 {
-			return "del error"
-		}
-		return "success"
-	default:
-		return "unknown error"
+	s.initRedis(connName)
+	nodeId, _ := strconv.Atoi(nodeIdStr)
+	redisKit.Redis().ChangeDb(ctx, nodeId)
+	// 通过键获取值
+	v := redisKit.Redis().Del(ctx, key)
+	if v == 0 {
+		return "del error"
 	}
+	return "success"
 }
 
 // RedisUpdateStringValue 更新redis数据
@@ -357,21 +331,16 @@ func (s *sRedis) RedisUpdateStringValue(connType, connName, nodeIdStr, key, valu
 		return errors.New("parameter is missing")
 	}
 	ctx := context.Background()
-	switch connType {
-	case "redis":
-		s.initRedis(connName)
-		nodeId, _ := strconv.Atoi(nodeIdStr)
-		redisKit.Redis().ChangeDb(ctx, nodeId)
-		// 通过键获取值
-		ttl, _ := strconv.Atoi(ttlStr)
-		err := redisKit.Redis().AddData(ctx, key, value, ttl)
-		if err != nil {
-			return err
-		}
-		return nil
-	default:
-		return errors.New("unknown error")
+	s.initRedis(connName)
+	nodeId, _ := strconv.Atoi(nodeIdStr)
+	redisKit.Redis().ChangeDb(ctx, nodeId)
+	// 通过键获取值
+	ttl, _ := strconv.Atoi(ttlStr)
+	err := redisKit.Redis().AddData(ctx, key, value, ttl)
+	if err != nil {
+		return err
 	}
+	return nil
 }
 
 // BuildCommand 构建命令

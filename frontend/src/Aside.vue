@@ -27,13 +27,15 @@
    });
  });
 
- // 加载数据库中的数据,使用懒加载的方案
+ // 一次性加载所有的数据库中的数据
  function loadNode(node, resolve) {
    console.log("nodeLevel", node.level);
-   console.log("selectedKeys",node)
+   console.log("nodeData",node.data)
    console.log("resolve",resolve)
+   let nodeData = node.data;
    if(node.level == 1){
      // 表示从基础开始加载
+     // window.go.main.App.GetNodeData(nodeData.connType,nodeData.)
    }
  }
 

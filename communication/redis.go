@@ -17,8 +17,20 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+var (
+	insRedis = sRedis{}
+)
+
+type sRedis struct {
+	ctx context.Context
+}
+
+func Redis() *sRedis {
+	return &insRedis
+}
+
 // 检查参数
-func checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
+func (s *sRedis) checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
 	//返回连接信息
 	message := "连接成功"
 	//状态码
@@ -42,7 +54,7 @@ func checkParameter(parameter map[string]gjson.Result) (int, string, bool) {
 }
 
 // RedisPing redis测试连接
-func RedisPing(connectionInfo string) (int, string) {
+func (s *sRedis) RedisPing(connectionInfo string) (int, string) {
 	//返回连接信息
 	message := "连接成功"
 	//状态码
@@ -50,7 +62,7 @@ func RedisPing(connectionInfo string) (int, string) {
 	//用于标记是否要继续匹配
 	fail := false
 	parameter := gjson.Parse(connectionInfo).Map()
-	code, message, fail = checkParameter(parameter)
+	code, message, fail = s.checkParameter(parameter)
 
 	info := structs.ConnectionType{
 		Alias:    parameter["alias"].String(),
@@ -79,13 +91,13 @@ func RedisPing(connectionInfo string) (int, string) {
 }
 
 // Ok 确定按钮
-func Ok(ctx context.Context, connectionInfo string) (int, string) {
+func (s *sRedis) Ok(ctx context.Context, connectionInfo string) (int, string) {
 	//返回连接信息
 	message := "连接成功"
 	//状态码
 	code := http.StatusOK
 	parameter := gjson.Parse(connectionInfo).Map()
-	code, message, _ = checkParameter(parameter)
+	code, message, _ = s.checkParameter(parameter)
 	info := structs.ConnectionType{
 		Type:     parameter["connType"].String(),
 		Alias:    parameter["alias"].String(),
@@ -110,31 +122,29 @@ func Ok(ctx context.Context, connectionInfo string) (int, string) {
 }
 
 // LoadingBaseHistoryInfo 加载已经存储的连接别名
-func LoadingBaseHistoryInfo(ctx context.Context) string {
+func (s *sRedis) LoadingBaseHistoryInfo(ctx context.Context) string {
+	// 读取所有的文件
 	files, _ := os.File().ReadFiles(ctx)
 	datas := make([]structs.BaseTreeInfo, 0, 1)
+	// 获取程序设定的基础路径
 	homeDir, _ := os.File().HomeDir(ctx)
+	// 循环组装数据，用于前端tree的显示
 	for _, f := range files {
 		fileName := f.Name()
 		var filePath strings.Builder
 		filePath.WriteString(homeDir)
 		filePath.WriteString(fileName)
+		// 读取文件内容
 		valueByte, _ := ioutil.ReadFile(filePath.String())
+		// 提取类型
 		t := gjson.Get(string(valueByte), "type").String()
+		// 提取别名
 		alias := gjson.Get(string(valueByte), "alias").String()
-		var ipt strings.Builder
-		ipt.WriteString("leftNavigation/")
-		ipt.WriteString(t)
-		ipt.WriteString(".png")
-		var key strings.Builder
-		key.WriteString(t)
-		key.WriteString(",")
-		key.WriteString(alias)
 		bci := structs.BaseTreeInfo{
 			Title:        alias,
-			Label:        key.String(),
+			Label:        alias,
 			ConnType:     t,
-			IconPath:     ipt.String(),
+			IconPath:     "",
 			ConnFileAddr: filePath.String(),
 		}
 		datas = append(datas, bci)
@@ -143,15 +153,9 @@ func LoadingBaseHistoryInfo(ctx context.Context) string {
 	return string(jb)
 }
 
-//type Children struct {
-//	Title string `json:"title"` //别名
-//	Key   string `json:"key"`   //key
-//	//Children []*Children `json:"children"` //子集
-//}
-
 // LoadingHistoryInfo 加载已经存储的连接信息
-func LoadingHistoryInfo(key string) (int, string) {
-	valueByte := initRedis(key)
+func (s *sRedis) LoadingHistoryInfo(key string) (int, string) {
+	valueByte := s.initRedis(key)
 	err := redisKit.Redis().Ping(context.Background())
 	if err != nil {
 		return http.StatusBadRequest, err.Error()
@@ -181,7 +185,7 @@ func LoadingHistoryInfo(key string) (int, string) {
 }
 
 // 连接redis
-func initRedis(key string) []byte {
+func (s *sRedis) initRedis(key string) []byte {
 	// 获取所有连接文件的路径
 	homeDir, _ := os.File().HomeDir(context.Background())
 	var filePath strings.Builder
@@ -200,13 +204,13 @@ func initRedis(key string) []byte {
 }
 
 // LoadingDbResource 加载数据库资源消耗
-func LoadingDbResource(key string) string {
-	initRedis(key)
+func (s *sRedis) LoadingDbResource(key string) string {
+	s.initRedis(key)
 	return redisKit.Redis().GetMainViewInfo(context.Background())
 }
 
 // GetNodeData 获取节点数据
-func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
+func (s *sRedis) GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 	var value strings.Builder
 	if connType == "" ||
 		connName == "" {
@@ -215,7 +219,7 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 	ctx := context.Background()
 	switch connType {
 	case "redis":
-		initRedis(connName)
+		s.initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.Redis().ChangeDb(ctx, nodeId)
 		arr, err := redisKit.Redis().GetDbKeys(ctx, 0)
@@ -230,7 +234,7 @@ func GetNodeData(connType, connName, nodeIdStr string) (string, error) {
 }
 
 // RedisGetData 通过key获取连接信息
-func RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, error) {
+func (s *sRedis) RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, error) {
 	// var value strings.Builder
 	var getValue structs.GetValue
 	if connType == "" ||
@@ -240,7 +244,7 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, 
 	ctx := context.Background()
 	switch connType {
 	case "redis":
-		initRedis(connName)
+		s.initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 获取数据类型
@@ -250,7 +254,7 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, 
 		case "string":
 			// 通过键获取值
 			v := redisKit.Redis().GetValue(ctx, key)
-			command := BuildCommand(key, "string", v)
+			command := s.BuildCommand(key, "string", v)
 			getValue.Type = "string"
 			getValue.Key = key
 			getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
@@ -267,7 +271,7 @@ func RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, 
 }
 
 // RedisReName 重命名key
-func RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
+func (s *sRedis) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
 	if connType == "" ||
 		connName == "" {
 		return "parameter is missing"
@@ -275,7 +279,7 @@ func RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
 	ctx := context.Background()
 	switch connType {
 	case "redis":
-		initRedis(connName)
+		s.initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 通过键获取值
@@ -290,7 +294,7 @@ func RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
 }
 
 // RedisUpTtl 更新redis剩余时间
-func RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr string) string {
+func (s *sRedis) RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr string) string {
 	//todo 当ttl=-1时会出现数据直接丢失的情况
 	ttl, err := strconv.Atoi(ttlStr)
 	if err != nil {
@@ -303,7 +307,7 @@ func RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr string) string
 	ctx := context.Background()
 	switch connType {
 	case "redis":
-		initRedis(connName)
+		s.initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 通过键获取值
@@ -324,7 +328,7 @@ func RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr string) string
 }
 
 // RedisDel 删除redis数据
-func RedisDel(connType, connName, nodeIdStr, key string) string {
+func (s *sRedis) RedisDel(connType, connName, nodeIdStr, key string) string {
 	if connType == "" ||
 		connName == "" {
 		return "parameter is missing"
@@ -332,7 +336,7 @@ func RedisDel(connType, connName, nodeIdStr, key string) string {
 	ctx := context.Background()
 	switch connType {
 	case "redis":
-		initRedis(connName)
+		s.initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 通过键获取值
@@ -347,7 +351,7 @@ func RedisDel(connType, connName, nodeIdStr, key string) string {
 }
 
 // RedisUpdateStringValue 更新redis数据
-func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttlStr string) error {
+func (s *sRedis) RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttlStr string) error {
 	if connType == "" ||
 		connName == "" {
 		return errors.New("parameter is missing")
@@ -355,7 +359,7 @@ func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttlStr st
 	ctx := context.Background()
 	switch connType {
 	case "redis":
-		initRedis(connName)
+		s.initRedis(connName)
 		nodeId, _ := strconv.Atoi(nodeIdStr)
 		redisKit.Redis().ChangeDb(ctx, nodeId)
 		// 通过键获取值
@@ -371,7 +375,7 @@ func RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttlStr st
 }
 
 // BuildCommand 构建命令
-func BuildCommand(key, keyType, value string) string {
+func (s *sRedis) BuildCommand(key, keyType, value string) string {
 	lowerCaseKeyType := strings.ToLower(keyType)
 	var command strings.Builder
 	switch lowerCaseKeyType {

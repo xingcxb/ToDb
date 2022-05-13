@@ -75,7 +75,7 @@ func (a *App) ExportConn() {
 // TestConnection 测试连接
 func (a *App) TestConnection(connectionInfo string) {
 	//var responseJson lib.JsonResponse
-	code, message := communication.RedisPing(connectionInfo)
+	code, message := communication.Redis().RedisPing(connectionInfo)
 	if code != http.StatusOK {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", message, icon)
 	} else {
@@ -86,7 +86,7 @@ func (a *App) TestConnection(connectionInfo string) {
 // Ok 确定按钮进行的操作
 func (a App) Ok(connectionInfo string) string {
 	var responseJson kit.JsonResponse
-	code, message := communication.Ok(a.ctx, connectionInfo)
+	code, message := communication.Redis().Ok(a.ctx, connectionInfo)
 	responseJson = kit.JsonResponse{
 		Code:    code,
 		Message: message,
@@ -99,12 +99,12 @@ func (a App) Ok(connectionInfo string) string {
 
 // LoadingConnKey 加载已保存的连接信息
 func (a *App) LoadingConnKey() string {
-	return communication.LoadingBaseHistoryInfo(a.ctx)
+	return communication.Redis().LoadingBaseHistoryInfo(a.ctx)
 }
 
 // LoadingConnInfo 获取链接信息详情
 func (a *App) LoadingConnInfo(key string) string {
-	code, message := communication.LoadingHistoryInfo(key)
+	code, message := communication.Redis().LoadingHistoryInfo(key)
 	if code != http.StatusOK {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", message, icon)
 	}
@@ -113,25 +113,25 @@ func (a *App) LoadingConnInfo(key string) string {
 
 // LoadingDbResource 加载数据库资源消耗
 func (a *App) LoadingDbResource(key string) string {
-	return communication.LoadingDbResource(key)
+	return communication.Redis().LoadingDbResource(key)
 }
 
 // GetNodeData 获取节点数据
 func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
-	sts, _ := communication.GetNodeData(connType, connName, nodeIdStr)
+	sts, _ := communication.Redis().GetNodeData(connType, connName, nodeIdStr)
 	return sts
 }
 
 // RedisGetData 从redis获取数据
 func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
-	_v, _ := communication.RedisGetData(connType, connName, nodeIdStr, key)
+	_v, _ := communication.Redis().RedisGetData(connType, connName, nodeIdStr, key)
 	v, _ := json.Marshal(_v)
 	return string(v)
 }
 
 // RedisReName redis key重命名
 func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) {
-	v := communication.RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
+	v := communication.Redis().RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
 	if v != "success" {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
@@ -141,7 +141,7 @@ func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) 
 
 // RedisUpTtl 更新redis剩余时间
 func (a *App) RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr string) {
-	v := communication.RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr)
+	v := communication.Redis().RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr)
 	if v != "success" {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
@@ -162,7 +162,7 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	if selection != "确定" {
 		return
 	}
-	v := communication.RedisDel(connType, connName, nodeIdStr, key)
+	v := communication.Redis().RedisDel(connType, connName, nodeIdStr, key)
 	if v != "success" {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {
@@ -172,7 +172,7 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 
 // RedisSaveStringValue 更新redis值
 func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value, ttl string) {
-	err := communication.RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
+	err := communication.Redis().RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
 	if err != nil {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
 	} else {

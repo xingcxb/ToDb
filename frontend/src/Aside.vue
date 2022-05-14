@@ -77,7 +77,9 @@ function loadNode(node, resolve) {
       }
     });
   }else{
-    resolve(node.data.children)
+    // if(node.data.children.length > 0) {
+    //   resolve(node.data.children)
+    // }
     console.log("level=======", node.level);
   }
 }

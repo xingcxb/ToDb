@@ -46,8 +46,8 @@ function loadNode(node, resolve) {
     // 表示只处理一级节点从基础开始加载
     router.push({
       // 当选中连接数据库时候需要将状态信息加载出来
-      path:"/rightContent/status",
-      query:{
+      path: "/rightContent/status",
+      query: {
         fileName: nodeData.label
       }
     });
@@ -64,7 +64,7 @@ function loadNode(node, resolve) {
     // 表示进入具体的库，需要加载key
     // 获取父节点的数据
     let parentNode = node.parent.data;
-    window.go.main.App.GetNodeData(parentNode.connType,parentNode.label,node.data.key).then((resp) => {
+    window.go.main.App.GetNodeData(parentNode.connType, parentNode.label, node.data.key).then((resp) => {
       // 当数据不存在的时候返回的是
       if (resp != "") {
         setTimeout(resolve(JSON.parse(resp)), 500)
@@ -73,10 +73,14 @@ function loadNode(node, resolve) {
         setTimeout(resolve([]), 500)
       }
     });
-  }else{
-    console.log("nodeData:", nodeData);
-    console.log("level=======", node.level);
-    setTimeout(resolve([...nodeData.children]), 500)
+  } else {
+    if (node.level > 2) {
+      let arr = [];
+      if (nodeData.children && nodeData.children.length > 0) {
+        arr = nodeData.children
+      }
+      setTimeout(resolve([...arr]), 500)
+    }
   }
 }
 </script>

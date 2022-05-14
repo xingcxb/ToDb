@@ -76,7 +76,7 @@ function loadNode(node, resolve) {
   }else{
     console.log("nodeData:", nodeData);
     console.log("level=======", node.level);
-    setTimeout(resolve([]), 500)
+    setTimeout(resolve([...nodeData.children]), 500)
   }
 }
 </script>

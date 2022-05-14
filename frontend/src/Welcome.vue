@@ -3,7 +3,7 @@
  * @Date: 2022-04-30 11:18:03
  * @LastEditors: symbol
  * @LastEditTime: 2022-04-30 17:53:49
- * @FilePath: /todb/frontend/JS/src/views/redis/Content_welcome.vue
+ * @FilePath: /todb/frontend/JS/src/views/redis/Welcome.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
@@ -16,7 +16,7 @@
     type="flex"
   >
     <el-col :span="12" :push="8">
-      <img src="../../assets/logos/logo.png" alt="ToDB" />
+      <img src="./assets/logos/logo.png" alt="ToDB" />
     </el-col>
     <el-col :span="12">
       <span class="app_name">ToDB </span><span class="tail">.app</span>

@@ -8,61 +8,48 @@
  *
  * Copyright (c) 2022 by symbol, All Rights Reserved.
  */
-import { createRouter, createWebHashHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import Default from "../Welcome.vue"
+import NewConnect from "../views/NewConnection.vue"
+import Status from "../views/redis/Content_status.vue"
+import Info from "../views/redis/Content_string_info.vue"
+import {createRouter, createWebHashHistory} from "vue-router";
 
 const routes = [
-  {
-    // 主页
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-  {
-    // 新建连接
-    path: "/newConnection",
-    name: "newConnection",
-    component: function () {
-      return import(
-        /* webpackChunkName: "about" */ "../views/NewConnection.vue"
-      );
+    // {
+    //   // 主页
+    //   path: "/",
+    //   name: "Home",
+    //   component: Home,
+    // },
+    {
+        // 新建连接
+        path: "/newConnection",
+        name: "newConnection",
+        component: NewConnect
     },
-  },
-  {
-    // 右侧默认页面
-    path: "/rightContent/default",
-    name: "default",
-    component: function () {
-      return import(
-        /* webpackChunkName: "about" */ "../views/redis/Content_welcome.vue"
-      );
+    {
+        // 右侧默认页面
+        path: "/rightContent/default",
+        name: "default",
+        component: Default
     },
-  },
-  {
-    // 右侧状态页面
-    path: "/rightContent/status",
-    name: "status",
-    component: function () {
-      return import(
-        /* webpackChunkName: "about" */ "../views/redis/Content_status.vue"
-      );
+    {
+        // 右侧状态页面
+        path: "/rightContent/status",
+        name: "status",
+        component: Status
     },
-  },
-  {
-    // 右侧详情页面
-    path: "/rightContent/value",
-    name: "info",
-    component: function () {
-      return import(
-        /* webpackChunkName: "about" */ "../views/redis/Content_string_info.vue"
-      );
+    {
+        // 右侧详情页面
+        path: "/rightContent/value",
+        name: "info",
+        component: Info
     },
-  },
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
+    history: createWebHashHistory(),
+    routes,
 });
 
 export default router;

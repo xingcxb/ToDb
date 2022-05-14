@@ -10,8 +10,9 @@
         </el-tag>
         <el-tooltip placement="bottom" content="自动刷新开关，每5秒刷新一次">
           <el-switch
-              change="changeAutoRefresh"
+              @change="changeAutoRefresh"
               v-model="autoRefresh"
+              inline-prompt
               active-text="开"
               inactive-text="关"
           >{{ autoRefresh }}
@@ -189,8 +190,9 @@ let kvInfo = reactive({
 
 // 页面加载时同步加载redis数据
 onBeforeMount(() => {
-  console.log("status页面", router.currentRoute.value.query.key)
-  if (router.currentRoute.value.query.key === "") {
+  // console.log("status页面", router.currentRoute.value.query.key)
+  let fileName = router.currentRoute.value.query.fileName;
+  if (fileName === "") {
     // 如果返回空值返回到默认界面
     router.push({
       path: "/rightContent/default",
@@ -198,7 +200,7 @@ onBeforeMount(() => {
     return;
   }
   // 获取基本数据
-  window.go.main.App.LoadingDbResource(router.currentRoute.value.query.key).then((resolve) => {
+  window.go.main.App.LoadingDbResource(fileName).then((resolve) => {
     if (resolve !== "") {
       // 如果返回值中不为空字符串才进行操作
       // console.log(resolve)
@@ -261,12 +263,14 @@ function getNodeData() {
 
 // 自动刷新按钮
 function changeAutoRefresh() {
+  console.log("自动刷新按钮",autoRefresh.value);
   if (autoRefresh.value) {
     // 开启定时器
     timer = setInterval(() => {
       // 刷新
+      console.log("value:",router.currentRoute.value.query.fileName);
       window.go.main.App.LoadingDbResource(
-          router.currentRoute.value.query.data
+          router.currentRoute.value.query.fileName
       ).then((resolve) => {
         if (resolve !== "") {
           // 如果返回值中不为空字符串才进行操作

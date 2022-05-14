@@ -116,6 +116,7 @@ func (a *App) LoadingConnInfo(dbType, fileName string) string {
 	}
 	if code != http.StatusOK {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", message, icon)
+		return ""
 	}
 	return message
 }
@@ -138,6 +139,9 @@ func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
 	}
 	if err != nil {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
+	}
+	if strs == "null" {
+		strs = ""
 	}
 	return strs
 }

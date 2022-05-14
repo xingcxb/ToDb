@@ -41,17 +41,16 @@ onBeforeMount(() => {
 
 // 【第二层】加载连接信息下的表/库
 function loadNode(node, resolve) {
-  console.log("node--------",node);
   let nodeData = node.data;
   if (node.level == 1) {
     // 表示只处理一级节点从基础开始加载
-    // 当选中第一个库的时候需要将状态信息加载出来
     router.push({
-      path:"/rightCount/status",
+      // 当选中连接数据库时候需要将状态信息加载出来
+      path:"/rightContent/status",
       query:{
-        key: nodeData.label
+        fileName: nodeData.label
       }
-    })
+    });
     window.go.main.App.LoadingConnInfo(nodeData.connType, nodeData.label).then((resp) => {
       if (resp !== "") {
         setTimeout(resolve(JSON.parse(resp)), 500)
@@ -61,25 +60,20 @@ function loadNode(node, resolve) {
       }
     });
   } else if (node.level == 2) {
-    console.log("node:", node);
+    // console.log("node:", node);
     // 表示进入具体的库，需要加载key
     // 获取父节点的数据
     let parentNode = node.parent.data;
-    window.go.main.App.GetNodeData(parentNode.connType,parentNode.label,node.key).then((resp) => {
-      if (resp !== "") {
-        console.log("res+++++:",resp)
+    window.go.main.App.GetNodeData(parentNode.connType,parentNode.label,node.data.key).then((resp) => {
+      // 当数据不存在的时候返回的是
+      if (resp != "") {
         setTimeout(resolve(JSON.parse(resp)), 500)
-        console.log("附加后的node:", node);
-        console.log("listData:",listData.data)
       } else {
         // 如果返回的数据不存在值，标记为没有子节点
         setTimeout(resolve([]), 500)
       }
     });
   }else{
-    // if(node.data.children.length > 0) {
-    //   resolve(node.data.children)
-    // }
     console.log("level=======", node.level);
   }
 }

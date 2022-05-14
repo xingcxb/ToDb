@@ -189,7 +189,7 @@ let kvInfo = reactive({
 
 // 页面加载时同步加载redis数据
 onBeforeMount(() => {
-  // console.log("status页面", router.currentRoute.value.query.key)
+  console.log("status页面", router.currentRoute.value.query.key)
   if (router.currentRoute.value.query.key === "") {
     // 如果返回空值返回到默认界面
     router.push({

@@ -19,11 +19,11 @@ func StrKit() *sStrKit {
 }
 
 type Node struct {
-	Title    string  `json:"title"`
+	Label    string  `json:"label"`
 	Key      string  `json:"key"`
 	FullStr  string  `json:"fullStr"`
 	Count    int     `json:"count"`
-	Children []*Node `json:"children"`
+	Children []*Node `json:"children,omitempty"`
 }
 
 func (s *sStrKit) PackageTree(v []string) string {
@@ -46,7 +46,7 @@ func (s *sStrKit) PackageTree(v []string) string {
 		}
 		flag := node.Key == ""
 		if flag {
-			node.Title = sl[0]
+			node.Label = sl[0]
 			var sb strings.Builder
 			sb.WriteString(sl[0])
 			sb.WriteString(":*")
@@ -88,7 +88,7 @@ func (s *sStrKit) GetChildren(nodeStr, fullStr string, parentNode *Node) {
 	}
 	flag := node.Key == ""
 	if flag {
-		node.Title = sl[0]
+		node.Label = sl[0]
 		var sb strings.Builder
 		sb.WriteString(sl[0])
 		sb.WriteString(":*")

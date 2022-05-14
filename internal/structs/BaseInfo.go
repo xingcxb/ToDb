@@ -34,7 +34,7 @@ type BaseTreeInfo struct {
 type DbTreeInfo struct {
 	Label    string `json:"label"`    //名称
 	Title    string `json:"title"`    //别名
-	Key      string `json:key`        //键
+	Key      string `json:"key"`      //键
 	IsLeaf   bool   `json:"isLeaf"`   //是否是叶子节点
 	Children string `json:"children"` //子节点
 }

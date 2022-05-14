@@ -67,7 +67,9 @@ function loadNode(node, resolve) {
     let parentNode = node.parent.data;
     window.go.main.App.GetNodeData(parentNode.connType,parentNode.label,node.key).then((resp) => {
       if (resp !== "") {
+        console.log("res+++++:",resp)
         setTimeout(resolve(JSON.parse(resp)), 500)
+        console.log("附加后的node:", node);
         console.log("listData:",listData.data)
       } else {
         // 如果返回的数据不存在值，标记为没有子节点
@@ -75,6 +77,7 @@ function loadNode(node, resolve) {
       }
     });
   }else{
+    resolve(node.data.children)
     console.log("level=======", node.level);
   }
 }

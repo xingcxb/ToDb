@@ -154,43 +154,39 @@ func (s *sRedis) LoadingBaseHistoryInfo(ctx context.Context) string {
 }
 
 // LoadingHistoryInfo 加载已经存储的连接信息
-func (s *sRedis) LoadingHistoryInfo(key string) (int, string) {
-	valueByte := s.initRedis(key)
+func (s *sRedis) LoadingHistoryInfo(fileName string) (int, string) {
+	s.initRedis(fileName)
 	err := redisKit.Redis().Ping(context.Background())
 	if err != nil {
 		return http.StatusBadRequest, err.Error()
 	}
-
-	t := gjson.Get(string(valueByte), "type").String()
 	var data []structs.DbTreeInfo
-	switch t {
-	case "redis":
-		//如果是redis则直接显示15个库
-		for i := 0; i < 16; i++ {
-			var dbName strings.Builder
-			dbName.WriteString("db")
-			dbName.WriteString(strconv.Itoa(i))
-			dbName.WriteString("(")
-			dbName.WriteString(strconv.Itoa(redisKit.Redis().GetDbCount(context.Background(), i)))
-			dbName.WriteString(")")
-			data = append(data, structs.DbTreeInfo{
-				Title: dbName.String(),
-				Key:   strconv.Itoa(i),
-			})
-		}
-	default:
+	//redis则直接显示15个库
+	for i := 0; i < 16; i++ {
+		var dbName strings.Builder
+		dbName.WriteString("db")
+		dbName.WriteString(strconv.Itoa(i))
+		dbName.WriteString("(")
+		dbName.WriteString(strconv.Itoa(redisKit.Redis().GetDbCount(context.Background(), i)))
+		dbName.WriteString(")")
+		data = append(data, structs.DbTreeInfo{
+			Label: dbName.String(),
+			Title: dbName.String(),
+			Key:   strconv.Itoa(i),
+		})
 	}
+
 	vb, _ := json.Marshal(data)
 	return http.StatusOK, string(vb)
 }
 
 // 连接redis
-func (s *sRedis) initRedis(key string) []byte {
+func (s *sRedis) initRedis(fileName string) []byte {
 	// 获取所有连接文件的路径
 	homeDir, _ := os.File().HomeDir(context.Background())
 	var filePath strings.Builder
 	filePath.WriteString(homeDir)
-	filePath.WriteString(key)
+	filePath.WriteString(fileName)
 	filePath.WriteString(".json")
 	valueByte, _ := ioutil.ReadFile(filePath.String())
 

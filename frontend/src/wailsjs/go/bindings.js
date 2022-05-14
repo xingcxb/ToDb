@@ -31,10 +31,11 @@ const go = {
       /**
        * LoadingConnInfo
        * @param {string} arg1 - Go Type: string
+       * @param {string} arg2 - Go Type: string
        * @returns {Promise<string>}  - Go Type: string
        */
-      "LoadingConnInfo": (arg1) => {
-        return window.go.main.App.LoadingConnInfo(arg1);
+      "LoadingConnInfo": (arg1, arg2) => {
+        return window.go.main.App.LoadingConnInfo(arg1, arg2);
       },
       /**
        * LoadingConnKey

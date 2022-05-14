@@ -104,8 +104,16 @@ func (a *App) LoadingConnKey() string {
 }
 
 // LoadingConnInfo 获取链接信息详情
-func (a *App) LoadingConnInfo(key string) string {
-	code, message := communication.Redis().LoadingHistoryInfo(key)
+func (a *App) LoadingConnInfo(dbType, fileName string) string {
+	var code int
+	var message string
+	switch dbType {
+	case "redis":
+		code, message = communication.Redis().LoadingHistoryInfo(fileName)
+	default:
+		code = http.StatusNotFound
+		message = "暂不支持的数据库类型"
+	}
 	if code != http.StatusOK {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", message, icon)
 	}
@@ -120,12 +128,16 @@ func (a *App) LoadingDbResource(key string) string {
 // GetNodeData 获取节点数据
 func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
 	strs := ""
+	var err error
 	switch connType {
 	case "redis":
 		// 获取redis节点数据
-		strs, _ = communication.Redis().GetNodeData(connType, connName, nodeIdStr)
+		strs, err = communication.Redis().GetNodeData(connType, connName, nodeIdStr)
 	default:
-		strs = "暂不支持"
+		err = errors.New("暂不支持此连接类型")
+	}
+	if err != nil {
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
 	}
 	return strs
 }

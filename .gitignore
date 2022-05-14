@@ -11,3 +11,4 @@ node_modules/
 build/bin/
 .gitignore
 /frontend/package-lock.json
+/frontend/package.json.md5

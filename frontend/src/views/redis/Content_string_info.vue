@@ -294,7 +294,7 @@ onBeforeMount(() => {
   // redis键
   oldKey.value = router.currentRoute.value.query.key;
   // redis db
-  nodeId.value = router.currentRoute.value.query.dbKey;
+  nodeId.value = router.currentRoute.value.query.dbId;
   // 类型
   connType.value = router.currentRoute.value.query.connType;
   // 连接文件名

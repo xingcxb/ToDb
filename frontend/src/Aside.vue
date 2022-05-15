@@ -9,7 +9,7 @@
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
 -->
 <template>
-  <div class="aside-outer-container">
+  <div>
     <!--左侧内容-->
     <el-tree
         :data="listData.data"
@@ -78,6 +78,34 @@ function loadNode(node, resolve) {
       let arr = [];
       if (nodeData.children && nodeData.children.length > 0) {
         arr = nodeData.children
+      } else {
+        // 这里是不存在子节点，将右边进行改变
+        // 获取到选中的顶级父类节点
+        let topParentNode = node.parent;
+        let nextParentNode = node.parent;
+        for (let i = 1; i < node.level - 1; i++) {
+          topParentNode = topParentNode.parent;
+          if (i === node.level - 3) {
+            nextParentNode = topParentNode;
+          }
+        }
+        window.go.main.App.ChangeRightWindowStyle(JSON.stringify(topParentNode.data),
+            JSON.stringify(nextParentNode.data), JSON.stringify(nodeData)).then((resp) => {
+          console.log("数据类型:", resp)
+          switch (resp){
+            case "string":
+              router.push({
+                path: "/rightContent/value_string",
+                query:{
+                  key: nodeData.fullStr,
+                  dbId: nextParentNode.data.key,
+                  connType: topParentNode.data.connType,
+                  connName:topParentNode.data.title,
+                }
+              })
+          }
+          setTimeout(resolve([]), 500)
+        });
       }
       setTimeout(resolve([...arr]), 500)
     }
@@ -85,4 +113,6 @@ function loadNode(node, resolve) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

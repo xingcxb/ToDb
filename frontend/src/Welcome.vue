@@ -10,7 +10,7 @@
 -->
 <template>
   <el-row
-    style="min-height: 600px; height: 100%"
+    style="height: 659px"
     justify="space-around"
     align="middle"
     type="flex"
@@ -50,7 +50,7 @@ function openBrowser(v) {
 }
 
 .tail {
-  font-size: 6px;
+  font-size: 7px;
 }
 
 .other {

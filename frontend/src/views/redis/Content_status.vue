@@ -4,7 +4,7 @@
   <el-row style="width: 100%; margin-right: 2px">
     <el-col :span="24">
       <div style="float: right">
-        <el-tag type="card">
+        <el-tag type="card" style="margin-right: 5px">
           <sync-outlined spin/>
           自动刷新
         </el-tag>

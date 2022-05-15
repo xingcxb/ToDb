@@ -5,6 +5,16 @@ const go = {
   "main": {
     "App": {
       /**
+       * ChangeRightWindowStyle
+       * @param {string} arg1 - Go Type: string
+       * @param {string} arg2 - Go Type: string
+       * @param {string} arg3 - Go Type: string
+       * @returns {Promise<string>}  - Go Type: string
+       */
+      "ChangeRightWindowStyle": (arg1, arg2, arg3) => {
+        return window.go.main.App.ChangeRightWindowStyle(arg1, arg2, arg3);
+      },
+      /**
        * ExportConn
        * @returns {Promise<void>} 
        */

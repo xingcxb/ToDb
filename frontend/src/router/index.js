@@ -11,7 +11,7 @@
 import Default from "../Welcome.vue"
 import NewConnect from "../views/NewConnection.vue"
 import Status from "../views/redis/Content_status.vue"
-import Info from "../views/redis/Content_string_info.vue"
+import StringInfo from "../views/redis/Content_string_info.vue"
 import {createRouter, createWebHashHistory} from "vue-router";
 
 const routes = [
@@ -40,10 +40,10 @@ const routes = [
         component: Status
     },
     {
-        // 右侧详情页面
-        path: "/rightContent/value",
-        name: "info",
-        component: Info
+        // 右侧详情页面string类型
+        path: "/rightContent/value_string",
+        name: "stringInfo",
+        component: StringInfo
     },
 ];
 

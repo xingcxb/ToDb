@@ -7,7 +7,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"github.com/tidwall/gjson"
 	"net/http"
+	"strings"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -121,9 +124,33 @@ func (a *App) LoadingConnInfo(dbType, fileName string) string {
 	return message
 }
 
-// LoadingDbResource 加载数据库资源消耗
+// LoadingDbResource 加载数据库资源消耗信息
 func (a *App) LoadingDbResource(key string) string {
-	return communication.Redis().LoadingDbResource(key)
+	return communication.Redis().LoadingDbResource(a.ctx, key)
+}
+
+// ChangeRightWindowStyle 改变右侧窗口样式
+func (a *App) ChangeRightWindowStyle(parentNode, nextParentNode, node string) string {
+	// 连接类型
+	connType := gjson.Get(parentNode, "connType").String()
+	// 文件名
+	fileName := gjson.Get(parentNode, "title").String()
+	switch connType {
+	case "redis":
+	default:
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", "暂不支持的数据库类型", icon)
+	}
+	// 获取db信息
+	dbId := gjson.Get(nextParentNode, "key").String()
+	// 获取指定的节点key
+	fullKey := gjson.Get(node, "fullStr").String()
+	// 指定的key数据类型
+	dataType, err := communication.Redis().GetValueType(a.ctx, fileName, dbId, fullKey)
+	fmt.Println(dataType)
+	if err != nil {
+		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
+	}
+	return strings.ToLower(dataType)
 }
 
 // GetNodeData 获取节点数据
@@ -133,7 +160,7 @@ func (a *App) GetNodeData(connType, connName, nodeIdStr string) string {
 	switch connType {
 	case "redis":
 		// 获取redis节点数据
-		strs, err = communication.Redis().GetNodeData(connType, connName, nodeIdStr)
+		strs, err = communication.Redis().GetNodeData(a.ctx, connType, connName, nodeIdStr)
 	default:
 		err = errors.New("暂不支持此连接类型")
 	}
@@ -152,7 +179,7 @@ func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 	switch connType {
 	case "redis":
 		// 获取redis节点数据
-		getValue, _ := communication.Redis().RedisGetData(connType, connName, nodeIdStr, key)
+		getValue, _ := communication.Redis().RedisGetData(a.ctx, connType, connName, nodeIdStr, key)
 		_v, _ := json.Marshal(getValue)
 		v = string(_v)
 	default:
@@ -167,7 +194,8 @@ func (a *App) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) 
 	v := ""
 	switch connType {
 	case "redis":
-		v = communication.Redis().RedisReName(connType, connName, nodeIdStr, oldKey, newKey)
+		v = communication.Redis().RedisReName(a.ctx, connType, connName,
+			nodeIdStr, oldKey, newKey)
 	default:
 		v = "暂不支持"
 	}
@@ -183,7 +211,7 @@ func (a *App) RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr string) {
 	v := ""
 	switch connType {
 	case "redis":
-		v = communication.Redis().RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr)
+		v = communication.Redis().RedisUpTtl(a.ctx, connType, connName, nodeIdStr, key, ttlStr)
 	default:
 		v = "暂不支持"
 	}
@@ -210,7 +238,7 @@ func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	v := ""
 	switch connType {
 	case "redis":
-		v = communication.Redis().RedisDel(connType, connName, nodeIdStr, key)
+		v = communication.Redis().RedisDel(a.ctx, connType, connName, nodeIdStr, key)
 	default:
 		v = "暂不支持"
 	}
@@ -226,7 +254,8 @@ func (a *App) RedisSaveStringValue(connType, connName, nodeIdStr, key, value, tt
 	var err error
 	switch connType {
 	case "redis":
-		err = communication.Redis().RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttl)
+		err = communication.Redis().RedisUpdateStringValue(a.ctx, connType, connName,
+			nodeIdStr, key, value, ttl)
 	default:
 		err = errors.New("暂不支持")
 	}

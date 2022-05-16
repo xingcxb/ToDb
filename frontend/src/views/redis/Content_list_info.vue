@@ -50,7 +50,7 @@
       </el-input>
     </el-col>
     <el-col :offset="2" :span="1">
-      <el-button type="primary" danger :size="size" @click="del">
+      <el-button type="primary" danger size="small" @click="del">
         <template #icon>
           <!--删除-->
           <Delete20Regular/>
@@ -61,7 +61,7 @@
       <el-button
           type="primary"
           @click="getInfo"
-          :size="size"
+          size="small"
           style="background: #ffb33a; border: none"
       >
         <template #icon>
@@ -73,7 +73,7 @@
     <el-col :span="1">
       <el-button
           type="primary"
-          :size="size"
+          size="small"
           style="background: #07c245; border: none"
           v-clipboard:copy="commandStr"
       >
@@ -94,10 +94,10 @@
   <el-row>
     <el-col :span="24">
       <!--表格-->
-      <el-table :data="content.data" height="100%" style="width: 100%">
-        <el-table-column prop="id"  :label=" `id(Total: ${content.data.length})` " width="100%"/>
-        <el-table-column prop="value" label="value" width="100%"/>
-        <el-table-column label="operation" width="100%">
+      <el-table :data="content.data" style="width: 100%">
+        <el-table-column prop="id"  :label=" `id(Total: ${content.data.length})` "/>
+        <el-table-column prop="value" label="value" />
+        <el-table-column label="operation">
           <template slot-scope="scope">
             <el-button size="small">324234
               <template #icon>

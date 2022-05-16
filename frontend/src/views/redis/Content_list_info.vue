@@ -21,12 +21,16 @@
   <el-row style="margin-top: 20px">
     <el-col :offset="1" :span="10">
       <el-input
-          :addon-before="listValue.data.type"
+          :addon-before="allValue.data.type"
           v-model:value="nowKey"
           style="width: calc(100% - 30px)"
       >
         <template #append>
-          <el-button :icon="CheckOutlined" @click="rename"/>
+          <el-button @click="rename">
+            <template #icon>
+              <CheckmarkOutline />
+            </template>
+          </el-button>
         </template>
       </el-input>
     </el-col>
@@ -37,7 +41,11 @@
           style="width: calc(100% - 60px)"
       >
         <template #append>
-          <el-button :icon="CheckOutlined" @click="updateTtl"/>
+          <el-button :icon="CheckOutlined" @click="updateTtl">
+            <template #icon>
+              <CheckmarkOutline />
+            </template>
+          </el-button>
         </template>
       </el-input>
     </el-col>
@@ -45,7 +53,7 @@
       <el-button type="primary" danger :size="size" @click="del">
         <template #icon>
           <!--删除-->
-          <delete-outlined/>
+          <Delete20Regular/>
         </template>
       </el-button>
     </el-col>
@@ -58,7 +66,7 @@
       >
         <template #icon>
           <!--刷新-->
-          <redo-outlined/>
+          <Refresh/>
         </template>
       </el-button>
     </el-col>
@@ -71,7 +79,7 @@
       >
         <template #icon>
           <!--获取命令-->
-          <code-outlined/>
+          <CodeSlashOutline/>
         </template>
       </el-button>
     </el-col>
@@ -86,27 +94,27 @@
   <el-row>
     <el-col :span="24">
       <!--表格-->
-      <el-table :data="listValue.data" height="100%" style="width: 100%">
-        <el-table-column prop="id" label="id(Total:2)" width="100%"/>
-        <el-table-columns prop="value" label="value" width="100%"/>
+      <el-table :data="content.data" height="100%" style="width: 100%">
+        <el-table-column prop="id"  :label=" `id(Total: ${content.data.length})` " width="100%"/>
+        <el-table-column prop="value" label="value" width="100%"/>
         <el-table-column label="operation" width="100%">
           <template slot-scope="scope">
-            <el-button size="small">
+            <el-button size="small">324234
               <template #icon>
                 <CopyOutline/>
               </template>
             </el-button>
-            <el-button size="small">
+            <el-button size="small">234234
               <template #icon>
                 <Edit/>
               </template>
             </el-button>
-            <el-button size="small">
+            <el-button size="small">23423423
               <template #icon>
                 <Delete20Regular/>
               </template>
             </el-button>
-            <el-button :icon="CodeSlashOutline" size="small">
+            <el-button size="small">234234
               <template #icon>
                 <CodeSlashOutline/>
               </template>
@@ -121,9 +129,10 @@
 <script setup>
 import {onBeforeMount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
-import {CodeSlashOutline, CopyOutline} from "@vicons/ionicons5"
+import {CodeSlashOutline, CopyOutline,CheckmarkOutline} from "@vicons/ionicons5"
 import {Delete20Regular} from "@vicons/fluent"
 import {Edit} from "@vicons/carbon"
+import {Refresh} from "@vicons/tabler"
 
 const router = useRouter();
 // 节点id
@@ -137,7 +146,7 @@ let nowKey = ref("");
 // redis old key
 let oldKey = ref("");
 // redis value
-let listValue = reactive({
+let allValue = reactive({
   data: "",
 });
 // redis 剩余时间
@@ -145,7 +154,9 @@ let ttl = ref("");
 // redis content data size
 let contentSize = ref(0);
 // redis content data
-let content = ref("");
+let content = reactive({
+  data: "",
+});
 // 内容展示类型
 let formatType = ref("Text");
 // 命令
@@ -161,12 +172,12 @@ function getInfo() {
       nowKey.value
   ).then((res) => {
     // 此处如果是空值，则应该是该键没有填充值
-    listValue.data = JSON.parse(res);
-    content.value = listValue.data.value;
-    console.log("这个值是：", content.value);
-    ttl.value = listValue.data.ttl;
-    contentSize.value = listValue.data.size;
-    commandStr.value = listValue.data.commandStr;
+    allValue.data = JSON.parse(res);
+    content.data = allValue.data.value;
+    console.log("这个值是：", content.data);
+    ttl.value = allValue.data.ttl;
+    contentSize.value = allValue.data.size;
+    commandStr.value = allValue.data.commandStr;
   });
 }
 

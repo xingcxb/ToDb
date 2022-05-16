@@ -84,7 +84,7 @@
       </el-button>
     </el-col>
   </el-row>
-  <el-row>
+  <el-row >
     <el-col :offset="1" :span="1">
       <el-button type="primary">
         添加新行
@@ -98,23 +98,23 @@
         <el-table-column prop="id"  :label=" `id(Total: ${content.data.length})` "/>
         <el-table-column prop="value" label="value" />
         <el-table-column label="operation">
-          <template slot-scope="scope">
-            <el-button size="small">324234
+          <template #default="scope">
+            <el-button size="small" type="success" circle>
               <template #icon>
                 <CopyOutline/>
               </template>
             </el-button>
-            <el-button size="small">234234
+            <el-button size="small" type="primary" circle>
               <template #icon>
                 <Edit/>
               </template>
             </el-button>
-            <el-button size="small">23423423
+            <el-button size="small" type="danger" circle>
               <template #icon>
                 <Delete20Regular/>
               </template>
             </el-button>
-            <el-button size="small">234234
+            <el-button size="small" type="warning" circle>
               <template #icon>
                 <CodeSlashOutline/>
               </template>
@@ -229,5 +229,7 @@ function updateTtl() {
 </script>
 
 <style scoped>
-
+.interval-row{
+ margin-top: 3px;
+}
 </style>

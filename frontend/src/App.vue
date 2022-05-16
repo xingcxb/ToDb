@@ -1,5 +1,5 @@
 <template>
-  <div style="background: #f5f4f2;">
+  <div>
     <!--  <div class="header" data-wails-drag>-->
     <el-container>
       <el-header height="69px">
@@ -8,7 +8,7 @@
       </el-header>
       <!--头部下面的属性-->
       <el-container>
-        <el-aside>
+        <el-aside style="background: #e0e1e1;">
           <el-scrollbar style="height: 659px">
             <!--左侧导航-->
             <Aside class="aside-outer-container"></Aside>

@@ -185,6 +185,7 @@ func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 	default:
 		v = "暂不支持"
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
+		return v
 	}
 	return v
 }

@@ -4,6 +4,7 @@ import (
 	"ToDb/kit"
 	"context"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -349,7 +350,7 @@ type VObj struct {
 // GetKeyInfo 通过key获取该键下值的所有信息
 func (s *sRedis) GetKeyInfo(ctx context.Context, key string) string {
 	// 获取值
-	v := s.GetValue(ctx, key)
+	v := s.GetStrValue(ctx, key)
 	size := len(v)
 	ttl := s.GetTTL(ctx, key)
 	keyType := s.GetType(ctx, key)
@@ -375,12 +376,22 @@ func (s *sRedis) GetType(ctx context.Context, key string) string {
 	return ""
 }
 
-// GetValue 获取redis数据，返回值和大小
-func (s *sRedis) GetValue(ctx context.Context, key string) string {
+// GetStrValue 获取redis string类型的数据，返回值和大小
+func (s *sRedis) GetStrValue(ctx context.Context, key string) string {
 	val, err := rdb.Get(ctx, key).Result()
 	if err != nil {
 		return ""
 	}
+	return val
+}
+
+// 获取redis list类型的数据，返回值和大小
+func (s *sRedis) GetListValue(ctx context.Context, key string) []string {
+	val, err := rdb.LRange(ctx, key, 0, 100).Result()
+	if err != nil {
+		return nil
+	}
+	fmt.Println("value-------------:", val)
 	return val
 }
 

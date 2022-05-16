@@ -1,6 +1,6 @@
 <template>
   <el-row :align="middle" style="margin-top: 10px">
-    <el-col :offset="10" :span="4">
+    <el-col :span="14">
       <img
         src="../../public/info/key.png"
         alt="nowKey"
@@ -139,7 +139,6 @@ import {
   DeleteOutlined,
   RedoOutlined,
   CodeOutlined,
-  SaveOutlined,
 } from "@ant-design/icons-vue";
 import { onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";

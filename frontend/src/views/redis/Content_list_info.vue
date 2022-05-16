@@ -1,0 +1,222 @@
+<template>
+  <el-row style="margin-top: 10px">
+    <el-col :span="14">
+      <img
+          src="../../public/info/key.png"
+          alt="nowKey"
+          style="vertical-align: middle"
+      />
+      <span style="font-size: 26px; vertical-align: middle">{{ nowKey }}</span>
+    </el-col>
+    <el-col :offset="8" :span="1">
+      <!--关闭图片-->
+      <img
+          src="../../public/info/close.png"
+          alt="close"
+          style="vertical-align: middle; cursor: pointer"
+          @click="close"
+      />
+    </el-col>
+  </el-row>
+  <el-row style="margin-top: 20px">
+    <el-col :offset="1" :span="10">
+      <el-input
+          :addon-before="listValue.data.type"
+          v-model:value="nowKey"
+          style="width: calc(100% - 30px)"
+      >
+        <template #append>
+          <el-button :icon="CheckOutlined" @click="rename"/>
+        </template>
+      </el-input>
+    </el-col>
+    <el-col :offset="1" :span="6">
+      <el-input
+          addon-before="TTL"
+          v-model:value="ttl"
+          style="width: calc(100% - 60px)"
+      >
+        <template #append>
+          <el-button :icon="CheckOutlined" @click="updateTtl"/>
+        </template>
+      </el-input>
+    </el-col>
+    <el-col :offset="2" :span="1">
+      <el-button type="primary" danger :size="size" @click="del">
+        <template #icon>
+          <!--删除-->
+          <delete-outlined/>
+        </template>
+      </el-button>
+    </el-col>
+    <el-col :span="1">
+      <el-button
+          type="primary"
+          @click="getInfo"
+          :size="size"
+          style="background: #ffb33a; border: none"
+      >
+        <template #icon>
+          <!--刷新-->
+          <redo-outlined/>
+        </template>
+      </el-button>
+    </el-col>
+    <el-col :span="1">
+      <el-button
+          type="primary"
+          :size="size"
+          style="background: #07c245; border: none"
+          v-clipboard:copy="commandStr"
+      >
+        <template #icon>
+          <!--获取命令-->
+          <code-outlined/>
+        </template>
+      </el-button>
+    </el-col>
+  </el-row>
+  <el-row>
+    <el-col :offset="1" :span="1">
+      <el-button type="primary">
+        添加新行
+      </el-button>
+    </el-col>
+  </el-row>
+  <el-row>
+    <el-col :span="24">
+      <!--表格-->
+      <el-table :data="listValue.data" height="100%" style="width: 100%">
+        <el-table-column prop="id" label="id(Total:2)" width="100%"/>
+        <el-table-columns prop="value" label="value" width="100%"/>
+        <el-table-column label="operation" width="100%">
+          <template slot-scope="scope">
+            <el-button size="small">
+              <template #icon>
+                <CopyOutline/>
+              </template>
+            </el-button>
+            <el-button size="small">
+              <template #icon>
+                <Edit/>
+              </template>
+            </el-button>
+            <el-button size="small">
+              <template #icon>
+                <Delete20Regular/>
+              </template>
+            </el-button>
+            <el-button :icon="CodeSlashOutline" size="small">
+              <template #icon>
+                <CodeSlashOutline/>
+              </template>
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-col>
+  </el-row>
+</template>
+
+<script setup>
+import {onBeforeMount, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+import {CodeSlashOutline, CopyOutline} from "@vicons/ionicons5"
+import {Delete20Regular} from "@vicons/fluent"
+import {Edit} from "@vicons/carbon"
+
+const router = useRouter();
+// 节点id
+let nodeId = ref("");
+// 连接类型
+let connType = ref("");
+// 连接文件名
+let connName = ref("");
+// redis key
+let nowKey = ref("");
+// redis old key
+let oldKey = ref("");
+// redis value
+let listValue = reactive({
+  data: "",
+});
+// redis 剩余时间
+let ttl = ref("");
+// redis content data size
+let contentSize = ref(0);
+// redis content data
+let content = ref("");
+// 内容展示类型
+let formatType = ref("Text");
+// 命令
+let commandStr = ref("");
+
+// 获取基础信息
+function getInfo() {
+  // 从redis获取数据
+  window.go.main.App.RedisGetData(
+      connType.value,
+      connName.value,
+      nodeId.value,
+      nowKey.value
+  ).then((res) => {
+    // 此处如果是空值，则应该是该键没有填充值
+    listValue.data = JSON.parse(res);
+    content.value = listValue.data.value;
+    console.log("这个值是：", content.value);
+    ttl.value = listValue.data.ttl;
+    contentSize.value = listValue.data.size;
+    commandStr.value = listValue.data.commandStr;
+  });
+}
+
+// 初始化挂载前的函数
+onBeforeMount(() => {
+  // 获取路由传递的参数
+  // redis键
+  nowKey.value = router.currentRoute.value.query.key;
+  // redis键
+  oldKey.value = router.currentRoute.value.query.key;
+  // redis db
+  nodeId.value = router.currentRoute.value.query.dbId;
+  // 类型
+  connType.value = router.currentRoute.value.query.connType;
+  // 连接文件名
+  connName.value = router.currentRoute.value.query.connName;
+  getInfo();
+});
+
+// 关闭页面
+function close() {
+  router.push({
+    path: "/rightContent/default",
+  });
+}
+
+// 修改redis的键
+function rename() {
+  window.go.main.App.RedisReName(
+      connType.value,
+      connName.value,
+      nodeId.value,
+      oldKey.value,
+      nowKey.value
+  );
+}
+
+// 更新剩余时间
+function updateTtl() {
+  window.go.main.App.RedisUpTtl(
+      connType.value,
+      connName.value,
+      nodeId.value,
+      nowKey.value,
+      ttl.value
+  );
+}
+
+</script>
+
+<style scoped>
+
+</style>

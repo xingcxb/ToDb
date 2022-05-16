@@ -17,6 +17,7 @@
         highlight-current
         accordion
         lazy
+        style="background: #e0e1e1;"
     ></el-tree>
   </div>
 </template>
@@ -92,17 +93,42 @@ function loadNode(node, resolve) {
         window.go.main.App.ChangeRightWindowStyle(JSON.stringify(topParentNode.data),
             JSON.stringify(nextParentNode.data), JSON.stringify(nodeData)).then((resp) => {
           console.log("数据类型:", resp)
-          switch (resp){
+          let fullStr = nodeData.fullStr
+          let dbId = nextParentNode.data.key
+          let connType = topParentNode.data.connType
+          let connName = topParentNode.data.title
+          console.log("点击了:", fullStr, dbId, connType, connName)
+          switch (resp) {
             case "string":
+              // 字符串类型
               router.push({
                 path: "/rightContent/value_string",
-                query:{
-                  key: nodeData.fullStr,
-                  dbId: nextParentNode.data.key,
-                  connType: topParentNode.data.connType,
-                  connName:topParentNode.data.title,
+                query: {
+                  key: fullStr,
+                  dbId: dbId,
+                  connType: connType,
+                  connName: connName,
                 }
               })
+              break;
+            case "list":
+              // list类型
+              router.push({
+                path: "/rightContent/value_list",
+                query: {
+                  key: fullStr,
+                  dbId: dbId,
+                  connType: connType,
+                  connName: connName,
+                }
+              })
+              break;
+            default:
+              // 其他的返回到默认的页面
+              router.push({
+                path: "/rightContent/default",
+              });
+              break;
           }
           setTimeout(resolve([]), 500)
         });

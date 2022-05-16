@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -236,16 +237,34 @@ func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr
 	// 获取数据类型
 	valueType := redisKit.Redis().GetType(ctx, key)
 	valueType = strings.ToLower(valueType)
+	fmt.Println("测试数据：", connType, connName, nodeIdStr, key, valueType)
 	switch valueType {
 	case "string":
 		// 获取类型为string的数据
-		v := redisKit.Redis().GetValue(ctx, key)
-		command := s.BuildCommand(key, "string", v)
+		v := redisKit.Redis().GetStrValue(ctx, key)
 		getValue.Type = "string"
 		getValue.Key = key
 		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
 		getValue.Value = v
 		getValue.Size = len(v)
+		command := s.BuildCommand(key, "string", v)
+		getValue.CommandStr = command
+		return getValue, nil
+	case "list":
+		// 获取类型为list的数据
+		v := redisKit.Redis().GetListValue(ctx, key)
+		getValue.Type = "list"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		var listValues []structs.RedisList
+		for i, vv := range v {
+			listValues = append(listValues, structs.RedisList{
+				Id:    i + 1,
+				Value: vv,
+			})
+		}
+		getValue.Value = listValues
+		command := s.BuildCommand(key, "list", v)
 		getValue.CommandStr = command
 		return getValue, nil
 	default:
@@ -348,7 +367,7 @@ func (s *sRedis) RedisUpdateStringValue(ctx context.Context, connType, connName,
 }
 
 // BuildCommand 构建命令
-func (s *sRedis) BuildCommand(key, keyType, value string) string {
+func (s *sRedis) BuildCommand(key, keyType string, value interface{}) string {
 	lowerCaseKeyType := strings.ToLower(keyType)
 	var command strings.Builder
 	switch lowerCaseKeyType {
@@ -358,10 +377,8 @@ func (s *sRedis) BuildCommand(key, keyType, value string) string {
 		command.WriteString("SET ")
 		command.WriteString("\"")
 		command.WriteString(key)
-		command.WriteString("\"")
-		command.WriteString(" ")
-		command.WriteString("\"")
-		command.WriteString(value)
+		command.WriteString("\" \"")
+		command.WriteString(value.(string))
 		command.WriteString("\"")
 	case "hash":
 		// 构建hash命令
@@ -370,9 +387,18 @@ func (s *sRedis) BuildCommand(key, keyType, value string) string {
 		command.WriteString("HMSET ")
 	case "list":
 		// 构建list命令
-		// RPUSH "1:2:list" "New member" "12312213"
+		// RPUSH "1:2:list" "New member" "12312213" "1231" "测试"
 		// return "RPUSH " + key + " " + value
 		command.WriteString("RPUSH ")
+		command.WriteString("\"")
+		command.WriteString(key)
+		command.WriteString("\"")
+		arr := value.([]string)
+		for _, v := range arr {
+			command.WriteString(" \"")
+			command.WriteString(v)
+			command.WriteString("\"")
+		}
 	case "set":
 		// 构建set命令
 		// SADD "1:2:set" "New member" "sdfsdf"

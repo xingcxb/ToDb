@@ -1,7 +1,7 @@
 package redisKit
 
 import (
-	"ToDb/lib"
+	"ToDb/kit"
 	"context"
 	"fmt"
 	"testing"
@@ -12,7 +12,7 @@ func TestConnect(t *testing.T) {
 	Port = "6379"
 	Password = "123456"
 	InitDb()
-	fmt.Println(GetMainViewInfo(context.Background()))
+	fmt.Println(Redis().GetMainViewInfo(context.Background()))
 }
 
 func TestInfo(t *testing.T) {
@@ -20,11 +20,11 @@ func TestInfo(t *testing.T) {
 	Port = "6379"
 	Password = "123456"
 	InitDb()
-	ChangeDb(context.Background(), 13)
+	Redis().ChangeDb(context.Background(), 13)
 	//fmt.Println(GetBaseAllInfo(context.Background()))
-	v, _ := GetDbKeys(context.Background(), 0)
+	v, _ := Redis().GetDbKeys(context.Background(), 0)
 	fmt.Println(v)
-	_v := lib.PackageTree(v)
+	_v := kit.StrKit().PackageTree(v)
 	fmt.Println(_v)
 }
 
@@ -33,6 +33,22 @@ func TestDel(t *testing.T) {
 	Port = "6379"
 	Password = "123456"
 	InitDb()
-	ChangeDb(context.Background(), 13)
-	Del(context.Background(), "1111")
+	Redis().ChangeDb(context.Background(), 13)
+	Redis().Del(context.Background(), "1111")
+}
+
+func TestStream(t *testing.T) {
+	Addr = "127.0.0.1"
+	Port = "6379"
+	Password = "123456"
+	InitDb()
+	Redis().GetStreamValue(context.Background(), "1:2:stream")
+}
+
+func TestZSet(t *testing.T) {
+	Addr = "127.0.0.1"
+	Port = "6379"
+	Password = "123456"
+	InitDb()
+	Redis().GetZSetCount(context.Background(), "1:2:stream")
 }

@@ -15,6 +15,7 @@ import StringInfo from "../views/redis/Content_string_info.vue"
 import ListInfo from "../views/redis/Content_list_info.vue"
 import HashInfo from "../views/redis/Content_hash_info.vue"
 import SetInfo from "../views/redis/Content_set_info.vue"
+import StreamInfo from "../views/redis/Content_stream_info.vue"
 import {createRouter, createWebHashHistory} from "vue-router";
 
 const routes = [
@@ -65,6 +66,12 @@ const routes = [
         path: "/rightContent/value_set",
         name: "hashInfo",
         component: SetInfo
+    },
+    {
+        // 右侧详情页面stream类型
+        path: "/rightContent/value_stream",
+        name: "hashInfo",
+        component: StreamInfo
     },
 ];
 

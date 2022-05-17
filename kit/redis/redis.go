@@ -4,6 +4,7 @@ import (
 	"ToDb/kit"
 	"context"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -399,6 +400,35 @@ func (s *sRedis) GetHashValue(ctx context.Context, key string) map[string]string
 	if err != nil {
 		return nil
 	}
+	return val
+}
+
+// GetStreamValue 获取redis中的Stream数据 todo 未拿到值
+func (s *sRedis) GetStreamValue(ctx context.Context, key string) string {
+	val, err := rdb.XRevRange(ctx, key, "-", "+").Result()
+	if err != nil {
+		return ""
+	}
+	fmt.Println("=========", val)
+	return ""
+}
+
+// GetZSetValue 获取zset数据
+func (s *sRedis) GetZSetValue(ctx context.Context, key string) string {
+	val, err := rdb.ZRevRangeWithScores(ctx, key, 0, 100).Result()
+	if err != nil {
+		return ""
+	}
+	fmt.Println("=========", val)
+	return ""
+}
+
+func (s *sRedis) GetZSetCount(ctx context.Context, key string) int64 {
+	val, err := rdb.ZCard(ctx, key).Result()
+	if err != nil {
+		return 0
+	}
+	fmt.Println("=========", val)
 	return val
 }
 

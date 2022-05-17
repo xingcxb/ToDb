@@ -179,7 +179,11 @@ func (a *App) RedisGetData(connType, connName, nodeIdStr, key string) string {
 	switch connType {
 	case "redis":
 		// 获取redis节点数据
-		getValue, _ := communication.Redis().RedisGetData(a.ctx, connType, connName, nodeIdStr, key)
+		getValue, err := communication.Redis().RedisGetData(a.ctx, connType, connName, nodeIdStr, key)
+		if err != nil {
+			kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
+			return ""
+		}
 		_v, _ := json.Marshal(getValue)
 		v = string(_v)
 	default:

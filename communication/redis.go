@@ -286,7 +286,6 @@ func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr
 		return getValue, nil
 	case "hash":
 		// 获取类型为hash的数据
-		fmt.Println("=========")
 		v := redisKit.Redis().GetHashValue(ctx, key)
 		getValue.Type = "hash"
 		getValue.Key = key
@@ -305,6 +304,7 @@ func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr
 		command := s.BuildCommand(key, "hash", v)
 		getValue.CommandStr = command
 		return getValue, nil
+	//case "stream":
 	default:
 		return getValue, errors.New("unknown error")
 	}

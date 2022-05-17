@@ -96,8 +96,6 @@ function loadNode(node, resolve) {
           let dbId = nextParentNode.data.key
           let connType = topParentNode.data.connType
           let connName = topParentNode.data.title
-          console.log("点击的数据：", fullStr, dbId, connType, connName)
-          console.log("返回的数据：", resp)
           switch (resp) {
             case "string":
               // 字符串类型

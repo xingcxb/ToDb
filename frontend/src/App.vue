@@ -45,11 +45,24 @@ onBeforeMount(() => {
 
 
 </script>
-
+<style>
+body {
+  margin: 0 0;
+  padding: 0 0 ;
+}
+</style>
 <style scoped>
+
+/deep/.el-card {
+  background-color: rgb(236, 237, 238);
+}
+
 body {
   overscroll-behavior: none;
+  margin: 0 0;
 }
+
+
 
 .aside-drag-container {
   position: relative;

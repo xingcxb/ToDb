@@ -1,6 +1,6 @@
 <template>
   <!--头部 导航-->
-  <el-row style="height: 69px">
+  <el-row style="height: 66px">
     <el-col :offset="1" :span="3" style="background: #ecedee">
       <el-dropdown trigger="click">
         <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">

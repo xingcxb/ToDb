@@ -292,6 +292,10 @@ function changeAutoRefresh() {
 </script>
 
 <style scoped>
+* {
+  padding: 0 0;
+  margin: 0 0;
+}
 .server-status-tag-p {
   height: 32px;
 }

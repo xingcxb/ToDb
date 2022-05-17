@@ -46,11 +46,14 @@ onBeforeMount(() => {
 
 </script>
 
-<style scoped>
+<style>
 body {
   overscroll-behavior: none;
+  margin: 0 0;
 }
+</style>
 
+<style scoped>
 .aside-drag-container {
   position: relative;
   user-select: none;

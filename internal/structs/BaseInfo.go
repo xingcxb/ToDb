@@ -38,3 +38,16 @@ type DbTreeInfo struct {
 	IsLeaf   bool   `json:"isLeaf"`   //是否是叶子节点
 	Children string `json:"children"` //子节点
 }
+
+// RedisList redis List数据
+type RedisList struct {
+	Id    int    `json:"id"`
+	Value string `json:"value"`
+}
+
+// RedisHash redis hash数据
+type RedisHash struct {
+	Id    int    `json:"id"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}

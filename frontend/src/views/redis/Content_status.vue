@@ -4,7 +4,7 @@
   <el-row style="width: 100%; margin-right: 2px">
     <el-col :span="24">
       <div style="float: right">
-        <el-tag type="card">
+        <el-tag type="card" style="margin-right: 5px">
           <sync-outlined spin/>
           自动刷新
         </el-tag>
@@ -138,7 +138,7 @@
   <el-row style="width: 100%; margin-right: 2px">
     <el-col :span="24">
       <el-card shadow="hover">
-        <template #title>
+        <template #header>
           <img
               src="../../public/status/kv.png"
               alt="service"
@@ -292,6 +292,10 @@ function changeAutoRefresh() {
 </script>
 
 <style scoped>
+* {
+  padding: 0 0;
+  margin: 0 0;
+}
 .server-status-tag-p {
   height: 32px;
 }

@@ -199,20 +199,19 @@ func (s *sRedis) initRedis(fileName string) []byte {
 	return valueByte
 }
 
-// LoadingDbResource 加载数据库资源消耗
-func (s *sRedis) LoadingDbResource(key string) string {
+// LoadingDbResource 加载数据库资源消耗信息
+func (s *sRedis) LoadingDbResource(ctx context.Context, key string) string {
 	s.initRedis(key)
-	return redisKit.Redis().GetMainViewInfo(context.Background())
+	return redisKit.Redis().GetMainViewInfo(ctx)
 }
 
 // GetNodeData 获取节点数据
-func (s *sRedis) GetNodeData(connType, connName, nodeIdStr string) (string, error) {
+func (s *sRedis) GetNodeData(ctx context.Context, connType, connName, nodeIdStr string) (string, error) {
 	var value string
 	if connType == "" ||
 		connName == "" {
 		return value, errors.New("parameter is missing")
 	}
-	ctx := context.Background()
 	s.initRedis(connName)
 	nodeId, _ := strconv.Atoi(nodeIdStr)
 	redisKit.Redis().ChangeDb(ctx, nodeId)
@@ -225,13 +224,12 @@ func (s *sRedis) GetNodeData(connType, connName, nodeIdStr string) (string, erro
 }
 
 // RedisGetData 通过key获取连接信息
-func (s *sRedis) RedisGetData(connType, connName, nodeIdStr, key string) (structs.GetValue, error) {
+func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr, key string) (structs.GetValue, error) {
 	var getValue structs.GetValue
 	if connType == "" ||
 		connName == "" {
 		return getValue, errors.New("parameter is missing")
 	}
-	ctx := context.Background()
 	s.initRedis(connName)
 	nodeId, _ := strconv.Atoi(nodeIdStr)
 	redisKit.Redis().ChangeDb(ctx, nodeId)
@@ -241,27 +239,95 @@ func (s *sRedis) RedisGetData(connType, connName, nodeIdStr, key string) (struct
 	switch valueType {
 	case "string":
 		// 获取类型为string的数据
-		v := redisKit.Redis().GetValue(ctx, key)
-		command := s.BuildCommand(key, "string", v)
+		v := redisKit.Redis().GetStrValue(ctx, key)
 		getValue.Type = "string"
 		getValue.Key = key
 		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
 		getValue.Value = v
 		getValue.Size = len(v)
+		command := s.BuildCommand(key, "string", v)
 		getValue.CommandStr = command
 		return getValue, nil
+	case "list":
+		// 获取类型为list的数据
+		v := redisKit.Redis().GetListValue(ctx, key)
+		getValue.Type = "list"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		var listValues []structs.RedisList
+		for i, vv := range v {
+			listValues = append(listValues, structs.RedisList{
+				Id:    i + 1,
+				Value: vv,
+			})
+		}
+		getValue.Value = listValues
+		command := s.BuildCommand(key, "list", v)
+		getValue.CommandStr = command
+		return getValue, nil
+	case "set":
+		// 获取类型为set的数据
+		v := redisKit.Redis().GetSetValue(ctx, key)
+		getValue.Type = "set"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		var setValues []structs.RedisList
+		for i, vv := range v {
+			setValues = append(setValues, structs.RedisList{
+				Id:    i + 1,
+				Value: vv,
+			})
+		}
+		getValue.Value = setValues
+		command := s.BuildCommand(key, "set", v)
+		getValue.CommandStr = command
+		return getValue, nil
+	case "hash":
+		// 获取类型为hash的数据
+		v := redisKit.Redis().GetHashValue(ctx, key)
+		getValue.Type = "hash"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		var hashValues []structs.RedisHash
+		var i = 1
+		for k, vv := range v {
+			hashValues = append(hashValues, structs.RedisHash{
+				Id:    i,
+				Key:   k,
+				Value: vv,
+			})
+			i++
+		}
+		getValue.Value = hashValues
+		command := s.BuildCommand(key, "hash", v)
+		getValue.CommandStr = command
+		return getValue, nil
+	//case "stream":
 	default:
 		return getValue, errors.New("unknown error")
 	}
 }
 
+// GetValueType 获取指定key的数据类型
+func (s *sRedis) GetValueType(ctx context.Context, connName, nodeIdStr, key string) (string, error) {
+	if connName == "" {
+		return "", errors.New("parameter is missing")
+	}
+	s.initRedis(connName)
+	s.initRedis(connName)
+	nodeId, _ := strconv.Atoi(nodeIdStr)
+	redisKit.Redis().ChangeDb(ctx, nodeId)
+	// 获取数据类型
+	valueType := redisKit.Redis().GetType(ctx, key)
+	return valueType, nil
+}
+
 // RedisReName 重命名key
-func (s *sRedis) RedisReName(connType, connName, nodeIdStr, oldKey, newKey string) string {
+func (s *sRedis) RedisReName(ctx context.Context, connType, connName, nodeIdStr, oldKey, newKey string) string {
 	if connType == "" ||
 		connName == "" {
 		return "parameter is missing"
 	}
-	ctx := context.Background()
 	s.initRedis(connName)
 	nodeId, _ := strconv.Atoi(nodeIdStr)
 	redisKit.Redis().ChangeDb(ctx, nodeId)
@@ -274,7 +340,7 @@ func (s *sRedis) RedisReName(connType, connName, nodeIdStr, oldKey, newKey strin
 }
 
 // RedisUpTtl 更新redis剩余时间
-func (s *sRedis) RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr string) string {
+func (s *sRedis) RedisUpTtl(ctx context.Context, connType, connName, nodeIdStr, key string, ttlStr string) string {
 	//todo 当ttl=-1时会出现数据直接丢失的情况
 	ttl, err := strconv.Atoi(ttlStr)
 	if err != nil {
@@ -284,7 +350,6 @@ func (s *sRedis) RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr st
 		connName == "" {
 		return "parameter is missing"
 	}
-	ctx := context.Background()
 	s.initRedis(connName)
 	nodeId, _ := strconv.Atoi(nodeIdStr)
 	redisKit.Redis().ChangeDb(ctx, nodeId)
@@ -303,12 +368,11 @@ func (s *sRedis) RedisUpTtl(connType, connName, nodeIdStr, key string, ttlStr st
 }
 
 // RedisDel 删除redis数据
-func (s *sRedis) RedisDel(connType, connName, nodeIdStr, key string) string {
+func (s *sRedis) RedisDel(ctx context.Context, connType, connName, nodeIdStr, key string) string {
 	if connType == "" ||
 		connName == "" {
 		return "parameter is missing"
 	}
-	ctx := context.Background()
 	s.initRedis(connName)
 	nodeId, _ := strconv.Atoi(nodeIdStr)
 	redisKit.Redis().ChangeDb(ctx, nodeId)
@@ -321,12 +385,11 @@ func (s *sRedis) RedisDel(connType, connName, nodeIdStr, key string) string {
 }
 
 // RedisUpdateStringValue 更新redis数据
-func (s *sRedis) RedisUpdateStringValue(connType, connName, nodeIdStr, key, value, ttlStr string) error {
+func (s *sRedis) RedisUpdateStringValue(ctx context.Context, connType, connName, nodeIdStr, key, value, ttlStr string) error {
 	if connType == "" ||
 		connName == "" {
 		return errors.New("parameter is missing")
 	}
-	ctx := context.Background()
 	s.initRedis(connName)
 	nodeId, _ := strconv.Atoi(nodeIdStr)
 	redisKit.Redis().ChangeDb(ctx, nodeId)
@@ -340,7 +403,7 @@ func (s *sRedis) RedisUpdateStringValue(connType, connName, nodeIdStr, key, valu
 }
 
 // BuildCommand 构建命令
-func (s *sRedis) BuildCommand(key, keyType, value string) string {
+func (s *sRedis) BuildCommand(key, keyType string, value interface{}) string {
 	lowerCaseKeyType := strings.ToLower(keyType)
 	var command strings.Builder
 	switch lowerCaseKeyType {
@@ -350,26 +413,51 @@ func (s *sRedis) BuildCommand(key, keyType, value string) string {
 		command.WriteString("SET ")
 		command.WriteString("\"")
 		command.WriteString(key)
-		command.WriteString("\"")
-		command.WriteString(" ")
-		command.WriteString("\"")
-		command.WriteString(value)
+		command.WriteString("\" \"")
+		command.WriteString(value.(string))
 		command.WriteString("\"")
 	case "hash":
 		// 构建hash命令
-		// HMSET "1:2:hash" "New field" "New value" "123" "321"
-		// return "HMSET " + key + " " + value
+		//HMSET "1:2:hash" "New field" "New value" "123" "321"
 		command.WriteString("HMSET ")
+		command.WriteString("\"")
+		command.WriteString(key)
+		arr := value.(map[string]string)
+		for k, v := range arr {
+			command.WriteString("\" \"")
+			command.WriteString(k)
+			command.WriteString("\" \"")
+			command.WriteString(v)
+		}
+		command.WriteString("\"")
 	case "list":
 		// 构建list命令
-		// RPUSH "1:2:list" "New member" "12312213"
+		// RPUSH "1:2:list" "New member" "12312213" "1231" "测试"
 		// return "RPUSH " + key + " " + value
 		command.WriteString("RPUSH ")
+		command.WriteString("\"")
+		command.WriteString(key)
+		command.WriteString("\"")
+		arr := value.([]string)
+		for _, v := range arr {
+			command.WriteString(" \"")
+			command.WriteString(v)
+			command.WriteString("\"")
+		}
 	case "set":
 		// 构建set命令
 		// SADD "1:2:set" "New member" "sdfsdf"
 		// return "SADD " + key + " " + value
 		command.WriteString("SADD ")
+		command.WriteString("\"")
+		command.WriteString(key)
+		command.WriteString("\"")
+		arr := value.([]string)
+		for _, v := range arr {
+			command.WriteString(" \"")
+			command.WriteString(v)
+			command.WriteString("\"")
+		}
 	case "zset":
 		// 构建zset命令
 		// XADD "1:2:stream" 1650445322163-0  "New key" "New value"

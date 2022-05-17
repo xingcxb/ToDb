@@ -11,10 +11,10 @@ package structs
 
 // GetValue	redis的详情页面返回结构体
 type GetValue struct {
-	Type       string `json:"type"`       // value类型
-	Key        string `json:"key"`        // key键
-	Ttl        string `json:"ttl"`        // ttl剩余时间
-	Value      string `json:"value"`      // value值
-	Size       int    `json:"size"`       // value大小
-	CommandStr string `json:"commandStr"` // redis命令
+	Type       string      `json:"type"`       // value类型
+	Key        string      `json:"key"`        // key键
+	Ttl        string      `json:"ttl"`        // ttl剩余时间
+	Value      interface{} `json:"value"`      // value值
+	Size       int         `json:"size"`       // value大小
+	CommandStr string      `json:"commandStr"` // redis命令
 }

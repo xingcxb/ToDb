@@ -11,7 +11,11 @@
 import Default from "../Welcome.vue"
 import NewConnect from "../views/NewConnection.vue"
 import Status from "../views/redis/Content_status.vue"
-import Info from "../views/redis/Content_string_info.vue"
+import StringInfo from "../views/redis/Content_string_info.vue"
+import ListInfo from "../views/redis/Content_list_info.vue"
+import HashInfo from "../views/redis/Content_hash_info.vue"
+import SetInfo from "../views/redis/Content_set_info.vue"
+import StreamInfo from "../views/redis/Content_stream_info.vue"
 import {createRouter, createWebHashHistory} from "vue-router";
 
 const routes = [
@@ -40,10 +44,34 @@ const routes = [
         component: Status
     },
     {
-        // 右侧详情页面
-        path: "/rightContent/value",
-        name: "info",
-        component: Info
+        // 右侧详情页面string类型
+        path: "/rightContent/value_string",
+        name: "stringInfo",
+        component: StringInfo
+    },
+    {
+        // 右侧详情页面list类型
+        path: "/rightContent/value_list",
+        name: "listInfo",
+        component: ListInfo
+    },
+    {
+        // 右侧详情页面hash类型
+        path: "/rightContent/value_hash",
+        name: "hashInfo",
+        component: HashInfo
+    },
+    {
+        // 右侧详情页面set类型
+        path: "/rightContent/value_set",
+        name: "hashInfo",
+        component: SetInfo
+    },
+    {
+        // 右侧详情页面stream类型
+        path: "/rightContent/value_stream",
+        name: "hashInfo",
+        component: StreamInfo
     },
 ];
 

@@ -3,6 +3,7 @@ import * as models from './models';
 export interface go {
   "main": {
     "App": {
+		ChangeRightWindowStyle(arg1:string,arg2:string,arg3:string):Promise<string>
 		ExportConn():Promise<void>
 		GetNodeData(arg1:string,arg2:string,arg3:string):Promise<string>
 		ImportConn():Promise<void>

@@ -4,6 +4,7 @@ import (
 	"ToDb/kit"
 	"context"
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -349,7 +350,7 @@ type VObj struct {
 // GetKeyInfo 通过key获取该键下值的所有信息
 func (s *sRedis) GetKeyInfo(ctx context.Context, key string) string {
 	// 获取值
-	v := s.GetValue(ctx, key)
+	v := s.GetStrValue(ctx, key)
 	size := len(v)
 	ttl := s.GetTTL(ctx, key)
 	keyType := s.GetType(ctx, key)
@@ -375,11 +376,67 @@ func (s *sRedis) GetType(ctx context.Context, key string) string {
 	return ""
 }
 
-// GetValue 获取redis数据，返回值和大小
-func (s *sRedis) GetValue(ctx context.Context, key string) string {
+// GetStrValue 获取redis string类型的数据，返回值和大小
+func (s *sRedis) GetStrValue(ctx context.Context, key string) string {
 	val, err := rdb.Get(ctx, key).Result()
 	if err != nil {
 		return ""
+	}
+	return val
+}
+
+// GetListValue 获取redis list类型的数据，返回值和大小
+func (s *sRedis) GetListValue(ctx context.Context, key string) []string {
+	val, err := rdb.LRange(ctx, key, 0, 100).Result()
+	if err != nil {
+		return nil
+	}
+	return val
+}
+
+// GetHashValue 获取redis hash类型的数据，返回值和大小
+func (s *sRedis) GetHashValue(ctx context.Context, key string) map[string]string {
+	val, err := rdb.HGetAll(ctx, key).Result()
+	if err != nil {
+		return nil
+	}
+	return val
+}
+
+// GetStreamValue 获取redis中的Stream数据 todo 未拿到值
+func (s *sRedis) GetStreamValue(ctx context.Context, key string) string {
+	val, err := rdb.XRevRange(ctx, key, "-", "+").Result()
+	if err != nil {
+		return ""
+	}
+	fmt.Println("=========", val)
+	return ""
+}
+
+// GetZSetValue 获取zset数据
+func (s *sRedis) GetZSetValue(ctx context.Context, key string) string {
+	val, err := rdb.ZRevRangeWithScores(ctx, key, 0, 100).Result()
+	if err != nil {
+		return ""
+	}
+	fmt.Println("=========", val)
+	return ""
+}
+
+func (s *sRedis) GetZSetCount(ctx context.Context, key string) int64 {
+	val, err := rdb.ZCard(ctx, key).Result()
+	if err != nil {
+		return 0
+	}
+	fmt.Println("=========", val)
+	return val
+}
+
+// GetSetValue 获取redis中的set数据，返回值和大小
+func (s *sRedis) GetSetValue(ctx context.Context, key string) []string {
+	val, err := rdb.SMembers(ctx, key).Result()
+	if err != nil {
+		return nil
 	}
 	return val
 }

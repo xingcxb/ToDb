@@ -44,3 +44,10 @@ type RedisList struct {
 	Id    int    `json:"id"`
 	Value string `json:"value"`
 }
+
+// RedisHash redis hash数据
+type RedisHash struct {
+	Id    int    `json:"id"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}

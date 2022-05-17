@@ -267,6 +267,44 @@ func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr
 		command := s.BuildCommand(key, "list", v)
 		getValue.CommandStr = command
 		return getValue, nil
+	case "set":
+		// 获取类型为set的数据
+		v := redisKit.Redis().GetSetValue(ctx, key)
+		getValue.Type = "set"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		var setValues []structs.RedisList
+		for i, vv := range v {
+			setValues = append(setValues, structs.RedisList{
+				Id:    i + 1,
+				Value: vv,
+			})
+		}
+		getValue.Value = setValues
+		command := s.BuildCommand(key, "set", v)
+		getValue.CommandStr = command
+		return getValue, nil
+	case "hash":
+		// 获取类型为hash的数据
+		fmt.Println("=========")
+		v := redisKit.Redis().GetHashValue(ctx, key)
+		getValue.Type = "hash"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		var hashValues []structs.RedisHash
+		var i = 1
+		for k, vv := range v {
+			hashValues = append(hashValues, structs.RedisHash{
+				Id:    i,
+				Key:   k,
+				Value: vv,
+			})
+			i++
+		}
+		getValue.Value = hashValues
+		command := s.BuildCommand(key, "hash", v)
+		getValue.CommandStr = command
+		return getValue, nil
 	default:
 		return getValue, errors.New("unknown error")
 	}
@@ -382,9 +420,18 @@ func (s *sRedis) BuildCommand(key, keyType string, value interface{}) string {
 		command.WriteString("\"")
 	case "hash":
 		// 构建hash命令
-		// HMSET "1:2:hash" "New field" "New value" "123" "321"
-		// return "HMSET " + key + " " + value
+		//HMSET "1:2:hash" "New field" "New value" "123" "321"
 		command.WriteString("HMSET ")
+		command.WriteString("\"")
+		command.WriteString(key)
+		arr := value.(map[string]string)
+		for k, v := range arr {
+			command.WriteString("\" \"")
+			command.WriteString(k)
+			command.WriteString("\" \"")
+			command.WriteString(v)
+		}
+		command.WriteString("\"")
 	case "list":
 		// 构建list命令
 		// RPUSH "1:2:list" "New member" "12312213" "1231" "测试"
@@ -404,6 +451,15 @@ func (s *sRedis) BuildCommand(key, keyType string, value interface{}) string {
 		// SADD "1:2:set" "New member" "sdfsdf"
 		// return "SADD " + key + " " + value
 		command.WriteString("SADD ")
+		command.WriteString("\"")
+		command.WriteString(key)
+		command.WriteString("\"")
+		arr := value.([]string)
+		for _, v := range arr {
+			command.WriteString(" \"")
+			command.WriteString(v)
+			command.WriteString("\"")
+		}
 	case "zset":
 		// 构建zset命令
 		// XADD "1:2:stream" 1650445322163-0  "New key" "New value"

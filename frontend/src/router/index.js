@@ -13,6 +13,8 @@ import NewConnect from "../views/NewConnection.vue"
 import Status from "../views/redis/Content_status.vue"
 import StringInfo from "../views/redis/Content_string_info.vue"
 import ListInfo from "../views/redis/Content_list_info.vue"
+import HashInfo from "../views/redis/Content_hash_info.vue"
+import SetInfo from "../views/redis/Content_set_info.vue"
 import {createRouter, createWebHashHistory} from "vue-router";
 
 const routes = [
@@ -51,6 +53,18 @@ const routes = [
         path: "/rightContent/value_list",
         name: "listInfo",
         component: ListInfo
+    },
+    {
+        // 右侧详情页面hash类型
+        path: "/rightContent/value_hash",
+        name: "hashInfo",
+        component: HashInfo
+    },
+    {
+        // 右侧详情页面set类型
+        path: "/rightContent/value_set",
+        name: "hashInfo",
+        component: SetInfo
     },
 ];
 

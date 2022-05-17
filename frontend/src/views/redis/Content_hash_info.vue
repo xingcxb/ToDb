@@ -86,7 +86,7 @@
       <!--表格-->
       <el-table :data="content.data" style="width: 100%">
         <el-table-column prop="id" :label=" `id(Total: ${content.data.length})` "/>
-        <el-table-column prop="value" label="value"/>
+        <el-table-column prop="value" label="Value"/>
         <el-table-column label="operation">
           <template #default="scope">
             <el-button size="small" type="success" circle>
@@ -184,6 +184,7 @@ onBeforeMount(() => {
   connType.value = router.currentRoute.value.query.connType;
   // 连接文件名
   connName.value = router.currentRoute.value.query.connName;
+  console.log("=====",nowKey.value,oldKey.value,nodeId.value,connType.value,connName.value);
   getInfo();
 });
 
@@ -225,7 +226,6 @@ function del() {
       nowKey.value
   );
 }
-
 </script>
 
 <style scoped>

@@ -4,7 +4,6 @@ import (
 	"ToDb/kit"
 	"context"
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -385,13 +384,30 @@ func (s *sRedis) GetStrValue(ctx context.Context, key string) string {
 	return val
 }
 
-// 获取redis list类型的数据，返回值和大小
+// GetListValue 获取redis list类型的数据，返回值和大小
 func (s *sRedis) GetListValue(ctx context.Context, key string) []string {
 	val, err := rdb.LRange(ctx, key, 0, 100).Result()
 	if err != nil {
 		return nil
 	}
-	fmt.Println("value-------------:", val)
+	return val
+}
+
+// GetHashValue 获取redis hash类型的数据，返回值和大小
+func (s *sRedis) GetHashValue(ctx context.Context, key string) map[string]string {
+	val, err := rdb.HGetAll(ctx, key).Result()
+	if err != nil {
+		return nil
+	}
+	return val
+}
+
+// GetSetValue 获取redis中的set数据，返回值和大小
+func (s *sRedis) GetSetValue(ctx context.Context, key string) []string {
+	val, err := rdb.SMembers(ctx, key).Result()
+	if err != nil {
+		return nil
+	}
 	return val
 }
 

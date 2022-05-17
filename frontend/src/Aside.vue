@@ -92,12 +92,12 @@ function loadNode(node, resolve) {
         }
         window.go.main.App.ChangeRightWindowStyle(JSON.stringify(topParentNode.data),
             JSON.stringify(nextParentNode.data), JSON.stringify(nodeData)).then((resp) => {
-          console.log("数据类型:", resp)
           let fullStr = nodeData.fullStr
           let dbId = nextParentNode.data.key
           let connType = topParentNode.data.connType
           let connName = topParentNode.data.title
-          console.log("点击了:", fullStr, dbId, connType, connName)
+          console.log("点击的数据：", fullStr, dbId, connType, connName)
+          console.log("返回的数据：", resp)
           switch (resp) {
             case "string":
               // 字符串类型
@@ -115,6 +115,31 @@ function loadNode(node, resolve) {
               // list类型
               router.push({
                 path: "/rightContent/value_list",
+                query: {
+                  key: fullStr,
+                  dbId: dbId,
+                  connType: connType,
+                  connName: connName,
+                }
+              })
+              break;
+            case "hash":
+              // hash类型
+              console.log("欢迎来到hash", fullStr, dbId, connType, connName)
+              router.push({
+                path: "/rightContent/value_hash",
+                query: {
+                  key: fullStr,
+                  dbId: dbId,
+                  connType: connType,
+                  connName: connName,
+                }
+              })
+              break;
+            case "set":
+              // set类型
+              router.push({
+                path: "/rightContent/value_set",
                 query: {
                   key: fullStr,
                   dbId: dbId,

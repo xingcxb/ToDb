@@ -8,7 +8,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -237,7 +236,6 @@ func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr
 	// 获取数据类型
 	valueType := redisKit.Redis().GetType(ctx, key)
 	valueType = strings.ToLower(valueType)
-	fmt.Println("测试数据：", connType, connName, nodeIdStr, key, valueType)
 	switch valueType {
 	case "string":
 		// 获取类型为string的数据

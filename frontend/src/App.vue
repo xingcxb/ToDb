@@ -2,20 +2,20 @@
   <div>
     <!--  <div class="header" data-wails-drag>-->
     <el-container>
-      <el-header height="69px">
+      <el-header height="69px" style="background: #ecedee;border-bottom: 1px solid #bebebe">
         <!--头部 导航-->
         <Header></Header>
       </el-header>
       <!--头部下面的属性-->
       <el-container>
-        <el-aside style="background: #e0e1e1;">
-          <el-scrollbar style="height: 659px">
+        <el-aside>
+          <el-scrollbar style="height: 600px">
             <!--左侧导航-->
             <Aside class="aside-outer-container"></Aside>
           </el-scrollbar>
         </el-aside>
         <el-main>
-          <el-scrollbar style="height: 659px">
+          <el-scrollbar style="height: 600px">
             <!--右侧内容-->
             <div class="connections-list">
               <router-view :key="$route.path + Date.now()"/>

@@ -138,7 +138,7 @@
   <el-row style="width: 100%; margin-right: 2px">
     <el-col :span="24">
       <el-card shadow="hover">
-        <template #title>
+        <template #header>
           <img
               src="../../public/status/kv.png"
               alt="service"

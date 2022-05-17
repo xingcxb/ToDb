@@ -1,7 +1,7 @@
 <template>
   <!--头部 导航-->
   <el-row style="height: 69px">
-    <el-col :offset="1" :span="3" style="background: #f5f4f2">
+    <el-col :offset="1" :span="3" style="background: #ecedee">
       <el-dropdown trigger="click">
         <el-card shadow="hover" class="card" :body-style="{padding:'0px',border:'none'}">
           <div class="quickText_div">
@@ -122,7 +122,7 @@ function exportConn() {
 .quickText_div {
   text-align: center;
   align-items: center;
-  background: #f5f4f2;
+  background: #ecedee;
 }
 
 .quickImg {

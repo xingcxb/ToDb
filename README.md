@@ -1,10 +1,9 @@
-<p align="center" style="text-align: center">
+<p style="text-align: center">
    <img src="todb.png"><br/>
 </p>
 
 # `ToDb`
 
-[![Goproxy.cn](https://goproxy.cn/stats/<module-path>/badges/download-count.svg)](https://goproxy.cn)
 
 `ToDb`一款连接数据库的工具
 
@@ -43,3 +42,6 @@
 
 - [reciment](https://gitee.com/recimentPackage)
 - [ProudMuBai](https://gitee.com/proudmubai)
+
+## License
+本项目遵循`Mulan license`

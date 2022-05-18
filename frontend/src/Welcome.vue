@@ -2,15 +2,15 @@
  * @Author: symbol
  * @Date: 2022-04-30 11:18:03
  * @LastEditors: symbol
- * @LastEditTime: 2022-04-30 17:53:49
- * @FilePath: /todb/frontend/JS/src/views/redis/Welcome.vue
+ * @LastEditTime: 2022-05-18 11:24:53
+ * @FilePath: /todb/frontend/src/Welcome.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
 -->
 <template>
   <el-row
-    style="height: 659px"
+    style="height: 600px; width: 945px"
     justify="space-around"
     align="middle"
     type="flex"

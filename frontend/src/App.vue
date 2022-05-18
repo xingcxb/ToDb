@@ -1,8 +1,21 @@
+<!--
+ * @Author: symbol
+ * @Date: 2022-05-18 08:23:08
+ * @LastEditors: symbol
+ * @LastEditTime: 2022-05-18 18:20:59
+ * @FilePath: /todb/frontend/src/App.vue
+ * @Description: 
+ * 
+ * Copyright (c) 2022 by symbol, All Rights Reserved. 
+-->
 <template>
   <div>
     <!--  <div class="header" data-wails-drag>-->
     <el-container>
-      <el-header height="69px" style="background: #ecedee;border-bottom: 1px solid #bebebe">
+      <el-header
+        height="69px"
+        style="background: #ecedee; border-bottom: 1px solid #bebebe"
+      >
         <!--头部 导航-->
         <Header></Header>
       </el-header>
@@ -18,7 +31,7 @@
           <el-scrollbar style="height: 600px">
             <!--右侧内容-->
             <div class="connections-list">
-              <router-view :key="$route.path + Date.now()"/>
+              <router-view :key="$route.path + Date.now()" />
             </div>
           </el-scrollbar>
         </el-main>
@@ -28,10 +41,10 @@
 </template>
 
 <script setup>
-import Header from './Header.vue';
+import Header from "./Header.vue";
 import Aside from "./Aside.vue";
-import {onBeforeMount, ref} from "vue";
-import {useRouter} from "vue-router";
+import { onBeforeMount, ref } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -42,17 +55,14 @@ onBeforeMount(() => {
     path: "/rightContent/default",
   });
 });
-
-
 </script>
 <style>
 body {
   margin: 0 0;
-  padding: 0 0 ;
+  padding: 0 0;
 }
 </style>
 <style scoped>
-
 /deep/.el-card {
   background-color: rgb(236, 237, 238);
 }

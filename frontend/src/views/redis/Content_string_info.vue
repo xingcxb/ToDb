@@ -18,7 +18,7 @@
       />
     </el-col>
   </el-row>
-  <el-row style="margin-top: 20px">
+  <el-row style="margin-top: 20px" :gutter="5">
     <el-col :span="10">
       <!--key-->
       <el-input v-model:value="nowKey" style="width: calc(100% - 30px)">
@@ -45,7 +45,7 @@
         </template>
       </el-input>
     </el-col>
-    <el-col :offset="1" :span="1" style="background: red">
+    <el-col :offset="1" :span="2">
       <el-button type="primary" danger :size="small" @click="del">
         <template #icon>
           <!--删除-->
@@ -53,7 +53,7 @@
         </template>
       </el-button>
     </el-col>
-    <el-col :span="1">
+    <el-col :span="2">
       <el-button
         type="primary"
         :size="small"
@@ -66,7 +66,7 @@
         </template>
       </el-button>
     </el-col>
-    <el-col :span="1">
+    <el-col :span="2">
       <el-button
         type="primary"
         :size="small"
@@ -80,13 +80,9 @@
       </el-button>
     </el-col>
   </el-row>
-  <el-row style="margin-top: 20px">
-    <el-col :offset="1">
-      <el-select
-        v-model="formatType"
-        style="width: 120px"
-        change="handleChange"
-      >
+  <el-row style="margin-top: 20px; height: 24px" :gutter="5">
+    <el-col :span="2">
+      <el-select size="small" v-model="formatType" change="handleChange">
         <el-option
           v-for="item in formatTypeList"
           :key="item.value"
@@ -95,26 +91,31 @@
         />
       </el-select>
     </el-col>
-    <el-col>
-      <el-button>Size：{{ contentSize }}B</el-button>
+    <el-col :span="2">
+      <el-tag>
+        <span style="font-size: 10px"> Size：{{ contentSize }}B </span>
+      </el-tag>
     </el-col>
-    <el-col>
+    <el-col :span="1">
       <el-button
-        style="border: none; padding-left: 5px"
+        :size="small"
+        style="border: none; padding-left: 5px; height: 24px"
         v-clipboard:copy="content"
       >
-        <copy-outlined />
+        <template #icon>
+          <CopyOutline />
+        </template>
         复制
       </el-button>
     </el-col>
   </el-row>
-  <el-row style="margin-top: 10px">
-    <el-col :offset="1" :span="22">
-      <el-input v-model="content" size="large" :rows="4" />
+  <el-row style="margin-top: 20px">
+    <el-col :span="23">
+      <el-input v-model="content" type="textarea" size="large" :rows="10" />
     </el-col>
   </el-row>
   <el-row style="margin-top: 10px">
-    <el-col :offset="1" :span="1">
+    <el-col :span="1">
       <el-button type="primary" @click="saveValue"> 保存</el-button>
     </el-col>
   </el-row>
@@ -123,7 +124,12 @@
 <script setup>
 import { onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { CheckmarkOutline, Refresh, Code } from "@vicons/ionicons5";
+import {
+  CheckmarkOutline,
+  Refresh,
+  Code,
+  CopyOutline,
+} from "@vicons/ionicons5";
 import { Delete28Regular } from "@vicons/fluent";
 
 const router = useRouter();

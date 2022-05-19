@@ -1,11 +1,11 @@
 {
-  "name": "test",
+  "name": "ToDb",
   "frontend:build": "",
   "frontend:install": "",
   "frontend:dev": "",
   "frontend:dev:watcher": "",
   "wailsjsdir": "./frontend",
-  "version": "2",
+  "version": "v0.1.0",
   "Path": "",
   "BuildDir": "",
   "outputfilename": "todb",
@@ -18,10 +18,10 @@
     "email": "xingcxb@hotmail.com"
   },
   "Info": {
-    "companyName": "test",
-    "productName": "test",
-    "productVersion": "1.0.0",
-    "copyright": "Copyright.........",
+    "companyName": "Symbol",
+    "productName": "ToDb",
+    "productVersion": "0.1.0",
+    "copyright": "Copyright©️ 2022- Symbol. All Rights Reserved.",
     "comments": "Built using Wails (https://wails.app)"
   },
   "debounceMS": 100,

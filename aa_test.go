@@ -1,8 +1,18 @@
+/*
+ * @Author: symbol
+ * @Date: 2022-05-04 10:22:52
+ * @LastEditors: symbol
+ * @LastEditTime: 2022-05-19 17:15:31
+ * @FilePath: /todb/aa_test.go
+ * @Description:
+ *
+ * Copyright (c) 2022 by symbol, All Rights Reserved.
+ */
 package main
 
 import (
-	"ToDb/communication"
 	"ToDb/kit"
+	"ToDb/service"
 	"context"
 	"fmt"
 	"testing"
@@ -10,20 +20,20 @@ import (
 
 func TestTt(t *testing.T) {
 	aa := `{"alias":"11","hostURL":"11","port":"11","username":"11","password":"11","savePassword":true}`
-	communication.Redis().Ok(context.Background(), aa)
+	service.Redis().Ok(context.Background(), aa)
 }
 
 func TestReadFile(t *testing.T) {
 	//communication.LoadingBaseHistoryInfo()
-	communication.Redis().LoadingHistoryInfo("这是2")
+	service.Redis().LoadingHistoryInfo("这是2")
 }
 
 func TestGetHistoryInfo(t *testing.T) {
-	fmt.Println(communication.Redis().LoadingHistoryInfo("这是2"))
+	fmt.Println(service.Redis().LoadingHistoryInfo("这是2"))
 }
 
 func TestFilePath(t *testing.T) {
-	fmt.Println(communication.Redis().LoadingBaseHistoryInfo(context.Background()))
+	fmt.Println(service.Redis().LoadingBaseHistoryInfo(context.Background()))
 }
 
 func TestTest(t *testing.T) {
@@ -41,5 +51,5 @@ func TestMP(t *testing.T) {
 }
 
 func TestApp_GetNodeData(t *testing.T) {
-	fmt.Println(communication.Redis().GetNodeData(context.Background(), "redis", "localhost", "13"))
+	fmt.Println(service.Redis().GetNodeData(context.Background(), "redis", "localhost", "13"))
 }

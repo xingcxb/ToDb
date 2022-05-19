@@ -173,7 +173,6 @@ function getInfo() {
     allValue.data = JSON.parse(res);
     content.data = allValue.data.value;
     ttl.value = allValue.data.ttl;
-    console.log("这个值是：", content.data);
     contentSize.value = allValue.data.size;
     commandStr.value = allValue.data.commandStr;
   });
@@ -181,7 +180,6 @@ function getInfo() {
 
 // 初始化挂载前的函数
 onBeforeMount(() => {
-  console.log("来了吗，老弟");
   // 获取路由传递的参数
   // redis键
   nowKey.value = router.currentRoute.value.query.key;
@@ -238,6 +236,6 @@ function del() {
 
 <style scoped>
 .interval_row {
-  margin-top: 3px;
+  margin-top: 10px;
 }
 </style>

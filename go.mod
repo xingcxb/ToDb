@@ -1,10 +1,10 @@
 module ToDb
 
-go 1.18
+go 1.17
 
 require (
 	github.com/go-redis/redis/v8 v8.11.5
-	github.com/tidwall/gjson v1.14.0
+	github.com/tidwall/gjson v1.8.0
 	github.com/wailsapp/wails/v2 v2.0.0-beta.34
 )
 
@@ -32,14 +32,14 @@ require (
 	github.com/pkg/browser v0.0.0-20210706143420-7d21f8c997e2 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/savsgio/gotils v0.0.0-20200117113501-90175b0fbe3f // indirect
-	github.com/tidwall/match v1.1.1 // indirect
-	github.com/tidwall/pretty v1.2.0 // indirect
+	github.com/tidwall/match v1.0.3 // indirect
+	github.com/tidwall/pretty v1.1.0 // indirect
 	github.com/tkrajina/go-reflector v0.5.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.28.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
-	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
+	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
 	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
-	golang.org/x/text v0.3.7 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
+
+// replace github.com/wailsapp/wails/v2 v2.0.0-beta.34 => /Users/symbol/go/pkg/mod/github.com/wailsapp/wails/v2@v2.0.0-beta.34

@@ -1,25 +1,26 @@
-// package communication
+// package service
 // @Author: symbol
 // @Date: 2022-05-04
 // @LastEditors: symbol
 // @LastEditTime: 2022-05-04 18:06:31
-// @FilePath: \ToDb\communication\general.go
+// @FilePath: \ToDb\service\general.go
 // @Description: 通用的通信模块
 
 // Copyright (c) 2022 by symbol, All Rights Reserved.
 
-package communication
+package service
 
 import (
 	"ToDb/kit/os"
 	"context"
-	"github.com/tidwall/gjson"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"io/ioutil"
 	sysOs "os"
 	"os/exec"
 	"os/user"
 	sysRuntime "runtime"
+
+	"github.com/tidwall/gjson"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 var (

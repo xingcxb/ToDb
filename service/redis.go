@@ -1,10 +1,10 @@
-package communication
+package service
 
 import (
-	"ToDb/internal/structs"
+	"ToDb/common/structs"
 	"ToDb/kit"
 	"ToDb/kit/os"
-	"ToDb/kit/redis"
+	redisKit "ToDb/kit/redis"
 	"context"
 	"encoding/json"
 	"errors"

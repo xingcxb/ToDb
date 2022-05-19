@@ -1,9 +1,9 @@
 package main
 
 import (
-	"ToDb/communication"
 	"ToDb/kit"
 	"ToDb/menu"
+	communication "ToDb/service"
 	"context"
 	"encoding/json"
 	"errors"

@@ -2,8 +2,8 @@
  * @Author: symbol
  * @Date: 2022-04-30 11:18:03
  * @LastEditors: symbol
- * @LastEditTime: 2022-04-30 19:13:05
- * @FilePath: /todb/frontend/JS/src/router/index.js
+ * @LastEditTime: 2022-05-19 14:36:07
+ * @FilePath: /todb/frontend/src/router/index.js
  * @Description:路由
  *
  * Copyright (c) 2022 by symbol, All Rights Reserved.
@@ -58,13 +58,13 @@ const routes = [
   {
     // 右侧详情页面set类型
     path: "/rightContent/value_set",
-    name: "hashInfo",
+    name: "setInfo",
     component: SetInfo,
   },
   {
     // 右侧详情页面stream类型
     path: "/rightContent/value_stream",
-    name: "hashInfo",
+    name: "streamInfo",
     component: StreamInfo,
   },
 ];

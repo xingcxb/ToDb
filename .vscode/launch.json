@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Wails: Production ToDb",
+      "type": "go",
+      "request": "launch",
+      "mode": "exec",
+      "program": "${workspaceFolder}/build/bin/ToDb",
+      "preLaunchTask": "build",
+      "cwd": "${workspaceFolder}",
+      "env": {},
+      "args": ["-assetdir", "frontend/src"]
+    },
+    {
+      "name": "Wails: Debug ToDb",
+      "type": "go",
+      "request": "launch",
+      "mode": "exec",
+      "program": "${workspaceFolder}/build/bin/ToDb",
+      "preLaunchTask": "build debug",
+      "cwd": "${workspaceFolder}",
+      "env": {},
+      "args": ["-assetdir", "frontend/src"]
+    }
+  ]
+}

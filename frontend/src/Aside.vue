@@ -2,7 +2,7 @@
  * @Author: symbol
  * @Date: 2022-05-09 22:20:07
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-19 14:02:53
+ * @LastEditTime: 2022-05-19 14:53:32
  * @FilePath: /todb/frontend/src/Aside.vue
  * @Description: 
  * 
@@ -172,4 +172,8 @@ function loadNode(node, resolve) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.interval_row {
+  margin-top: 10px;
+}
+</style>

@@ -1,27 +1,31 @@
 {
-  "name": "ToDb",
-  "assetdir": "frontend/dist",
-  "frontend:build": "npm run build",
-  "frontend:install": "npm install",
+  "name": "test",
+  "frontend:build": "",
+  "frontend:install": "",
   "frontend:dev": "",
-  "wailsjsdir": "frontend/src",
+  "frontend:dev:watcher": "",
+  "wailsjsdir": "./frontend",
   "version": "2",
   "Path": "",
   "BuildDir": "",
-  "outputfilename": "wails_note.exe",
+  "outputfilename": "todb",
   "OutputType": "",
   "Platform": "",
+  "runNonNativeBuildHooks": false,
+  "postBuildHooks": null,
   "Author": {
-    "name": "Symbol",
+    "name": "xingcxb",
     "email": "xingcxb@hotmail.com"
   },
   "Info": {
-    "companyName": "Symbol",
-    "productName": "ToDb",
-    "productVersion": "0.1.0",
-    "copyright": "Copyright©️ 2022- Symbol. All Rights Reserved."
+    "companyName": "test",
+    "productName": "test",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright.........",
+    "comments": "Built using Wails (https://wails.app)"
   },
   "debounceMS": 100,
   "devserverurl": "http://localhost:34115",
-  "appargs": ""
+  "appargs": "",
+  "nsisType": ""
 }

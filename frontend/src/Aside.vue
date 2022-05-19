@@ -2,8 +2,8 @@
  * @Author: symbol
  * @Date: 2022-05-09 22:20:07
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-14 12:09:56
- * @FilePath: \ToDb\frontend\src\Aside.vue
+ * @LastEditTime: 2022-05-19 14:02:53
+ * @FilePath: /todb/frontend/src/Aside.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
@@ -12,18 +12,18 @@
   <div>
     <!--左侧内容-->
     <el-tree
-        :data="listData.data"
-        :load="loadNode"
-        highlight-current
-        accordion
-        lazy
-        style="background: #e0e1e1;"
+      :data="listData.data"
+      :load="loadNode"
+      highlight-current
+      accordion
+      lazy
+      style="background: #e0e1e1"
     ></el-tree>
   </div>
 </template>
 
 <script setup>
-import {onBeforeMount, reactive} from "vue";
+import { onBeforeMount, reactive } from "vue";
 import router from "./router";
 
 let listData = reactive({
@@ -39,7 +39,6 @@ onBeforeMount(() => {
   });
 });
 
-
 // 【第二层】加载连接信息下的表/库
 function loadNode(node, resolve) {
   let nodeData = node.data;
@@ -49,36 +48,42 @@ function loadNode(node, resolve) {
       // 当选中连接数据库时候需要将状态信息加载出来
       path: "/rightContent/status",
       query: {
-        fileName: nodeData.label
-      }
+        fileName: nodeData.label,
+      },
     });
-    window.go.main.App.LoadingConnInfo(nodeData.connType, nodeData.label).then((resp) => {
-      if (resp !== "") {
-        setTimeout(resolve(JSON.parse(resp)), 500)
-      } else {
-        // 如果返回的数据不存在值，标记为没有子节点
-        setTimeout(resolve([]), 500)
+    window.go.main.App.LoadingConnInfo(nodeData.connType, nodeData.label).then(
+      (resp) => {
+        if (resp !== "") {
+          setTimeout(resolve(JSON.parse(resp)), 500);
+        } else {
+          // 如果返回的数据不存在值，标记为没有子节点
+          setTimeout(resolve([]), 500);
+        }
       }
-    });
+    );
   } else if (node.level == 2) {
     // console.log("node:", node);
     // 表示进入具体的库，需要加载key
     // 获取父节点的数据
     let parentNode = node.parent.data;
-    window.go.main.App.GetNodeData(parentNode.connType, parentNode.label, node.data.key).then((resp) => {
+    window.go.main.App.GetNodeData(
+      parentNode.connType,
+      parentNode.label,
+      node.data.key
+    ).then((resp) => {
       // 当数据不存在的时候返回的是
       if (resp != "") {
-        setTimeout(resolve(JSON.parse(resp)), 500)
+        setTimeout(resolve(JSON.parse(resp)), 500);
       } else {
         // 如果返回的数据不存在值，标记为没有子节点
-        setTimeout(resolve([]), 500)
+        setTimeout(resolve([]), 500);
       }
     });
   } else {
     if (node.level > 2) {
       let arr = [];
       if (nodeData.children && nodeData.children.length > 0) {
-        arr = nodeData.children
+        arr = nodeData.children;
       } else {
         // 这里是不存在子节点，将右边进行改变
         // 获取到选中的顶级父类节点
@@ -90,12 +95,16 @@ function loadNode(node, resolve) {
             nextParentNode = topParentNode;
           }
         }
-        window.go.main.App.ChangeRightWindowStyle(JSON.stringify(topParentNode.data),
-            JSON.stringify(nextParentNode.data), JSON.stringify(nodeData)).then((resp) => {
-          let fullStr = nodeData.fullStr
-          let dbId = nextParentNode.data.key
-          let connType = topParentNode.data.connType
-          let connName = topParentNode.data.title
+        window.go.main.App.ChangeRightWindowStyle(
+          JSON.stringify(topParentNode.data),
+          JSON.stringify(nextParentNode.data),
+          JSON.stringify(nodeData)
+        ).then((resp) => {
+          let fullStr = nodeData.fullStr;
+          let dbId = nextParentNode.data.key;
+          let connType = topParentNode.data.connType;
+          let connName = topParentNode.data.title;
+          console.log("类型为：", resp);
           switch (resp) {
             case "string":
               // 字符串类型
@@ -106,8 +115,8 @@ function loadNode(node, resolve) {
                   dbId: dbId,
                   connType: connType,
                   connName: connName,
-                }
-              })
+                },
+              });
               break;
             case "list":
               // list类型
@@ -118,12 +127,12 @@ function loadNode(node, resolve) {
                   dbId: dbId,
                   connType: connType,
                   connName: connName,
-                }
-              })
+                },
+              });
               break;
             case "hash":
               // hash类型
-              console.log("欢迎来到hash", fullStr, dbId, connType, connName)
+              console.log("欢迎来到hash", fullStr, dbId, connType, connName);
               router.push({
                 path: "/rightContent/value_hash",
                 query: {
@@ -131,10 +140,11 @@ function loadNode(node, resolve) {
                   dbId: dbId,
                   connType: connType,
                   connName: connName,
-                }
-              })
+                },
+              });
               break;
             case "set":
+              console.log("欢迎来到set", fullStr, dbId, connType, connName);
               // set类型
               router.push({
                 path: "/rightContent/value_set",
@@ -143,8 +153,8 @@ function loadNode(node, resolve) {
                   dbId: dbId,
                   connType: connType,
                   connName: connName,
-                }
-              })
+                },
+              });
               break;
             default:
               // 其他的返回到默认的页面
@@ -153,15 +163,13 @@ function loadNode(node, resolve) {
               });
               break;
           }
-          setTimeout(resolve([]), 500)
+          setTimeout(resolve([]), 500);
         });
       }
-      setTimeout(resolve([...arr]), 500)
+      setTimeout(resolve([...arr]), 500);
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

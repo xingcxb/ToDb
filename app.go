@@ -7,10 +7,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
-	"github.com/tidwall/gjson"
 	"net/http"
 	"strings"
+
+	"github.com/tidwall/gjson"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -139,6 +139,7 @@ func (a *App) ChangeRightWindowStyle(parentNode, nextParentNode, node string) st
 	case "redis":
 	default:
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", "暂不支持的数据库类型", icon)
+		return ""
 	}
 	// 获取db信息
 	dbId := gjson.Get(nextParentNode, "key").String()
@@ -146,7 +147,6 @@ func (a *App) ChangeRightWindowStyle(parentNode, nextParentNode, node string) st
 	fullKey := gjson.Get(node, "fullStr").String()
 	// 指定的key数据类型
 	dataType, err := communication.Redis().GetValueType(a.ctx, fileName, dbId, fullKey)
-	fmt.Println(dataType)
 	if err != nil {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", err.Error(), icon)
 	}

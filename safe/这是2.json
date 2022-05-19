@@ -1,8 +1,0 @@
-{
-    "type": "redis",
-    "alias": "这是2",
-    "hostURL": "192.168.10.59",
-    "port": "6379",
-    "username": "",
-    "password": "123456"
-}

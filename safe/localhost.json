@@ -1,8 +1,0 @@
-{
-    "type": "redis",
-    "alias": "localhost",
-    "hostURL": "127.0.0.1",
-    "port": "6379",
-    "username": "",
-    "password": "123456"
-}

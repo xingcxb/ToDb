@@ -22,7 +22,7 @@
     <el-col :span="10">
       <!--key-->
       <el-input v-model:value="nowKey" style="width: calc(100% - 30px)">
-        <template #prepend>{{ value.data.type }}</template>
+        <template #prepend>{{ allValue.data.type }}</template>
         <template #append>
           <el-button @click="rename">
             <template #icon>
@@ -34,7 +34,7 @@
     </el-col>
     <el-col :offset="1" :span="6">
       <!--到期时间-->
-      <el-input v-model:value="ttl" style="width: calc(100% - 60px)">
+      <el-input v-model:value="ttl" style="width: calc(100% - 30px)">
         <template #prepend>TTL</template>
         <template #append>
           <el-button @click="updateTtl">
@@ -124,12 +124,8 @@
 <script setup>
 import { onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import {
-  CheckmarkOutline,
-  Refresh,
-  Code,
-  CopyOutline,
-} from "@vicons/ionicons5";
+import { CheckmarkOutline, Code, CopyOutline } from "@vicons/ionicons5";
+import { Refresh } from "@vicons/tabler";
 import { Delete28Regular } from "@vicons/fluent";
 
 const router = useRouter();
@@ -145,7 +141,7 @@ let nowKey = ref("");
 // redis old key
 let oldKey = ref("");
 // redis value
-let value = reactive({
+let allValue = reactive({
   data: "",
 });
 // redis 剩余时间
@@ -248,11 +244,11 @@ function getInfo() {
       nowKey.value
     ).then((res) => {
       // 此处如果是空值，则应该是该键没有填充值
-      value.data = JSON.parse(res);
-      content.value = value.data.value;
-      ttl.value = value.data.ttl;
-      contentSize.value = value.data.size;
-      commandStr.value = value.data.commandStr;
+      allValue.data = JSON.parse(res);
+      content.value = allValue.data.value;
+      ttl.value = allValue.data.ttl;
+      contentSize.value = allValue.data.size;
+      commandStr.value = allValue.data.commandStr;
     });
   }
 }

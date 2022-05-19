@@ -1,12 +1,12 @@
 <template>
-  <el-row style="margin-top: 10px">
+  <el-row type="flex" justify="center" align="middle" style="margin-top: 10px">
     <el-col :span="14">
       <img
         src="../../public/info/key.png"
         alt="nowKey"
-        style="vertical-align: middle"
+        style="vertical-align: middle; height: 28px; width: 28px"
       />
-      <span style="font-size: 26px; vertical-align: middle">{{ nowKey }}</span>
+      <span style="font-size: 20px; vertical-align: middle">{{ nowKey }}</span>
     </el-col>
     <el-col :offset="8" :span="1">
       <!--关闭图片-->
@@ -18,13 +18,10 @@
       />
     </el-col>
   </el-row>
-  <el-row style="margin-top: 20px">
-    <el-col :offset="1" :span="10">
-      <el-input
-        :addon-before="allValue.data.type"
-        v-model:value="nowKey"
-        style="width: calc(100% - 30px)"
-      >
+  <el-row style="margin-top: 20px" :gutter="5">
+    <el-col :span="10">
+      <el-input v-model:value="nowKey" style="width: calc(100% - 30px)">
+        <template #prepend>{{ connType.value }}</template>
         <template #append>
           <el-button @click="rename">
             <template #icon>
@@ -35,11 +32,8 @@
       </el-input>
     </el-col>
     <el-col :offset="1" :span="6">
-      <el-input
-        addon-before="TTL"
-        v-model:value="ttl"
-        style="width: calc(100% - 60px)"
-      >
+      <el-input v-model:value="ttl" style="width: calc(100% - 30px)">
+        <template #prepend>TTL</template>
         <template #append>
           <el-button :icon="CheckOutlined" @click="updateTtl">
             <template #icon>
@@ -49,17 +43,18 @@
         </template>
       </el-input>
     </el-col>
-    <el-col :offset="2" :span="1">
-      <el-button type="primary" danger @click="del">
+    <el-col :offset="1" :span="2">
+      <el-button type="primary" danger :size="small" @click="del">
         <template #icon>
           <!--删除-->
           <Delete20Regular />
         </template>
       </el-button>
     </el-col>
-    <el-col :span="1">
+    <el-col :span="2">
       <el-button
         type="primary"
+        :size="small"
         @click="getInfo"
         style="background: #ffb33a; border: none"
       >
@@ -69,9 +64,10 @@
         </template>
       </el-button>
     </el-col>
-    <el-col :span="1">
+    <el-col :span="2">
       <el-button
         type="primary"
+        :size="small"
         style="background: #07c245; border: none"
         v-clipboard:copy="commandStr"
       >
@@ -83,12 +79,12 @@
     </el-col>
   </el-row>
   <el-row class="interval_row">
-    <el-col :offset="1" :span="1">
+    <el-col :span="2">
       <el-button type="primary"> 添加新行 </el-button>
     </el-col>
   </el-row>
-  <el-row>
-    <el-col :offset="1" :span="22">
+  <el-row class="interval_row">
+    <el-col :span="22">
       <!--表格-->
       <el-table :data="content.data" style="width: 100%">
         <el-table-column

@@ -2,7 +2,7 @@
  * @Author: symbol
  * @Date: 2022-05-09 22:20:07
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-19 14:53:32
+ * @LastEditTime: 2022-05-19 17:58:20
  * @FilePath: /todb/frontend/src/Aside.vue
  * @Description: 
  * 
@@ -132,7 +132,6 @@ function loadNode(node, resolve) {
               break;
             case "hash":
               // hash类型
-              console.log("欢迎来到hash", fullStr, dbId, connType, connName);
               router.push({
                 path: "/rightContent/value_hash",
                 query: {
@@ -144,7 +143,6 @@ function loadNode(node, resolve) {
               });
               break;
             case "set":
-              console.log("欢迎来到set", fullStr, dbId, connType, connName);
               // set类型
               router.push({
                 path: "/rightContent/value_set",

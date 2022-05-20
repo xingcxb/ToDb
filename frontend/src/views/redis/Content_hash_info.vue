@@ -21,7 +21,7 @@
   <el-row style="margin-top: 20px" :gutter="5">
     <el-col :span="10">
       <el-input v-model:value="nowKey" style="width: calc(100% - 30px)">
-        <template #prepend>{{ connType.value }}</template>
+        <template #prepend>{{ allValue.data.type }}</template>
         <template #append>
           <el-button @click="rename">
             <template #icon>
@@ -173,7 +173,7 @@ function getInfo() {
     // 此处如果是空值，则应该是该键没有填充值
     allValue.data = JSON.parse(res);
     content.data = allValue.data.value;
-    console.log("这个值是：", content.data);
+    console.log("这个页面是hash这个值是：", allValue.data);
     ttl.value = allValue.data.ttl;
     contentSize.value = allValue.data.size;
     commandStr.value = allValue.data.commandStr;
@@ -193,14 +193,6 @@ onBeforeMount(() => {
   connType.value = router.currentRoute.value.query.connType;
   // 连接文件名
   connName.value = router.currentRoute.value.query.connName;
-  console.log(
-    "=====",
-    nowKey.value,
-    oldKey.value,
-    nodeId.value,
-    connType.value,
-    connName.value
-  );
   getInfo();
 });
 

@@ -1,20 +1,18 @@
 {
   "name": "ToDb",
-  "frontend:build": "",
-  "frontend:install": "",
+  "assetdir": "frontend/dist",
+  "frontend:build": "npm run build",
+  "frontend:install": "npm install",
   "frontend:dev": "",
-  "frontend:dev:watcher": "",
-  "wailsjsdir": "./frontend",
-  "version": "v0.1.0",
+  "wailsjsdir": "frontend/src",
+  "version": "2",
   "Path": "",
   "BuildDir": "",
-  "outputfilename": "todb",
+  "outputfilename": "wails_note.exe",
   "OutputType": "",
   "Platform": "",
-  "runNonNativeBuildHooks": false,
-  "postBuildHooks": null,
   "Author": {
-    "name": "xingcxb",
+    "name": "Symbol",
     "email": "xingcxb@hotmail.com"
   },
   "Info": {
@@ -22,10 +20,9 @@
     "productName": "ToDb",
     "productVersion": "0.1.0",
     "copyright": "Copyright©️ 2022- Symbol. All Rights Reserved.",
-    "comments": "Built using Wails (https://wails.app)"
+    "comments": "又一个装模作样的数据库连接工具🙄️"
   },
   "debounceMS": 100,
   "devserverurl": "http://localhost:34115",
-  "appargs": "",
-  "nsisType": ""
+  "appargs": ""
 }

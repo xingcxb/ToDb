@@ -177,7 +177,7 @@ function getInfo() {
     // 此处如果是空值，则应该是该键没有填充值
     allValue.data = JSON.parse(res);
     content.data = allValue.data.value;
-    console.log("这个值是：", content.data);
+    console.log("这个页面是stream这个值是：", content.data);
     ttl.value = allValue.data.ttl;
     contentSize.value = allValue.data.size;
     commandStr.value = allValue.data.commandStr;

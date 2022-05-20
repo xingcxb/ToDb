@@ -1,13 +1,3 @@
-/*
- * @Author: symbol
- * @Date: 2022-05-08 08:49:54
- * @LastEditors: symbol
- * @LastEditTime: 2022-05-18 11:20:09
- * @FilePath: /todb/frontend/vite.config.js
- * @Description:
- *
- * Copyright (c) 2022 by symbol, All Rights Reserved.
- */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";

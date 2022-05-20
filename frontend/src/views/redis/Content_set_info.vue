@@ -32,7 +32,7 @@
       </el-input>
     </el-col>
     <el-col :offset="1" :span="6">
-      <el-input v-model:value="ttl" style="width: calc(100% - 60px)">
+      <el-input v-model:value="ttl" style="width: calc(100% - 30px)">
         <template #prepend>TTL</template>
         <template #append>
           <el-button :icon="CheckOutlined" @click="updateTtl">

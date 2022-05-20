@@ -1,3 +1,13 @@
+/*
+ * @Author: symbol
+ * @Date: 2022-05-04 10:22:53
+ * @LastEditors: symbol
+ * @LastEditTime: 2022-05-20 17:54:11
+ * @FilePath: /todb/kit/redis/redis_test.go
+ * @Description:
+ *
+ * Copyright (c) 2022 by symbol, All Rights Reserved.
+ */
 package redisKit
 
 import (
@@ -42,6 +52,7 @@ func TestStream(t *testing.T) {
 	Port = "6379"
 	Password = "123456"
 	InitDb()
+	Redis().ChangeDb(context.Background(), 13)
 	Redis().GetStreamValue(context.Background(), "1:2:stream")
 }
 
@@ -50,5 +61,6 @@ func TestZSet(t *testing.T) {
 	Port = "6379"
 	Password = "123456"
 	InitDb()
-	Redis().GetZSetCount(context.Background(), "1:2:stream")
+	Redis().ChangeDb(context.Background(), 13)
+	Redis().GetZSetCount(context.Background(), "1:2:zset")
 }

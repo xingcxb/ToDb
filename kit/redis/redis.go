@@ -404,13 +404,13 @@ func (s *sRedis) GetHashValue(ctx context.Context, key string) map[string]string
 }
 
 // GetStreamValue 获取redis中的Stream数据 todo 未拿到值
-func (s *sRedis) GetStreamValue(ctx context.Context, key string) string {
-	val, err := rdb.XRevRange(ctx, key, "-", "+").Result()
+func (s *sRedis) GetStreamValue(ctx context.Context, key string) []redis.XMessage {
+	val, err := rdb.XRevRangeN(ctx, key, "+", "-", 30).Result()
 	if err != nil {
-		return ""
+		return nil
 	}
 	fmt.Println("=========", val)
-	return ""
+	return val
 }
 
 // GetZSetValue 获取zset数据
@@ -423,6 +423,7 @@ func (s *sRedis) GetZSetValue(ctx context.Context, key string) string {
 	return ""
 }
 
+// GetZSetCount 获取zset中的数量
 func (s *sRedis) GetZSetCount(ctx context.Context, key string) int64 {
 	val, err := rdb.ZCard(ctx, key).Result()
 	if err != nil {

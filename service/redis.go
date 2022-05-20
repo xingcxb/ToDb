@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/go-redis/redis/v8"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -302,7 +303,22 @@ func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr
 		command := s.BuildCommand(key, "hash", v)
 		getValue.CommandStr = command
 		return getValue, nil
-	//case "stream":
+	case "stream":
+		// 获取类型为stream的数据
+		v := redisKit.Redis().GetStreamValue(ctx, key)
+		getValue.Type = "stream"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		var streamValues []redis.XMessage
+		var i = 1
+		for _, vv := range v {
+			streamValues = append(streamValues, vv)
+			i++
+		}
+		getValue.Value = streamValues
+		command := s.BuildCommand(key, "stream", v)
+		getValue.CommandStr = command
+		return getValue, nil
 	default:
 		return getValue, errors.New("unknown error")
 	}
@@ -469,6 +485,21 @@ func (s *sRedis) BuildCommand(key, keyType string, value interface{}) string {
 		// ZADD "1:2:zset" 12 "321" 0 "New member"
 		// return "XADD " + key + " " + value
 		command.WriteString("XADD ")
+		command.WriteString("\"")
+		command.WriteString(key)
+		command.WriteString("\"")
+		arr := value.([]redis.XMessage)
+		for _, v := range arr {
+			command.WriteString(v.ID)
+			_val := v.Values
+			for mk, mv := range _val {
+				command.WriteString(" \"")
+				command.WriteString(mk)
+				command.WriteString("\" \"")
+				command.WriteString(mv.(string))
+				command.WriteString("\"")
+			}
+		}
 	default:
 		return ""
 	}

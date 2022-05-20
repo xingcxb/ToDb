@@ -18,3 +18,16 @@ type GetValue struct {
 	Size       int         `json:"size"`       // value大小
 	CommandStr string      `json:"commandStr"` // redis命令
 }
+
+// RedisList redis List数据
+type RedisList struct {
+	Id    int    `json:"id"`
+	Value string `json:"value"`
+}
+
+// RedisHash redis hash数据
+type RedisHash struct {
+	Id    int    `json:"id"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}

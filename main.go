@@ -2,8 +2,8 @@
  * @Author: symbol
  * @Date: 2022-05-08 08:49:54
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-19 15:05:15
- * @FilePath: /todb/main.go
+ * @LastEditTime: 2022-05-21 20:47:32
+ * @FilePath: \ToDb\main.go
  * @Description:
  *
  * Copyright (c) 2022 by symbol, All Rights Reserved.
@@ -13,6 +13,7 @@ package main
 import (
 	"embed"
 	"log"
+	goruntime "runtime"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -25,6 +26,12 @@ var assets embed.FS
 var icon []byte
 
 func main() {
+	// 判断系统如果是win需要增高窗口大小
+	windowsHeight := 728
+	osInfo := goruntime.GOOS
+	if osInfo == "windows" {
+		windowsHeight = 770
+	}
 	// Create an instance of the app structure
 	// 创建一个App结构体实例
 	app := NewApp()
@@ -34,7 +41,7 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:            "ToDb",
 		Width:            1342,
-		Height:           728,
+		Height:           windowsHeight,
 		DisableResize:    true,
 		Assets:           assets,
 		OnStartup:        app.startup,

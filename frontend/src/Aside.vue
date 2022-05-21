@@ -2,8 +2,8 @@
  * @Author: symbol
  * @Date: 2022-05-09 22:20:07
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-19 17:58:20
- * @FilePath: /todb/frontend/src/Aside.vue
+ * @LastEditTime: 2022-05-21 21:54:05
+ * @FilePath: \ToDb\frontend\src\Aside.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
@@ -105,62 +105,41 @@ function loadNode(node, resolve) {
           let connType = topParentNode.data.connType;
           let connName = topParentNode.data.title;
           console.log("类型为：", resp);
+          let path = "";
           switch (resp) {
             case "string":
               // 字符串类型
-              router.push({
-                path: "/rightContent/value_string",
-                query: {
-                  key: fullStr,
-                  dbId: dbId,
-                  connType: connType,
-                  connName: connName,
-                },
-              });
+              path = "/rightContent/value_string";
               break;
             case "list":
               // list类型
-              router.push({
-                path: "/rightContent/value_list",
-                query: {
-                  key: fullStr,
-                  dbId: dbId,
-                  connType: connType,
-                  connName: connName,
-                },
-              });
+              path = "/rightContent/value_list";
               break;
             case "hash":
               // hash类型
-              router.push({
-                path: "/rightContent/value_hash",
-                query: {
-                  key: fullStr,
-                  dbId: dbId,
-                  connType: connType,
-                  connName: connName,
-                },
-              });
+              path = "/rightContent/value_hash";
               break;
             case "set":
               // set类型
-              router.push({
-                path: "/rightContent/value_set",
-                query: {
-                  key: fullStr,
-                  dbId: dbId,
-                  connType: connType,
-                  connName: connName,
-                },
-              });
+              path = "/rightContent/value_set";
+              break;
+            case "stream":
+              path = "/rightContent/value_stream";
               break;
             default:
               // 其他的返回到默认的页面
-              router.push({
-                path: "/rightContent/default",
-              });
+              path = "/rightContent/default";
               break;
           }
+          router.push({
+            path: path,
+            query: {
+              key: fullStr,
+              dbId: dbId,
+              connType: connType,
+              connName: connName,
+            },
+          });
           setTimeout(resolve([]), 500);
         });
       }

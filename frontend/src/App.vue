@@ -28,12 +28,12 @@
           </el-scrollbar>
         </el-aside>
         <el-main>
-          <el-scrollbar style="height: 600px">
+<!--          <el-scrollbar style="height: 600px">-->
             <!--右侧内容-->
             <div class="connections-list">
               <router-view :key="$route.path + Date.now()" />
             </div>
-          </el-scrollbar>
+<!--          </el-scrollbar>-->
         </el-main>
       </el-container>
     </el-container>
@@ -80,6 +80,7 @@ body {
 
 .aside-outer-container .connections-list {
   overflow-y: auto;
+  width: 98%;
   height: calc(100vh - 54px);
   margin-top: 4px;
   /*border-top: 1px solid #dbdada;*/

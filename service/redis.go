@@ -8,12 +8,13 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/go-redis/redis/v8"
 	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strconv"
 	"strings"
+
+	"github.com/go-redis/redis/v8"
 
 	"github.com/tidwall/gjson"
 )
@@ -309,11 +310,15 @@ func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr
 		getValue.Type = "stream"
 		getValue.Key = key
 		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
-		var streamValues []redis.XMessage
-		var i = 1
-		for _, vv := range v {
-			streamValues = append(streamValues, vv)
-			i++
+		var streamValues []structs.RedisHash
+		for i, vv := range v {
+			_data, _ := json.Marshal(vv.Values)
+			streamValues = append(streamValues, structs.RedisHash{
+				Id:    i,
+				Key:   vv.ID,
+				Value: string(_data),
+			})
+			// streamValues = append(streamValues, vv)
 		}
 		getValue.Value = streamValues
 		command := s.BuildCommand(key, "stream", v)

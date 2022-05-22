@@ -32,7 +32,7 @@
       </el-input>
     </el-col>
     <el-col :offset="1" :span="6">
-      <el-input v-model:value="ttl" style="width: calc(100% - 60px)">
+      <el-input v-model:value="ttl" style="width: calc(100% - 30px)">
         <template #prepend>TTL</template>
         <template #append>
           <el-button :icon="CheckOutlined" @click="updateTtl">
@@ -64,7 +64,7 @@
         </template>
       </el-button>
     </el-col>
-    <el-col :span="2">
+    <el-col :span="1">
       <el-button
         type="primary"
         :size="small"
@@ -91,6 +91,7 @@
           prop="id"
           :label="`id(Total: ${content.data.length})`"
         />
+        <el-table-column prop="key" :label="`key`" />
         <el-table-column prop="value" label="value" />
         <el-table-column label="operation">
           <template #default="scope">
@@ -173,7 +174,7 @@ function getInfo() {
     // 此处如果是空值，则应该是该键没有填充值
     allValue.data = JSON.parse(res);
     content.data = allValue.data.value;
-    console.log("这个页面是stream这个值是：", allValue.data);
+    console.log("这个页面是stream这个content值是：", content.data);
     ttl.value = allValue.data.ttl;
     contentSize.value = allValue.data.size;
     commandStr.value = allValue.data.commandStr;

@@ -2,8 +2,8 @@
  * @Author: symbol
  * @Date: 2022-05-09 22:20:07
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-21 21:54:05
- * @FilePath: \ToDb\frontend\src\Aside.vue
+ * @LastEditTime: 2022-05-22 14:39:26
+ * @FilePath: /todb/frontend/src/Aside.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
@@ -124,7 +124,12 @@ function loadNode(node, resolve) {
               path = "/rightContent/value_set";
               break;
             case "stream":
+              // stream类型
               path = "/rightContent/value_stream";
+              break;
+            case "zset":
+              // zset类型
+              path = "/rightContent/value_zset";
               break;
             default:
               // 其他的返回到默认的页面

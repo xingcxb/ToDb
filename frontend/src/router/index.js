@@ -2,7 +2,7 @@
  * @Author: symbol
  * @Date: 2022-04-30 11:18:03
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-19 14:36:07
+ * @LastEditTime: 2022-05-22 14:39:52
  * @FilePath: /todb/frontend/src/router/index.js
  * @Description:路由
  *
@@ -15,6 +15,7 @@ import StringInfo from "../views/redis/Content_string_info.vue";
 import ListInfo from "../views/redis/Content_list_info.vue";
 import HashInfo from "../views/redis/Content_hash_info.vue";
 import SetInfo from "../views/redis/Content_set_info.vue";
+import ZSetInfo from "../views/redis/Content_zset_info.vue";
 import StreamInfo from "../views/redis/Content_stream_info.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
@@ -66,6 +67,12 @@ const routes = [
     path: "/rightContent/value_stream",
     name: "streamInfo",
     component: StreamInfo,
+  },
+  {
+    // 右侧详情页面zset类型
+    path: "/rightContent/value_zset",
+    name: "zsetInfo",
+    component: ZSetInfo,
   },
 ];
 

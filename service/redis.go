@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -324,6 +325,26 @@ func (s *sRedis) RedisGetData(ctx context.Context, connType, connName, nodeIdStr
 		command := s.BuildCommand(key, "stream", v)
 		getValue.CommandStr = command
 		return getValue, nil
+	case "zset":
+		// 获取类型为zset的数据
+		v := redisKit.Redis().GetZSetValue(ctx, key)
+		getValue.Type = "zset"
+		getValue.Key = key
+		getValue.Ttl = redisKit.Redis().GetTTL(ctx, key)
+		var zsetValues []structs.RedisHash
+		var i = 1
+		for mk, mv := range v {
+			zsetValues = append(zsetValues, structs.RedisHash{
+				Id:    i,
+				Key:   mk,
+				Value: mv,
+			})
+			i++
+		}
+		getValue.Value = zsetValues
+		command := s.BuildCommand(key, "zset", v)
+		getValue.CommandStr = command
+		return getValue, nil
 	default:
 		return getValue, errors.New("unknown error")
 	}
@@ -481,13 +502,22 @@ func (s *sRedis) BuildCommand(key, keyType string, value interface{}) string {
 		}
 	case "zset":
 		// 构建zset命令
-		// XADD "1:2:stream" 1650445322163-0  "New key" "New value"
-		// XADD "1:2:stream" 21312312312312-0  "New key" "New value"
+		//ZADD "1:2:zset" 12 "321" 0 "New member"
 		// return "ZADD " + key + " " + value
 		command.WriteString("ZADD ")
+		command.WriteString("\"")
+		command.WriteString(key)
+		command.WriteString("\" ")
+		arr := value.(map[string]string)
+		fmt.Println("=====>", arr)
+		for k, v := range arr {
+			command.WriteString(k)
+			command.WriteString(" \"")
+			command.WriteString(v)
+			command.WriteString("\" ")
+		}
 	case "stream":
 		// 构建stream命令
-		// ZADD "1:2:zset" 12 "321" 0 "New member"
 		// return "XADD " + key + " " + value
 		command.WriteString("XADD ")
 		command.WriteString("\"")

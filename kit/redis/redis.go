@@ -4,7 +4,6 @@ import (
 	"ToDb/kit"
 	"context"
 	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -409,18 +408,20 @@ func (s *sRedis) GetStreamValue(ctx context.Context, key string) []redis.XMessag
 	if err != nil {
 		return nil
 	}
-	fmt.Println("=========", val)
 	return val
 }
 
 // GetZSetValue 获取zset数据
-func (s *sRedis) GetZSetValue(ctx context.Context, key string) string {
+func (s *sRedis) GetZSetValue(ctx context.Context, key string) map[string]string {
 	val, err := rdb.ZRevRangeWithScores(ctx, key, 0, 100).Result()
 	if err != nil {
-		return ""
+		return nil
 	}
-	fmt.Println("=========", val)
-	return ""
+	var zsetMap = make(map[string]string)
+	for _, v := range val {
+		zsetMap[strconv.FormatFloat(v.Score, 'f', -1, 64)] = v.Member.(string)
+	}
+	return zsetMap
 }
 
 // GetZSetCount 获取zset中的数量
@@ -429,7 +430,6 @@ func (s *sRedis) GetZSetCount(ctx context.Context, key string) int64 {
 	if err != nil {
 		return 0
 	}
-	fmt.Println("=========", val)
 	return val
 }
 

@@ -1,20 +1,10 @@
-<!--
- * @Author: symbol
- * @Date: 2022-05-09 22:20:07
- * @LastEditors: symbol
- * @LastEditTime: 2022-05-22 18:48:44
- * @FilePath: /todb/frontend/src/Aside.vue
- * @Description: 
- * 
- * Copyright (c) 2022 by symbol, All Rights Reserved. 
--->
 <template>
   <div>
     <!--左侧内容-->
     <el-tree
       :data="listData.data"
       :load="loadNode"
-      node-click="nodeClick"
+      @node-click="changeNode"
       highlight-current
       accordion
       lazy
@@ -157,6 +147,78 @@ function loadNode(node, resolve) {
     }
   }
 }
+
+const changeNode = (tag, node, event) => {
+  console.log(node);
+  if (node.level > 2) {
+    let arr = [];
+    if (node.children && node.children.length > 0) {
+      arr = node.children;
+    } else {
+      // 这里是不存在子节点，将右边进行改变
+      // 获取到选中的顶级父类节点
+      let topParentNode = node.parent;
+      let nextParentNode = node.parent;
+      for (let i = 1; i < node.level - 1; i++) {
+        topParentNode = topParentNode.parent;
+        if (i === node.level - 3) {
+          nextParentNode = topParentNode;
+        }
+      }
+      window.go.main.App.ChangeRightWindowStyle(
+        JSON.stringify(topParentNode.data),
+        JSON.stringify(nextParentNode.data),
+        JSON.stringify(node.data)
+      ).then((resp) => {
+        let fullStr = node.data.fullStr;
+        let dbId = nextParentNode.data.key;
+        let connType = topParentNode.data.connType;
+        let connName = topParentNode.data.title;
+        console.log("类型为：", resp);
+        let path = "";
+        switch (resp) {
+          case "string":
+            // 字符串类型
+            path = "/rightContent/value_string";
+            break;
+          case "list":
+            // list类型
+            path = "/rightContent/value_list";
+            break;
+          case "hash":
+            // hash类型
+            path = "/rightContent/value_hash";
+            break;
+          case "set":
+            // set类型
+            path = "/rightContent/value_set";
+            break;
+          case "stream":
+            // stream类型
+            path = "/rightContent/value_stream";
+            break;
+          case "zset":
+            // zset类型
+            path = "/rightContent/value_zset";
+            break;
+          default:
+            // 其他的返回到默认的页面
+            path = "/rightContent/default";
+            break;
+        }
+        router.push({
+          path: path,
+          query: {
+            key: fullStr,
+            dbId: dbId,
+            connType: connType,
+            connName: connName,
+          },
+        });
+      });
+    }
+  }
+};
 </script>
 
 <style scoped>

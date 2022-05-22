@@ -1,9 +1,9 @@
 <!--
  * @Author: symbol
- * @Date: 2022-05-18 08:23:08
+ * @Date: 2022-05-08 20:21:31
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-18 18:20:59
- * @FilePath: /todb/frontend/src/App.vue
+ * @LastEditTime: 2022-05-22 20:21:01
+ * @FilePath: \ToDb\frontend\src\App.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
@@ -28,12 +28,12 @@
           </el-scrollbar>
         </el-aside>
         <el-main>
-<!--          <el-scrollbar style="height: 600px">-->
-            <!--右侧内容-->
-            <div class="connections-list">
-              <router-view :key="$route.path + Date.now()" />
-            </div>
-<!--          </el-scrollbar>-->
+          <!--          <el-scrollbar style="height: 600px">-->
+          <!--右侧内容-->
+          <div class="connections-list">
+            <router-view :key="$route.path + Date.now()" />
+          </div>
+          <!--          </el-scrollbar>-->
         </el-main>
       </el-container>
     </el-container>

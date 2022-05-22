@@ -101,8 +101,10 @@ func (s *sRedis) Ok(ctx context.Context, connectionInfo string) (int, string) {
 	code := http.StatusOK
 	parameter := gjson.Parse(connectionInfo).Map()
 	code, message, _ = s.checkParameter(parameter)
+	connType := parameter["connType"].String()
+	connType = strings.ToLower(connType)
 	info := structs.ConnectionType{
-		Type:     parameter["connType"].String(),
+		Type:     connType,
 		Alias:    parameter["alias"].String(),
 		HostURL:  parameter["hostURL"].String(),
 		Port:     parameter["port"].String(),

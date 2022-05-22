@@ -2,7 +2,7 @@
  * @Author: symbol
  * @Date: 2022-05-09 22:20:07
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-22 14:39:26
+ * @LastEditTime: 2022-05-22 18:48:44
  * @FilePath: /todb/frontend/src/Aside.vue
  * @Description: 
  * 
@@ -14,6 +14,7 @@
     <el-tree
       :data="listData.data"
       :load="loadNode"
+      node-click="nodeClick"
       highlight-current
       accordion
       lazy
@@ -29,6 +30,10 @@ import router from "./router";
 let listData = reactive({
   data: [],
 });
+
+function nodeClick(data) {
+  console.log(data);
+}
 
 onBeforeMount(() => {
   window.go.main.App.LoadingConnKey().then((resolve) => {

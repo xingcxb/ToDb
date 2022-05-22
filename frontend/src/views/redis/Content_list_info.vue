@@ -19,7 +19,7 @@
     </el-col>
   </el-row>
   <el-row style="margin-top: 20px" :gutter="5">
-    <el-col :span="10">
+    <el-col :span="9">
       <!--key-->
       <el-input v-model:value="nowKey" style="width: calc(100% - 30px)">
         <template #prepend>{{ allValue.data.type }}</template>

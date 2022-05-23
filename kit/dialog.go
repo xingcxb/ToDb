@@ -1,12 +1,13 @@
-// package lib
-// @Author: symbol
-// @Date: 2022-05-01 22:39:52
-// @LastEditTime: 2022-05-01 22:54:13
-// @LastEditors: symbol
-// @Description: 对话框控制工具
-// @FilePath: \ToDb\lib\dialog.go
-
-// Copyright (c) 2022 by easymbol, All Rights Reserved.
+/*
+ * @Author: symbol
+ * @Date: 2022-05-22 11:21:34
+ * @LastEditors: symbol
+ * @LastEditTime: 2022-05-23 14:51:19
+ * @FilePath: /todb/kit/dialog.go
+ * @Description: 对话框控制工具
+ *
+ * Copyright (c) 2022 by symbol, All Rights Reserved.
+ */
 
 package kit
 
@@ -42,5 +43,13 @@ func (d *sDiaLogKit) DefaultDialog(ctx context.Context, title, message string, i
 		Message:       message,
 		Buttons:       []string{"确定"},
 		DefaultButton: "确定",
+	})
+}
+
+// AboutDialog 关于对话框
+func (d *sDiaLogKit) About(ctx context.Context) {
+	runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
+		Type: runtime.InfoDialog,
+		// Title: ,
 	})
 }

@@ -2,8 +2,8 @@
  * @Author: symbol
  * @Date: 2022-04-30 11:18:03
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-18 11:24:53
- * @FilePath: /todb/frontend/src/Welcome.vue
+ * @LastEditTime: 2022-05-23 22:18:47
+ * @FilePath: \ToDb\frontend\src\Welcome.vue
  * @Description: 
  * 
  * Copyright (c) 2022 by symbol, All Rights Reserved. 
@@ -50,7 +50,7 @@ function openBrowser(v) {
 }
 
 .tail {
-  font-size: 7px;
+  font-size: 10px;
 }
 
 .other {

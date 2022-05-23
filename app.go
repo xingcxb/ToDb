@@ -32,7 +32,7 @@ func (a *App) startup(ctx context.Context) {
 	// Perform your setup here
 	// 在这里执行初始化设置
 	a.ctx = ctx
-	menu.InitMenu(ctx)
+	menu.InitMenu(ctx, icon)
 }
 
 // domReady is called after the front-end dom has been loaded

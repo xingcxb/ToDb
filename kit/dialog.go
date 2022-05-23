@@ -2,8 +2,8 @@
  * @Author: symbol
  * @Date: 2022-05-22 11:21:34
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-23 14:51:19
- * @FilePath: /todb/kit/dialog.go
+ * @LastEditTime: 2022-05-23 22:17:48
+ * @FilePath: \ToDb\kit\dialog.go
  * @Description: 对话框控制工具
  *
  * Copyright (c) 2022 by symbol, All Rights Reserved.
@@ -12,6 +12,7 @@
 package kit
 
 import (
+	"ToDb/common/consts"
 	"context"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -47,9 +48,14 @@ func (d *sDiaLogKit) DefaultDialog(ctx context.Context, title, message string, i
 }
 
 // AboutDialog 关于对话框
-func (d *sDiaLogKit) About(ctx context.Context) {
+func (d *sDiaLogKit) About(ctx context.Context, icon []byte) {
 	runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
-		Type: runtime.InfoDialog,
-		// Title: ,
+		Type:          runtime.InfoDialog,
+		Title:         consts.AppName,
+		Message:       consts.Description,
+		Icon:          icon,
+		CancelButton:  consts.BtnCancelText,
+		DefaultButton: consts.BtnConfirmText,
+		Buttons:       []string{consts.BtnConfirmText, consts.BtnCancelText},
 	})
 }

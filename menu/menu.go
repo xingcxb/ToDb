@@ -3,9 +3,10 @@ package menu
 import (
 	"ToDb/kit"
 	"context"
+	goruntime "runtime"
+
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
-	goruntime "runtime"
 )
 
 var (
@@ -22,17 +23,17 @@ func Menu() *sMenu {
 }
 
 // InitMenu 初始化菜单目录
-func InitMenu(ctx context.Context) {
+func InitMenu(ctx context.Context, icon []byte) {
 	var appMenu *menu.Menu
 	// 判断系统类型
 	osInfo = goruntime.GOOS
 	switch osInfo {
 	case "windows":
 		//Windows目录
-		appMenu = windows(ctx)
+		appMenu = windows(ctx, icon)
 	case "darwin":
 		//macos
-		appMenu = macOs(ctx)
+		appMenu = macOs(ctx, icon)
 	default:
 		//linux
 		kit.DiaLogKit().DefaultDialog(ctx, "错误", "暂不支持该系统", nil)
@@ -41,25 +42,25 @@ func InitMenu(ctx context.Context) {
 }
 
 // macOS菜单
-func macOs(ctx context.Context) *menu.Menu {
+func macOs(ctx context.Context, icon []byte) *menu.Menu {
 	return menu.NewMenuFromItems(
-		MacOSMenu().About(ctx),
+		MacOSMenu().About(ctx, icon),
 		MacOSMenu().File(ctx),
 		Menu().Edit(ctx),
 		Menu().Find(ctx),
 		Menu().Tools(ctx),
-		Menu().Help(ctx),
+		Menu().Help(ctx, icon),
 	)
 }
 
 // windows菜单
-func windows(ctx context.Context) *menu.Menu {
+func windows(ctx context.Context, icon []byte) *menu.Menu {
 	return menu.NewMenuFromItems(
 		WinMenu().File(ctx),
 		Menu().Edit(ctx),
 		Menu().Find(ctx),
 		Menu().Tools(ctx),
-		Menu().Help(ctx),
+		Menu().Help(ctx, icon),
 	)
 }
 
@@ -102,7 +103,7 @@ func (s *sMenu) Tools(ctx context.Context) *menu.MenuItem {
 }
 
 // Help 帮助
-func (s *sMenu) Help(ctx context.Context) *menu.MenuItem {
+func (s *sMenu) Help(ctx context.Context, icon []byte) *menu.MenuItem {
 	return menu.SubMenu("帮助",
 		menu.NewMenuFromItems(
 			menu.Text("帮助中心", nil, nil),
@@ -120,6 +121,9 @@ func (s *sMenu) Help(ctx context.Context) *menu.MenuItem {
 			menu.Separator(),
 			menu.Text("检查更新", nil, nil),
 			menu.Separator(),
+			menu.Text("关于", nil, func(cd *menu.CallbackData) {
+				kit.DiaLogKit().About(ctx, icon)
+			}),
 		),
 	)
 }

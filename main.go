@@ -2,7 +2,7 @@
  * @Author: symbol
  * @Date: 2022-05-08 08:49:54
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-21 20:47:32
+ * @LastEditTime: 2022-05-23 22:44:39
  * @FilePath: \ToDb\main.go
  * @Description:
  *
@@ -11,6 +11,7 @@
 package main
 
 import (
+	"ToDb/common/consts"
 	"embed"
 	"log"
 	goruntime "runtime"
@@ -39,7 +40,7 @@ func main() {
 	// Create application with options
 	// 使用选项创建应用
 	err := wails.Run(&options.App{
-		Title:            "ToDb",
+		Title:            consts.AppName,
 		Width:            1342,
 		Height:           windowsHeight,
 		DisableResize:    true,

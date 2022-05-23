@@ -2,7 +2,7 @@
  * @Author: symbol
  * @Date: 2022-05-22 11:21:34
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-23 22:17:48
+ * @LastEditTime: 2022-05-23 22:56:52
  * @FilePath: \ToDb\kit\dialog.go
  * @Description: 对话框控制工具
  *
@@ -54,8 +54,7 @@ func (d *sDiaLogKit) About(ctx context.Context, icon []byte) {
 		Title:         consts.AppName,
 		Message:       consts.Description,
 		Icon:          icon,
-		CancelButton:  consts.BtnCancelText,
 		DefaultButton: consts.BtnConfirmText,
-		Buttons:       []string{consts.BtnConfirmText, consts.BtnCancelText},
+		Buttons:       []string{consts.BtnConfirmText},
 	})
 }

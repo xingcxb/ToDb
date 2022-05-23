@@ -119,6 +119,11 @@ function toView(v) {
   connType.value = v;
 }
 
+window.runtime.EventsOn("createConn", function (data) {
+  console.log(data);
+  toView(data);
+});
+
 // 导入的方法暴露给go
 window.runtime.EventsOn("importConn", function () {
   importFile();

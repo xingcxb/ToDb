@@ -1,7 +1,18 @@
+/*
+ * @Author: symbol
+ * @Date: 2022-05-22 11:21:34
+ * @LastEditors: symbol
+ * @LastEditTime: 2022-05-23 11:40:40
+ * @FilePath: /todb/menu/macOSMenu.go
+ * @Description:
+ *
+ * Copyright (c) 2022 by symbol, All Rights Reserved.
+ */
 package menu
 
 import (
 	"context"
+
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -32,12 +43,12 @@ func (s *sMacOSMenu) File(ctx context.Context) *menu.MenuItem {
 		menu.NewMenuFromItems(
 			menu.SubMenu("新建连接",
 				menu.NewMenuFromItems(
-					menu.Text("Redis...", nil, func(data *menu.CallbackData) {
+					menu.Text("Redis...", keys.CmdOrCtrl("N"), func(data *menu.CallbackData) {
 						runtime.EventsEmit(ctx, "createConn", "redis")
 					}),
-					menu.Text("MySQL...", nil, func(data *menu.CallbackData) {
-						runtime.EventsEmit(ctx, "createConn", "mysql")
-					}),
+					// menu.Text("MySQL...", nil, func(data *menu.CallbackData) {
+					// 	runtime.EventsEmit(ctx, "createConn", "mysql")
+					// }),
 				),
 			),
 			menu.Text("新建查询", nil, nil),

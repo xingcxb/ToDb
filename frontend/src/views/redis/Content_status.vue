@@ -1,7 +1,8 @@
 <template>
+  <el-scrollbar style="height: 600px">
   <br/>
   <!--自动刷新-->
-  <el-row style="width: 100%; margin-right: 2px">
+  <el-row style="width: 98%; margin-right: 2px">
     <el-col :span="24">
       <div style="float: right">
         <el-tag type="card" style="margin-right: 5px">
@@ -23,10 +24,9 @@
   </el-row>
   <br/>
   <!--基础信息-->
-  <el-row :gutter="16" justify="space-around" style="margin-left: 2px">
+  <div style="display: flex;width: 98%;margin-left: 2px">
     <!-- server status row -->
-    <el-col :span="8" class="gutter-row">
-      <el-card shadow="hover">
+      <el-card class="lineCard" shadow="hover">
         <template #header>
           <img
               src="../../public/status/service.png"
@@ -58,10 +58,8 @@
           </el-tag>
         </p>
       </el-card>
-    </el-col>
     <!-- memory row -->
-    <el-col :span="8" class="gutter-row">
-      <el-card shadow="hover">
+      <el-card class="lineCard" shadow="hover">
         <template #header>
           <img
               src="../../public/status/memory.png"
@@ -95,9 +93,7 @@
           </el-tag>
         </p>
       </el-card>
-    </el-col>
-    <el-col :span="8" class="gutter-row">
-      <el-card shadow="hover">
+      <el-card class="lineCard" style="margin-right: 0;" shadow="hover">
         <template #header>
           <img
               src="../../public/status/history.png"
@@ -131,11 +127,10 @@
           </el-tag>
         </p>
       </el-card>
-    </el-col>
-  </el-row>
+    </div>
   <br/>
   <!--键值信息-->
-  <el-row style="width: 100%; margin-right: 2px">
+  <el-row style="width: 98%; margin-right: 2px">
     <el-col :span="24">
       <el-card shadow="hover">
         <template #header>
@@ -159,6 +154,7 @@
       </el-card>
     </el-col>
   </el-row>
+  </el-scrollbar>
 </template>
 
 <script setup>
@@ -298,6 +294,10 @@ function changeAutoRefresh() {
 }
 .server-status-tag-p {
   height: 32px;
+}
+/deep/.lineCard {
+  width: 30%;
+  margin-right: 5%;
 }
 
 .server-status-container {

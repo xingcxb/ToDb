@@ -20,7 +20,7 @@
   </el-row>
   <el-row style="margin-top: 20px" :gutter="5">
     <el-col :span="10">
-      <el-input v-model:value="nowKey" style="width: calc(100% - 30px)">
+      <el-input v-model="nowKey" style="width: calc(100% - 30px)">
         <template #prepend>{{ allValue.data.type }}</template>
         <template #append>
           <el-button @click="rename">
@@ -32,7 +32,7 @@
       </el-input>
     </el-col>
     <el-col :offset="1" :span="6">
-      <el-input v-model:value="ttl" style="width: calc(100% - 30px)">
+      <el-input v-model="ttl" style="width: calc(100% - 30px)">
         <template #prepend>TTL</template>
         <template #append>
           <el-button :icon="CheckOutlined" @click="updateTtl">

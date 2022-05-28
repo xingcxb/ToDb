@@ -143,7 +143,7 @@ function ok() {
       setTimeout(() => {
         confirmLoading.value = false;
         handleClose();
-      }, 2000);
+      }, 200);
     }
   });
 }

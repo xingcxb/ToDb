@@ -6,6 +6,7 @@ import (
 	goruntime "runtime"
 
 	"github.com/wailsapp/wails/v2/pkg/menu"
+	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
@@ -68,17 +69,11 @@ func windows(ctx context.Context, icon []byte) *menu.Menu {
 func (s *sMenu) Edit(ctx context.Context) *menu.MenuItem {
 	return menu.SubMenu("编辑",
 		menu.NewMenuFromItems(
-			menu.Text("撤销", nil, nil),
-			menu.Text("重做", nil, nil),
+			menu.Text("撤销", keys.CmdOrCtrl("Z"), nil),
 			menu.Separator(),
-			menu.Text("剪切", nil, nil),
-			menu.Text("复制", nil, nil),
-			menu.Text("粘贴", nil, nil),
-			menu.Separator(),
-			menu.Text("全选", nil, nil),
-			menu.Separator(),
-			menu.Text("开始听写...", nil, nil),
-			menu.Text("表情与符号...", nil, nil),
+			menu.Text("剪切", keys.CmdOrCtrl("X"), nil),
+			menu.Text("复制", keys.CmdOrCtrl("C"), nil),
+			menu.Text("粘贴", keys.CmdOrCtrl("V"), nil),
 		),
 	)
 }
@@ -98,6 +93,9 @@ func (s *sMenu) Tools(ctx context.Context) *menu.MenuItem {
 	return menu.SubMenu("工具",
 		menu.NewMenuFromItems(
 			menu.Text("历史日志", nil, nil),
+			menu.Text("刷新", keys.CmdOrCtrl("R"), func(data *menu.CallbackData) {
+				runtime.WindowReload(ctx)
+			}),
 		),
 	)
 }

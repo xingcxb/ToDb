@@ -119,8 +119,8 @@ function toView(v) {
   connType.value = v;
 }
 
+// 创建新的连接
 window.runtime.EventsOn("createConn", function (data) {
-  console.log(data);
   toView(data);
 });
 
@@ -136,7 +136,6 @@ window.runtime.EventsOn("exportConn", function () {
 
 // 导入连接
 function importFile() {
-  console.log("导入连接");
   window.go.main.App.ImportConn();
 }
 

@@ -1,3 +1,13 @@
+/*
+ * @Author: symbol
+ * @Date: 2022-05-21 19:59:46
+ * @LastEditors: symbol
+ * @LastEditTime: 2022-05-28 14:53:21
+ * @FilePath: \ToDb\service\general.go
+ * @Description:
+ *
+ * Copyright (c) 2022 by symbol, All Rights Reserved.
+ */
 // package service
 // @Author: symbol
 // @Date: 2022-05-04

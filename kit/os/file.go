@@ -21,7 +21,7 @@ import (
 
 var (
 	insFile  = sFile{}
-	lastPath = "/.ToDb"
+	lastPath = ".ToDb"
 )
 
 type sFile struct {
@@ -49,7 +49,7 @@ func (o *sFile) HomeDir(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	path := user.HomeDir + lastPath + string(os.PathSeparator)
+	path := user.HomeDir + string(os.PathSeparator) + lastPath + string(os.PathSeparator)
 	return path, nil
 }
 

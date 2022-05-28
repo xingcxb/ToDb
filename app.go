@@ -98,6 +98,7 @@ func (a App) Ok(connectionInfo string) string {
 	if code != http.StatusOK {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", message, icon)
 	}
+	runtime.WindowReload(a.ctx)
 	return responseJson.String()
 }
 
@@ -230,23 +231,16 @@ func (a *App) RedisUpTtl(connType, connName, nodeIdStr, key, ttlStr string) {
 // RedisDelKey 删除键
 func (a *App) RedisDelKey(connType, connName, nodeIdStr, key string) {
 	selection, _ := runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-		Type:          runtime.WarningDialog,
-		Title:         "删除",
-		Message:       "确定删除该key吗？",
-		Buttons:       []string{"确定", "取消"},
-		DefaultButton: "取消",
-		CancelButton:  "取消",
+		Type:    runtime.InfoDialog,
+		Title:   "删除",
+		Message: "确定删除该key吗？",
+		Buttons: []string{"Cancel", "Ok"},
 	})
-	if selection != "确定" {
+	if selection != "Ok" {
 		return
 	}
-	v := ""
-	switch connType {
-	case "redis":
-		v = communication.Redis().RedisDel(a.ctx, connType, connName, nodeIdStr, key)
-	default:
-		v = "暂不支持"
-	}
+	v := communication.Redis().RedisDel(a.ctx, connType, connName, nodeIdStr, key)
+
 	if v != "success" {
 		kit.DiaLogKit().DefaultDialog(a.ctx, "错误", v, icon)
 	} else {

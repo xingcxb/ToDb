@@ -117,7 +117,9 @@ func (s *sMenu) Help(ctx context.Context, icon []byte) *menu.MenuItem {
 			),
 			menu.Text("意见反馈", nil, nil),
 			menu.Separator(),
-			menu.Text("检查更新", nil, nil),
+			menu.Text("检查更新", nil, func(_ *menu.CallbackData) {
+				kit.Update().CheckUpdate()
+			}),
 			menu.Separator(),
 			menu.Text("关于", nil, func(cd *menu.CallbackData) {
 				kit.DiaLogKit().About(ctx, icon)

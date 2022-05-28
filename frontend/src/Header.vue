@@ -107,7 +107,7 @@
 </template>
 
 <script setup>
-import Connection from "./views/NewConnection.vue";
+import Connection from "./views/pop/NewConnection.vue";
 import { ref } from "vue";
 
 let visible = ref(false);

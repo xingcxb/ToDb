@@ -10,12 +10,14 @@
     </el-col>
     <el-col :offset="8" :span="1">
       <!--关闭图片-->
-      <img
-        src="../../public/info/close.png"
-        alt="close"
-        style="vertical-align: middle; cursor: pointer"
-        @click="close"
-      />
+      <el-tooltip content="关闭页面" placement="top">
+        <img
+          src="../../public/info/close.png"
+          alt="close"
+          style="vertical-align: middle; cursor: pointer"
+          @click="close"
+        />
+      </el-tooltip>
     </el-col>
   </el-row>
   <el-row style="margin-top: 20px" :gutter="5">
@@ -46,45 +48,78 @@
       </el-input>
     </el-col>
     <el-col :offset="1" :span="2">
-      <el-button type="primary" danger :size="small" @click="del">
-        <template #icon>
-          <!--删除-->
-          <Delete20Regular />
-        </template>
-      </el-button>
+      <el-tooltip content="删除" placement="bottom">
+        <el-button type="primary" danger :size="small" @click="del">
+          <template #icon>
+            <!--删除-->
+            <Delete20Regular />
+          </template>
+        </el-button>
+      </el-tooltip>
     </el-col>
     <el-col :span="2">
-      <el-button
-        type="primary"
-        :size="small"
-        @click="getInfo"
-        style="background: #ffb33a; border: none"
-      >
-        <template #icon>
-          <!--刷新-->
-          <Refresh />
-        </template>
-      </el-button>
+      <el-tooltip content="刷新" placement="bottom">
+        <el-button
+          type="primary"
+          :size="small"
+          @click="getInfo"
+          style="background: #ffb33a; border: none"
+        >
+          <template #icon>
+            <!--刷新-->
+            <Refresh />
+          </template>
+        </el-button>
+      </el-tooltip>
     </el-col>
     <el-col :span="2">
-      <el-button
-        type="primary"
-        :size="small"
-        style="background: #07c245; border: none"
-        v-clipboard:copy="commandStr"
-      >
-        <template #icon>
-          <!--获取命令-->
-          <CodeSlashOutline />
-        </template>
-      </el-button>
+      <el-tooltip content="复制为命令" placement="bottom">
+        <el-button
+          type="primary"
+          :size="small"
+          style="background: #07c245; border: none"
+          v-clipboard:copy="commandStr"
+        >
+          <template #icon>
+            <!--获取命令-->
+            <CodeSlashOutline />
+          </template>
+        </el-button>
+      </el-tooltip>
     </el-col>
   </el-row>
   <el-row class="interval_row">
     <el-col :span="2">
-      <el-button type="primary"> 添加新行 </el-button>
+      <el-button type="primary" disabled @click="addRowDialog = true">
+        添加新行
+      </el-button>
     </el-col>
   </el-row>
+  <el-dialog v-model="addRowDialog" title="插入行" width="40%" center>
+    <!--添加list值的弹窗-->
+    <el-row>
+      <el-col :span="2">
+        <span style="font-size: 16px">键值</span>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col>
+        <el-input
+          v-model="newKv"
+          :rows="4"
+          type="textarea"
+          placeholder="请输入键值"
+        >
+        </el-input>
+      </el-col>
+    </el-row>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="addRowDialog = false">取消</el-button>
+        <el-button type="primary"> 确认 </el-button>
+      </span>
+    </template>
+  </el-dialog>
   <el-row class="interval_row">
     <el-col :span="22">
       <!--表格-->
@@ -96,30 +131,22 @@
         <el-table-column prop="value" label="value" />
         <el-table-column label="operation">
           <template #default="scope">
-            <el-button size="small" type="success" circle>
-              <template #icon>
-                <!--复制值-->
-                <CopyOutline />
-              </template>
-            </el-button>
-            <el-button size="small" type="primary" circle>
-              <template #icon>
-                <!--编辑内容-->
-                <Edit />
-              </template>
-            </el-button>
-            <el-button size="small" type="danger" circle>
-              <template #icon>
-                <!--删除内容-->
-                <Delete20Regular />
-              </template>
-            </el-button>
-            <el-button size="small" type="warning" circle>
-              <template #icon>
-                <!--复制值为命令-->
-                <CodeSlashOutline />
-              </template>
-            </el-button>
+            <el-tooltip content="复制值" placement="bottom">
+              <el-button size="small" type="success" disabled circle>
+                <template #icon>
+                  <!--复制值-->
+                  <CopyOutline />
+                </template>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="删除当前行" placement="bottom">
+              <el-button size="small" type="danger" disabled circle>
+                <template #icon>
+                  <!--删除内容-->
+                  <Delete20Regular />
+                </template>
+              </el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -166,6 +193,10 @@ let content = reactive({
 let formatType = ref("Text");
 // 命令
 let commandStr = ref("");
+// 添加行弹窗显示标记
+let addRowDialog = ref(false);
+// 添加行的值
+let newKv = ref("");
 
 // 获取基础信息
 function getInfo() {
@@ -179,7 +210,6 @@ function getInfo() {
     // 此处如果是空值，则应该是该键没有填充值
     allValue.data = JSON.parse(res);
     content.data = allValue.data.value;
-    console.log("这个页面是list这个content值是：", content.data);
     ttl.value = allValue.data.ttl;
     contentSize.value = allValue.data.size;
     commandStr.value = allValue.data.commandStr;
@@ -240,6 +270,9 @@ function del() {
     nowKey.value
   );
 }
+
+// 创建新的行弹窗
+function addListRowPop() {}
 </script>
 
 <style scoped>

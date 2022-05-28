@@ -10,11 +10,7 @@
     <el-row>
       <el-col :span="24" class="imageRow">
         <!--  //472*72-->
-        <img
-          :width="100"
-          :height="72"
-          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        />
+        <!-- <img :width="100" :height="72" src="" />-->
       </el-col>
     </el-row>
     <br />

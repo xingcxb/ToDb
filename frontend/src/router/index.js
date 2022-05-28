@@ -2,14 +2,14 @@
  * @Author: symbol
  * @Date: 2022-04-30 11:18:03
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-22 14:39:52
- * @FilePath: /todb/frontend/src/router/index.js
+ * @LastEditTime: 2022-05-28 17:16:50
+ * @FilePath: \ToDb\frontend\src\router\index.js
  * @Description:路由
  *
  * Copyright (c) 2022 by symbol, All Rights Reserved.
  */
 import Default from "../Welcome.vue";
-import NewConnect from "../views/NewConnection.vue";
+import NewConnect from "../views/pop/NewConnection.vue";
 import Status from "../views/redis/Content_status.vue";
 import StringInfo from "../views/redis/Content_string_info.vue";
 import ListInfo from "../views/redis/Content_list_info.vue";

@@ -2,7 +2,7 @@
  * @Author: symbol
  * @Date: 2022-05-22 11:21:34
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-23 22:20:49
+ * @LastEditTime: 2022-05-28 23:12:52
  * @FilePath: \ToDb\menu\macOSMenu.go
  * @Description:
  *
@@ -39,6 +39,10 @@ func (s *sMacOSMenu) About(ctx context.Context, icon []byte) *menu.MenuItem {
 		menu.NewMenuFromItems(
 			menu.Text("关于ToDb", nil, func(cd *menu.CallbackData) {
 				kit.DiaLogKit().About(ctx, icon)
+			}),
+			menu.Separator(),
+			menu.Text("退出", keys.CmdOrCtrl("Q"), func(cd *menu.CallbackData) {
+				runtime.Quit(ctx)
 			}),
 		),
 	)

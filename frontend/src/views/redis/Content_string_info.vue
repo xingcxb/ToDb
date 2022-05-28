@@ -10,12 +10,14 @@
     </el-col>
     <el-col :offset="8" :span="1">
       <!--关闭图片-->
-      <img
-        src="../../public/info/close.png"
-        alt="close"
-        style="vertical-align: middle; cursor: pointer"
-        @click="close"
-      />
+      <el-tooltip content="关闭页面" placement="top">
+        <img
+          src="../../public/info/close.png"
+          alt="close"
+          style="vertical-align: middle; cursor: pointer"
+          @click="close"
+        />
+      </el-tooltip>
     </el-col>
   </el-row>
   <el-row style="margin-top: 20px" :gutter="5">
@@ -46,38 +48,44 @@
       </el-input>
     </el-col>
     <el-col :offset="1" :span="2">
-      <el-button type="primary" danger :size="small" @click="del">
-        <template #icon>
-          <!--删除-->
-          <Delete28Regular />
-        </template>
-      </el-button>
+      <el-tooltip content="删除" placement="bottom">
+        <el-button type="primary" danger :size="small" @click="del">
+          <template #icon>
+            <!--删除-->
+            <Delete28Regular />
+          </template>
+        </el-button>
+      </el-tooltip>
     </el-col>
     <el-col :span="2">
-      <el-button
-        type="primary"
-        :size="small"
-        @click="getInfo"
-        style="background: #ffb33a; border: none"
-      >
-        <template #icon>
-          <!--刷新-->
-          <Refresh />
-        </template>
-      </el-button>
+      <el-tooltip content="刷新" placement="bottom">
+        <el-button
+          type="primary"
+          :size="small"
+          @click="getInfo"
+          style="background: #ffb33a; border: none"
+        >
+          <template #icon>
+            <!--刷新-->
+            <Refresh />
+          </template>
+        </el-button>
+      </el-tooltip>
     </el-col>
     <el-col :span="2">
-      <el-button
-        type="primary"
-        :size="small"
-        style="background: #07c245; border: none"
-        v-clipboard:copy="commandStr"
-      >
-        <template #icon>
-          <!--获取命令-->
-          <Code />
-        </template>
-      </el-button>
+      <el-tooltip content="复制命令" placement="bottom">
+        <el-button
+          type="primary"
+          :size="small"
+          style="background: #07c245; border: none"
+          v-clipboard:copy="commandStr"
+        >
+          <template #icon>
+            <!--获取命令-->
+            <Code />
+          </template>
+        </el-button>
+      </el-tooltip>
     </el-col>
   </el-row>
   <el-row style="margin-top: 20px; height: 24px" :gutter="5">
@@ -97,16 +105,18 @@
       </el-tag>
     </el-col>
     <el-col :span="1">
-      <el-button
-        :size="small"
-        style="border: none; padding-left: 5px; height: 24px"
-        v-clipboard:copy="content"
-      >
-        <template #icon>
-          <CopyOutline />
-        </template>
-        复制
-      </el-button>
+      <el-tooltip content="复制值" placement="bottom">
+        <el-button
+          :size="small"
+          style="border: none; padding-left: 5px; height: 24px"
+          v-clipboard:copy="content"
+        >
+          <template #icon>
+            <CopyOutline />
+          </template>
+          复制
+        </el-button>
+      </el-tooltip>
     </el-col>
   </el-row>
   <el-row style="margin-top: 20px">

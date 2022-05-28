@@ -2,7 +2,7 @@
  * @Author: symbol
  * @Date: 2022-05-28 23:13:40
  * @LastEditors: symbol
- * @LastEditTime: 2022-05-28 23:38:36
+ * @LastEditTime: 2022-05-28 23:48:38
  * @FilePath: \ToDb\kit\update.go
  * @Description:
  *
@@ -10,7 +10,10 @@
  */
 package kit
 
-import "context"
+import (
+	"context"
+	"fmt"
+)
 
 var (
 	insUpdate = sUpdate{}
@@ -24,11 +27,12 @@ func Update() *sUpdate {
 	return &insUpdate
 }
 
-const(
-	githubUrl := "https://api.github.com/repos/xingcxb/todb/releases/latest"
+const (
+	githubUrl = "https://api.github.com/repos/xingcxb/todb/releases/latest"
 )
 
 // 检查是否存在更新
 func (u *sUpdate) CheckUpdate() {
 	//TODO 未发布版本暂缓实现
+	fmt.Println(githubUrl)
 }

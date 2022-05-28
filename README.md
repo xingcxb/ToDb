@@ -1,10 +1,18 @@
+<!--
+ * @Author: symbol
+ * @Date: 2022-05-01 17:37:06
+ * @LastEditors: symbol
+ * @LastEditTime: 2022-05-28 23:53:39
+ * @FilePath: \ToDb\README.md
+ * @Description:
+ *
+ * Copyright (c) 2022 by symbol, All Rights Reserved.
+-->
 <p align="center" style="text-align: center">
    <img src="todb.png"><br/>
 </p>
 
 # `ToDb`
-
-[![Goproxy.cn](https://goproxy.cn/stats/<module-path>/badges/download-count.svg)](https://goproxy.cn)
 
 `ToDb`一款连接数据库的工具
 
@@ -19,6 +27,12 @@
 - [x] `Redis`
 - [ ] `MySQL`
 - [ ] ......
+
+## 预览
+
+![](https://symbol-node.oss-cn-shanghai.aliyuncs.com/git/ToDb/1.png)
+
+![](https://symbol-node.oss-cn-shanghai.aliyuncs.com/git/ToDb/2.png)
 
 ## 常见问题
 

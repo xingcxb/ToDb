@@ -47,7 +47,7 @@ jobs:
           wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
           chmod +x linuxdeploy*.AppImage
           ls ./
-          ./linuxdeploy*.AppImage --appdir AppDir --executable ToDb --desktop-file=ToDb.AppImage.desktop --icon-file=todb.png --output appimage
+          ./linuxdeploy*.AppImage --appdir AppDir --executable todb --desktop-file=ToDb.AppImage.desktop --icon-file=todb.png --output appimage
         if: matrix.platform == 'ubuntu-latest'
       - name: Build package windows
         run: |

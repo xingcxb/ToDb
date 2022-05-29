@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Get wails
-        run: go get -u github.com/wailsapp/wails/cmd/wails@v2.0.0-beta.34
+        run: go get -u github.com/wailsapp/wails/v2/cmd/wails@v2.0.0-beta.34
       - name: Build package osx
         run: |
           export PATH=${PATH}:`go env GOPATH`/bin

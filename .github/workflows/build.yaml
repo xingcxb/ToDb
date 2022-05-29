@@ -1,3 +1,4 @@
+name: ToDb
 on:
   push:
     tags:

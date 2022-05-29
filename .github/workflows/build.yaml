@@ -62,7 +62,7 @@ jobs:
           New-Item -ItemType directory -Path "$HOME\.wails" -Force
           Copy-Item -Path "$PWD\wails.json" -Destination "$HOME\.wails\wails.json"
           choco install mingw
-          wails build -p
+          wails build 
           Compress-Archive -Path .\build\ToDb* -DestinationPath .\ToDb.zip
         if: matrix.os == 'windows-latest'
       - name: upload artifact macOS

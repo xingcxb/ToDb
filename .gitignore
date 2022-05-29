@@ -4,7 +4,6 @@ build/bin/ToDb.app/Contents/Info.plist
 build/bin/ToDb.app/Contents/MacOS/ToDb
 build/bin/ToDb.app/Contents/Resources/iconfile.icns
 .idea/ToDb.iml
-.github/
 .idea/
 .history/
 node_modules/

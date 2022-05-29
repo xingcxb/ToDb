@@ -31,7 +31,7 @@ jobs:
           cp wails.json ~/.wails/
           export LOG_LEVEL=debug
           export GODEBUG=1
-          wails build -p
+          wails build
           echo "converting .app into a .dmg"
           npm install -g appdmg
           appdmg dmg-spec.json ToDb.dmg

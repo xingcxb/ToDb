@@ -24,13 +24,13 @@ jobs:
       - name: Get Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.0.0-beta.34
 
-      - name: Import Code-Signing Certificates
-        uses: Apple-Actions/import-codesign-certs@v1
-        with:
-          # The certificates in a PKCS12 file encoded as a base64 string
-          p12-file-base64: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_P12_BASE64 }}
-          # The password used to import the PKCS12 file.
-          p12-password: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_PASSWORD }}
+        # - name: Import Code-Signing Certificates
+        #   uses: Apple-Actions/import-codesign-certs@v1
+        #   with:
+        #     # The certificates in a PKCS12 file encoded as a base64 string
+        #     p12-file-base64: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_P12_BASE64 }}
+        #     # The password used to import the PKCS12 file.
+        #     p12-password: ${{ secrets.APPLE_DEVELOPER_CERTIFICATE_PASSWORD }}
         if: matrix.os == 'macos-11'
 
       - name: Install gon via HomeBrew for code signing and app notarization
@@ -40,9 +40,9 @@ jobs:
         if: matrix.os == 'macos-11'
 
       - name: Build and Sign MacOS Binaries
-        env:
-          AC_USERNAME: ${{ secrets.AC_USERNAME }}
-          AC_PASSWORD: ${{ secrets.AC_PASSWORD }}
+        # env:
+        #   AC_USERNAME: ${{ secrets.AC_USERNAME }}
+        #   AC_PASSWORD: ${{ secrets.AC_PASSWORD }}
         run: |
           ./build-macos.sh
         if: matrix.os == 'macos-11'

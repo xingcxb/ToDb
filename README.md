@@ -47,3 +47,10 @@
 
 - [reciment](https://gitee.com/recimentPackage)
 - [ProudMuBai](https://gitee.com/proudmubai)
+
+## 特别感谢
+
+   A special thank you to JetBrains for donating licenses to us!<br/><br/>
+   Please click the logo to let them know your appreciation!<br/><br/>
+   <a href="https://www.jetbrains.com?from=ToDb"><img src="jb_beam.png" width="30%"></a>
+</p>

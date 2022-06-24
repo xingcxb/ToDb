@@ -1,13 +1,3 @@
-<!--
- * @Author: symbol
- * @Date: 2022-05-01 17:37:06
- * @LastEditors: symbol
- * @LastEditTime: 2022-05-28 23:53:39
- * @FilePath: \ToDb\README.md
- * @Description:
- *
- * Copyright (c) 2022 by symbol, All Rights Reserved.
--->
 <p align="center" style="text-align: center">
    <img src="todb.png"><br/>
 </p>
